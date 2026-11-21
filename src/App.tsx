@@ -51,6 +51,7 @@ export default function App() {
 
   // Modals
   const [showTimer, setShowTimer] = useState<boolean>(false);
+  const [timerViewOnly, setTimerViewOnly] = useState<boolean>(false);
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const [showBrewerPicker, setShowBrewerPicker] = useState<boolean>(false);
 
@@ -434,7 +435,16 @@ export default function App() {
         <div className={`w-full rounded-2xl border p-3.5 flex items-center justify-between gap-3 shadow-sm transition-colors ${
           settings.darkMode ? 'bg-zinc-950/70 border-zinc-800/80 text-zinc-100' : 'bg-white border-zinc-200 text-zinc-900'
         }`}>
-          <div className="flex items-center gap-3 min-w-0">
+          <button
+            type="button"
+            onClick={() => {
+              sounds.playKeyClick();
+              setTimerViewOnly(true);
+              setShowTimer(true);
+            }}
+            aria-label={settings.lang === 'hu' ? 'Recept lépései' : 'Recipe steps'}
+            className="flex items-center gap-3 min-w-0 text-left cursor-pointer"
+          >
             <div className={`w-14 h-14 rounded-2xl border flex items-center justify-center flex-shrink-0 shadow-inner ${
               settings.darkMode ? 'bg-zinc-900 border-zinc-800/80' : 'bg-zinc-50 border-zinc-200'
             }`}>
@@ -455,7 +465,7 @@ export default function App() {
                 {currentRecipe.creatorEn} • {currentRecipe.brewTimeSec >= 3600 ? `${Math.round(currentRecipe.brewTimeSec / 3600)}h` : `${currentRecipe.brewTimeSec}s`}
               </p>
             </div>
-          </div>
+          </button>
 
           <button
             type="button"
@@ -558,6 +568,7 @@ export default function App() {
           type="button"
           onClick={() => {
             sounds.playKeyClick();
+            setTimerViewOnly(false);
             setShowTimer(true);
           }}
           className="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-mono font-bold text-sm sm:text-base shadow-xl shadow-amber-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
@@ -590,6 +601,7 @@ export default function App() {
           roastLevel={roastLevel}
           themeColor={settings.themeColor}
           lang={settings.lang}
+          viewOnly={timerViewOnly}
           onClose={() => setShowTimer(false)}
         />
       )}
