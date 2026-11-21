@@ -587,6 +587,7 @@ export default function App() {
           recipe={currentRecipe}
           coffeeGrams={coffeeNum}
           waterGrams={waterNum}
+          roastLevel={roastLevel}
           themeColor={settings.themeColor}
           lang={settings.lang}
           onClose={() => setShowTimer(false)}

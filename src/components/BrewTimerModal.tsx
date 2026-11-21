@@ -36,6 +36,7 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(sounds.enabled);
+  const [isActiveTimer, setIsActiveTimer] = useState(!viewOnly);
 
   const startRef = useRef(0); // wall-clock start, so the timer stays right when the tab is throttled
   const D = (dark: string, light: string) => (darkMode ? dark : light);
@@ -59,8 +60,7 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
 
     // Scale water target dynamically
     if (st.waterTarget && recipe.defaultWater) {
-      const ratioFraction = st.waterTarget / recipe.defaultWater;
-      waterTarget = Math.round(waterGrams * ratioFraction);
+      waterTarget = Math.round(waterGrams * (st.waterTarget / recipe.defaultWater));
     }
 
     // Replace hardcoded coffee and water grams in step descriptions
@@ -70,12 +70,12 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
     descHu = descHu
       .replace(new RegExp(`${defaultC}g`, 'g'), `${coffeeGrams}g`)
       .replace(new RegExp(`${defaultW}g`, 'g'), `${waterGrams}g`)
-      .replace(/85°C|80-85°C|92°C|95°C|98°C/g, tempDisplay);
+      .replace(/~?85°C|80-85°C|~?90°C|~?92°C|~?95°C|~?98°C/g, tempDisplay);
 
     descEn = descEn
       .replace(new RegExp(`${defaultC}g`, 'g'), `${coffeeGrams}g`)
       .replace(new RegExp(`${defaultW}g`, 'g'), `${waterGrams}g`)
-      .replace(/85°C|80-85°C|92°C|95°C|98°C/g, tempDisplay);
+      .replace(/~?85°C|80-85°C|~?90°C|~?92°C|~?95°C|~?98°C/g, tempDisplay);
 
     titleHu = titleHu
       .replace(new RegExp(`${defaultC}g`, 'g'), `${coffeeGrams}g`)
@@ -262,116 +262,172 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
           </div>
         </div>
 
-        {/* Big Digital Scale Chronometer */}
-        {!viewOnly && (
-          <div className={`flex flex-col items-center justify-center p-5 rounded-2xl ${D('bg-zinc-900/40','bg-zinc-100')} border ${D('border-zinc-800/60','border-zinc-200')} font-mono`}>
-            <div className="flex items-center gap-2 text-xs text-zinc-500 mb-1">
-              <Clock className="w-3.5 h-3.5" />
-              <span>ELAPSED / TOTAL: {formatTime(totalBrewSec)}</span>
-            </div>
-
-            <div className={`text-5xl sm:text-7xl font-bold tracking-tight tabular-nums py-2 ${getThemeText()}`}>
-              {formatTime(elapsedSec)}
-            </div>
-
-            {totalBrewSec >= 3600 && isRunning && (
-              <div className="text-[11px] text-zinc-500 mt-0.5">
-                {lang === 'hu' ? 'Várható befejezés: ~' : 'Estimated completion: ~'}
-                {new Date(Date.now() + (totalBrewSec - elapsedSec) * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </div>
-            )}
-
-            {/* Progress bar */}
-            <div className={`w-full ${D('bg-zinc-800','bg-zinc-200')} rounded-full h-2 mt-3 overflow-hidden`}>
-              <div
-                className={`h-full transition-all duration-300 ${getProgressBarClass()}`}
-                style={{ width: `${progressPercent}%` }}
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Step Guide Card */}
-        {currentStep && (
-          <div className={`rounded-2xl ${D('bg-zinc-900/60','bg-zinc-100')} border ${D('border-zinc-800','border-zinc-200')} p-4 flex flex-col gap-2`}>
-            <div className="flex items-center justify-between text-xs font-mono">
-              <span className="text-amber-400 font-semibold uppercase tracking-wider">
-                {t.step} {currentStepIndex + 1} / {steps.length}
+        {/* Big Digital Scale Chronometer or All Steps List */}
+        {!isActiveTimer ? (
+          <div className="flex flex-col gap-3">
+            <div className={`flex items-center justify-between text-xs font-mono pb-1 border-b ${D('border-zinc-800/40 text-zinc-400','border-zinc-200 text-zinc-600')}`}>
+              <span className="font-semibold uppercase tracking-wider text-amber-500">
+                {lang === 'hu' ? 'Elkészítés Lépései' : 'Brewing Steps'} ({steps.length})
               </span>
-              <span className="text-zinc-500">
-                @{formatTime(currentStep.timeSec)}
-              </span>
+              <span>{lang === 'hu' ? `Vízhőfok: ${tempDisplay}` : `Water: ${tempDisplay}`}</span>
             </div>
 
-            <h4 className={`text-base sm:text-lg font-bold ${D('text-zinc-100','text-zinc-900')}`}>
-              {lang === 'hu' ? currentStep.titleHu : currentStep.titleEn}
-            </h4>
+            <div className="flex flex-col gap-2.5 max-h-[52vh] overflow-y-auto pr-1">
+              {steps.map((st, idx) => (
+                <div
+                  key={idx}
+                  className={`rounded-2xl ${D('bg-zinc-900/60','bg-zinc-100')} border ${D('border-zinc-800','border-zinc-200')} p-3.5 flex flex-col gap-1.5`}
+                >
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <span className="text-amber-500 font-bold uppercase tracking-wider">
+                      {t.step} {idx + 1}
+                    </span>
+                    <span className="text-zinc-500">
+                      @{formatTime(st.timeSec)}
+                    </span>
+                  </div>
 
-            <p className={`text-xs sm:text-sm ${D('text-zinc-400','text-zinc-600')} leading-relaxed`}>
-              {lang === 'hu' ? currentStep.descHu : currentStep.descEn}
-            </p>
+                  <h4 className={`text-sm sm:text-base font-bold ${D('text-zinc-100','text-zinc-900')}`}>
+                    {lang === 'hu' ? st.titleHu : st.titleEn}
+                  </h4>
 
-            {currentStep.waterTarget && (
-              <div className={`mt-1 flex items-center gap-1.5 text-xs font-mono font-medium p-2 rounded-lg ${D('text-blue-400 bg-blue-950/30 border border-blue-900/50', 'text-blue-700 bg-blue-50 border border-blue-200')}`}>
-                <span className="flex items-center gap-1.5"><Droplet className="w-3.5 h-3.5" aria-hidden="true" />{t.water}: {Math.round(currentStep.waterTarget * scale)}g target</span>
-              </div>
-            )}
-          </div>
-        )}
+                  <p className={`text-xs ${D('text-zinc-400','text-zinc-600')} leading-relaxed`}>
+                    {lang === 'hu' ? st.descHu : st.descEn}
+                  </p>
 
-        {/* Completion Message */}
-        {isFinished && (
-          <div className="flex items-center gap-3 p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-800/60 text-emerald-300 text-sm">
-            <CheckCircle2 className="w-5 h-5 flex-shrink-0 text-emerald-400" />
-            <span className="font-medium">{t.brewFinished}</span>
-          </div>
-        )}
+                  {st.waterTarget && (
+                    <div className={`mt-1 flex items-center gap-1.5 text-[11px] font-mono font-medium p-1.5 rounded-lg ${D('text-blue-400 bg-blue-950/30 border border-blue-900/50', 'text-blue-700 bg-blue-50 border border-blue-200')}`}>
+                      <span className="flex items-center gap-1.5"><Droplet className="w-3.5 h-3.5" aria-hidden="true" />{t.water}: {st.waterTarget}g target</span>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
 
-        {/* Control Action Buttons */}
-        {!viewOnly && (
-          <div className="grid grid-cols-4 gap-2 pt-2">
+            {/* Big Start button inside view-only modal */}
             <button
               type="button"
-              onClick={handlePrevStep}
-              disabled={currentStepIndex === 0}
-              className={`p-3 rounded-2xl ${D('bg-zinc-900','bg-zinc-100')} ${D('hover:bg-zinc-800','hover:bg-zinc-200')} disabled:opacity-30 border ${D('border-zinc-800','border-zinc-200')} flex items-center justify-center ${D('text-zinc-300','text-zinc-700')} active:scale-95 transition-all cursor-pointer`}
-              title={t.previousStep}
+              onClick={() => {
+                sounds.playKeyClick();
+                setIsActiveTimer(true);
+                seek(0);
+                setIsRunning(true);
+              }}
+              className="w-full mt-1 py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-mono font-bold text-sm shadow-xl flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition-all"
             >
-              <SkipBack className="w-5 h-5" />
+              <Play className="w-4 h-4 fill-current" />
+              <span>{t.startTimer}</span>
             </button>
+          </div>
+        ) : (
+          <>
+            <div className={`flex flex-col items-center justify-center p-5 rounded-2xl ${D('bg-zinc-900/40','bg-zinc-100')} border ${D('border-zinc-800/60','border-zinc-200')} font-mono`}>
+              <div className="flex items-center gap-2 text-xs text-zinc-500 mb-1">
+                <Clock className="w-3.5 h-3.5" />
+                <span>ELAPSED / TOTAL: {formatTime(totalBrewSec)}</span>
+              </div>
 
-            <button
-              type="button"
-              onClick={toggleRun}
-              className={`col-span-2 py-3 px-4 rounded-2xl font-mono font-bold text-base flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all cursor-pointer ${
-                isRunning
-                  ? 'bg-amber-600 hover:bg-amber-500 text-zinc-950'
-                  : 'bg-emerald-500 hover:bg-emerald-400 text-zinc-950'
-              }`}
-            >
-              {isRunning ? (
-                <>
-                  <Pause className="w-5 h-5" />
-                  <span>{t.pause}</span>
-                </>
-              ) : (
-                <>
-                  <Play className="w-5 h-5 fill-current" />
-                  <span>{elapsedSec > 0 ? t.resume : t.startTimer}</span>
-                </>
+              <div className={`text-5xl sm:text-7xl font-bold tracking-tight tabular-nums py-2 ${getThemeText()}`}>
+                {formatTime(elapsedSec)}
+              </div>
+
+              {totalBrewSec >= 3600 && isRunning && (
+                <div className="text-[11px] text-zinc-500 mt-0.5">
+                  {lang === 'hu' ? 'Várható befejezés: ~' : 'Estimated completion: ~'}
+                  {new Date(Date.now() + (totalBrewSec - elapsedSec) * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </div>
               )}
-            </button>
 
-            <button
-              type="button"
-              onClick={handleNextStep}
-              disabled={currentStepIndex === steps.length - 1}
-              className={`p-3 rounded-2xl ${D('bg-zinc-900','bg-zinc-100')} ${D('hover:bg-zinc-800','hover:bg-zinc-200')} disabled:opacity-30 border ${D('border-zinc-800','border-zinc-200')} flex items-center justify-center ${D('text-zinc-300','text-zinc-700')} active:scale-95 transition-all cursor-pointer`}
-              title={t.nextStep}
-            >
-              <SkipForward className="w-5 h-5" />
-            </button>
-          </div>
+              {/* Progress bar */}
+              <div className={`w-full ${D('bg-zinc-800','bg-zinc-200')} rounded-full h-2 mt-3 overflow-hidden`}>
+                <div
+                  className={`h-full transition-all duration-300 ${getProgressBarClass()}`}
+                  style={{ width: `${progressPercent}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Step Guide Card */}
+            {currentStep && (
+              <div className={`rounded-2xl ${D('bg-zinc-900/60','bg-zinc-100')} border ${D('border-zinc-800','border-zinc-200')} p-4 flex flex-col gap-2`}>
+                <div className="flex items-center justify-between text-xs font-mono">
+                  <span className="text-amber-400 font-semibold uppercase tracking-wider">
+                    {t.step} {currentStepIndex + 1} / {steps.length}
+                  </span>
+                  <span className="text-zinc-500">
+                    @{formatTime(currentStep.timeSec)}
+                  </span>
+                </div>
+
+                <h4 className={`text-base sm:text-lg font-bold ${D('text-zinc-100','text-zinc-900')}`}>
+                  {lang === 'hu' ? currentStep.titleHu : currentStep.titleEn}
+                </h4>
+
+                <p className={`text-xs sm:text-sm ${D('text-zinc-400','text-zinc-600')} leading-relaxed`}>
+                  {lang === 'hu' ? currentStep.descHu : currentStep.descEn}
+                </p>
+
+                {currentStep.waterTarget && (
+                  <div className={`mt-1 flex items-center gap-1.5 text-xs font-mono font-medium p-2 rounded-lg ${D('text-blue-400 bg-blue-950/30 border border-blue-900/50', 'text-blue-700 bg-blue-50 border border-blue-200')}`}>
+                    <span className="flex items-center gap-1.5"><Droplet className="w-3.5 h-3.5" aria-hidden="true" />{t.water}: {currentStep.waterTarget}g target</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Completion Message */}
+            {isFinished && (
+              <div className="flex items-center gap-3 p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-800/60 text-emerald-300 text-sm">
+                <CheckCircle2 className="w-5 h-5 flex-shrink-0 text-emerald-400" />
+                <span className="font-medium">{t.brewFinished}</span>
+              </div>
+            )}
+
+            {/* Control Action Buttons */}
+            <div className="grid grid-cols-4 gap-2 pt-2">
+              <button
+                type="button"
+                onClick={handlePrevStep}
+                disabled={currentStepIndex === 0}
+                className={`p-3 rounded-2xl ${D('bg-zinc-900','bg-zinc-100')} ${D('hover:bg-zinc-800','hover:bg-zinc-200')} disabled:opacity-30 border ${D('border-zinc-800','border-zinc-200')} flex items-center justify-center ${D('text-zinc-300','text-zinc-700')} active:scale-95 transition-all cursor-pointer`}
+                title={t.previousStep}
+              >
+                <SkipBack className="w-5 h-5" />
+              </button>
+
+              <button
+                type="button"
+                onClick={toggleRun}
+                className={`col-span-2 py-3 px-4 rounded-2xl font-mono font-bold text-base flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all cursor-pointer ${
+                  isRunning
+                    ? 'bg-amber-600 hover:bg-amber-500 text-zinc-950'
+                    : 'bg-emerald-500 hover:bg-emerald-400 text-zinc-950'
+                }`}
+              >
+                {isRunning ? (
+                  <>
+                    <Pause className="w-5 h-5" />
+                    <span>{t.pause}</span>
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-5 h-5 fill-current" />
+                    <span>{elapsedSec > 0 ? t.resume : t.startTimer}</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleNextStep}
+                disabled={currentStepIndex === steps.length - 1}
+                className={`p-3 rounded-2xl ${D('bg-zinc-900','bg-zinc-100')} ${D('hover:bg-zinc-800','hover:bg-zinc-200')} disabled:opacity-30 border ${D('border-zinc-800','border-zinc-200')} flex items-center justify-center ${D('text-zinc-300','text-zinc-700')} active:scale-95 transition-all cursor-pointer`}
+                title={t.nextStep}
+              >
+                <SkipForward className="w-5 h-5" />
+              </button>
+            </div>
+          </>
         )}
 
         {/* Reset & Dismiss button */}
