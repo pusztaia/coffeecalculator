@@ -1,0 +1,73 @@
+# ☕ Kávé Mérleg / Coffee Calculator (AeroPress & Kotyogós / Moka Pot)
+
+Egy professzionális, digitális mérleg felületű kávéarány-kalkulátor és lépésről lépésre időzítő, amelyet a **Coffee Calculator: Brew Ratios** (iOS app), a **calculate.coffee** és a **Coffee Bros** aránykalkulátorok legjobb funkciói ihlettek.
+
+Kifejezetten az **AeroPress** és a **Kotyogós (Moka Pot / Bialetti)** szerelmeseinek tervezve, de támogatja a **V60, French Press, Eszpresszó és Chemex** módszereket is.
+
+---
+
+## 🌟 Főbb Funkciók
+
+### 1. ⚖️ Konyhai Digitális Mérleg Érzet & Kijelző (Bench Scale UI)
+- **Világító digitális LED/OLED kijelző** (Borostyánsárga, Jégkék, Foszforzöld vagy Gyöngyházfehér fényeffektussal).
+- **Kétirányú azonnali számolás (Swap)**:
+  - Beírod a kávé őrleményt (g) ➔ azonnal megkapod a szükséges vizet (g/ml).
+  - Vagy fordítva: beírod a rendelkezésre álló vizet ➔ azonnal kiadja a szükséges kávémennyiséget.
+- **Nagy gombok nedves kézre**: Nagy méretű érintőgombok a konyhai pult melletti kényelmes használathoz.
+- **Valódi billentyűzet támogatás**: Asztali gépen vagy laptopon a számbillentyűkkel, Backspace-szel, ESC-cel (AC) és 'S'-sel (Swap) is közvetlenül kezelhető.
+- **Szintetizált haptikus és audio hanghatások** (Web Audio API): Finom mérleg-kattintások és tára sípolás (némítható).
+
+### 2. 🫖 Kiemelt Kotyogós (Moka Pot) Modul
+- **Csészetérfogat gyorsválasztó**:
+  - **1 csésze**: ~7g kávé, 60ml víz (40ml kihozatal)
+  - **2 csésze**: ~11g kávé, 100ml víz (70ml kihozatal)
+  - **3 csésze** (klasszikus Bialetti): ~16g kávé, 150ml víz (110ml kihozatal)
+  - **4 csésze**: ~20g kávé, 190ml víz (140ml kihozatal)
+  - **6 csésze**: ~30g kávé, 300ml víz (220ml kihozatal)
+  - **9 csésze**: ~45g kávé, 450ml víz (330ml kihozatal)
+- **Fizikai kapacitásjelző**: Mutatja a szűrőkosár kapacitását, az alsó tartály biztonsági szelep alá töltendő vízmennyiségét és a várható csészébe jutó kávémennyiséget.
+- **Újhullámos és klasszikus receptek**: James Hoffmann forró vizes specialty technikája és a hagyományos olasz kotyogós technika.
+
+### 3. 🧪 Kiemelt AeroPress Modul
+- **Mesterreceptek**:
+  - **James Hoffmann Ultimate**: 11g kávé / 200g víz (85°C), kíméletes lenyomás.
+  - **Tim Wendelboe Nordic Style**: Tiszta, gyümölcsös és világos északi stílus.
+  - **Inverted (Fordított módszer)**: Teljes áztatási kontroll, korai csepegés nélkül.
+  - **Espresso-stílusú koncentrátum**: Rövid, sűrű kávé latte-hoz, cappuccinohoz vagy jegeskávéhoz.
+- **Arányszabályozás**: 1:12 (testes) és 1:18 (lágyabb) között 0.5-ös lépésközzel állítható.
+
+### 4. ⏱️ Lépésről Lépésre Főzési Időzítő (Brew Timer)
+- Valós idejű visszaszámláló időzítő.
+- Lépésenkénti útmutató felöntési célsúlyokkal (pl. Bloom / Előáztatás 50g, Keverés, Dugattyú vákuum, Lassú lenyomás).
+- Hangjelzés lépésváltáskor és konfetti fanfár a kávé elkészültekor!
+
+### 5. 🌡️ Pörkölési Szint, Vízhőfok és Őrlésfinomság Útmutató
+- **Világos pörkölés (Light)**: 94–96°C
+- **Közepes pörkölés (Medium)**: 90–93°C
+- **Sötét pörkölés (Dark)**: 84–88°C
+- **Őrlésméret skála**: Vizuális részecskeméret-jelzővel az extra finomtól a durváig.
+
+### 6. 🌐 Kétnyelvű támogatás & Mértékegységek
+- Egy kattintással váltható **Magyar (HU 🇭🇺)** és **English (EN 🇬🇧)** felület.
+- Súlyegység: Grams (g) / Ounces (oz).
+- Térfogategység: g / ml / fl oz.
+- Hőmérséklet: °C / °F.
+
+---
+
+## 🚀 Futtatás
+
+Fejlesztői szerver indítása:
+```bash
+npm install
+npm run dev
+```
+
+Böngészőben nyisd meg:
+`http://localhost:5173`
+
+Produkciós verzió építése:
+```bash
+npm run build
+```
+A kész fájlok a `dist/` mappába kerülnek, mely azonnal kiszolgálható bármilyen webszerverről vagy Netlify / Vercel / GitHub Pages tárhelyről.
