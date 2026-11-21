@@ -27,7 +27,7 @@ export default function App() {
     volumeUnit: 'g',
     soundEnabled: true,
     themeColor: 'amber',
-    darkMode: true,
+    darkMode: false,
     lang: 'hu', // Default to Hungarian as requested, toggleable anytime
   });
 
@@ -54,6 +54,12 @@ export default function App() {
   const [showBrewerPicker, setShowBrewerPicker] = useState<boolean>(false);
 
   const t = TRANSLATIONS[settings.lang];
+
+  // Drive Tailwind's `dark:` variant, the page background and the browser chrome colour from one setting
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', settings.darkMode);
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', settings.darkMode ? '#09090b' : '#f4f4f5');
+  }, [settings.darkMode]);
   const ratioKind = currentBrewer.id === 'moka-pot' || currentBrewer.id === 'espresso' ? currentBrewer.id : 'filter';
 
   // Helper to recompute dependent field
@@ -529,7 +535,7 @@ export default function App() {
         </button>
 
         {/* Footer tip */}
-        <footer className={`text-center text-[11px] font-mono py-3 ${settings.darkMode ? 'text-zinc-600' : 'text-zinc-500'}`}>
+        <footer className={`text-center text-[11px] font-mono py-3 ${settings.darkMode ? 'text-zinc-500' : 'text-zinc-500'}`}>
           {currentBrewer.id === 'aeropress' ? t.tipAeroPress : currentBrewer.id === 'moka-pot' ? t.tipMoka : 'Coffee Calculator • Bench Scale Ratio Engine'}
         </footer>
       </div>

@@ -86,6 +86,7 @@ export const Keypad: React.FC<KeypadProps> = ({
             onClick={() => handleKey(() => onNudgeRatio(-0.5))}
             className={`flex items-center gap-0.5 px-2.5 py-1 rounded-lg border active:scale-95 transition-all ${nudgeBtnClass}`}
             title="Nudge ratio down (stronger)"
+            aria-label="Nudge ratio down (stronger)"
           >
             <Minus className="w-3.5 h-3.5" />
             <span>0.5</span>
@@ -95,6 +96,7 @@ export const Keypad: React.FC<KeypadProps> = ({
             onClick={() => handleKey(() => onNudgeRatio(0.5))}
             className={`flex items-center gap-0.5 px-2.5 py-1 rounded-lg border active:scale-95 transition-all ${nudgeBtnClass}`}
             title="Nudge ratio up (milder)"
+            aria-label="Nudge ratio up (milder)"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>0.5</span>
@@ -131,6 +133,7 @@ export const Keypad: React.FC<KeypadProps> = ({
           onClick={() => handleKey(onClear)}
           className={`${funcKeyClass} ${accentClass}`}
           title="All Clear"
+          aria-label="All Clear"
         >
           <span className="font-bold tracking-wider">AC</span>
         </button>
@@ -162,6 +165,7 @@ export const Keypad: React.FC<KeypadProps> = ({
           onClick={() => handleKey(onBackspace)}
           className={funcKeyClass}
           title="Backspace"
+          aria-label="Backspace"
         >
           <Delete className="w-6 h-6" />
         </button>
@@ -193,6 +197,7 @@ export const Keypad: React.FC<KeypadProps> = ({
           onClick={() => handleKey(onSwap)}
           className={`${funcKeyClass} ${darkMode ? 'text-zinc-300 hover:text-white' : 'text-zinc-700 hover:text-zinc-950'}`}
           title="Swap Coffee / Water"
+          aria-label="Swap Coffee / Water"
         >
           <ArrowLeftRight className="w-5 h-5" />
         </button>
@@ -224,6 +229,7 @@ export const Keypad: React.FC<KeypadProps> = ({
           onClick={() => handleKey(onClear)}
           className={funcKeyClass}
           title="Tare / Reset"
+          aria-label="Tare / Reset"
         >
           <RotateCcw className="w-5 h-5" />
         </button>

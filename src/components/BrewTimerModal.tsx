@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import type { Recipe, ThemeColor } from '../types/coffee';
 import { TRANSLATIONS } from '../data/translations';
 import { sounds } from '../utils/audio';
+import { useModal } from '../utils/useModal';
 import confetti from 'canvas-confetti';
 import { Play, Pause, RotateCcw, SkipForward, SkipBack, X, CheckCircle2, Clock, Droplet } from 'lucide-react';
 
@@ -25,6 +26,7 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
   onClose,
 }) => {
   const t = TRANSLATIONS[lang];
+  const dialogRef = useModal(onClose);
   const [elapsedSec, setElapsedSec] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
@@ -147,7 +149,7 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
-      <div className={`w-full max-w-lg ${D('bg-zinc-950','bg-white')} border ${D('border-zinc-800','border-zinc-200')} rounded-3xl p-5 sm:p-6 shadow-2xl flex flex-col gap-5 relative max-h-[92vh] overflow-y-auto`}>
+      <div ref={dialogRef} role="dialog" aria-modal="true" aria-label={lang === 'hu' ? recipe.nameHu : recipe.nameEn} tabIndex={-1} className={`outline-none w-full max-w-lg ${D('bg-zinc-950','bg-white')} border ${D('border-zinc-800','border-zinc-200')} rounded-3xl p-5 sm:p-6 shadow-2xl flex flex-col gap-5 relative max-h-[92vh] overflow-y-auto`}>
         {/* Header */}
         <div className={`flex items-center justify-between pb-3 border-b ${D('border-zinc-900','border-zinc-200')}`}>
           <div>

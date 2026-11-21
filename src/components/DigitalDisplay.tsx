@@ -92,7 +92,7 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           <span className="font-semibold text-zinc-400">SCALE ON</span>
-          <span className="text-[11px] text-zinc-600">| NET</span>
+          <span className="text-[11px] text-zinc-500">| NET</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-[11px] font-mono tracking-wider text-zinc-400">
@@ -102,6 +102,7 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
             type="button"
             onClick={onSwap}
             title={t.swap}
+            aria-label={t.swap}
             className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-700/60 text-zinc-300 hover:text-white hover:border-zinc-500 transition-colors active:scale-95 text-[11px]"
           >
             <ArrowLeftRight className="w-3 h-3" />
@@ -192,7 +193,7 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
             ? `${t.activeField}: ${t.coffee} → ${t.water}`
             : `${t.activeField}: ${t.water} → ${t.coffee}`}
         </span>
-        <span className="text-zinc-600 text-[11px]">TAP FIELD TO SWITCH</span>
+        <span className="text-zinc-500 text-[11px]">TAP FIELD TO SWITCH</span>
       </div>
     </div>
   );
