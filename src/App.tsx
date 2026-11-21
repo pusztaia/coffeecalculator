@@ -519,7 +519,7 @@ export default function App() {
                       : 'bg-white border-zinc-200 text-zinc-600 hover:text-zinc-900 shadow-sm hover:border-zinc-300'
                 }`}
               >
-                <span className={`block text-[10px] uppercase tracking-wider ${isSelected ? 'opacity-100 font-bold' : 'opacity-70'}`}>
+                <span className={`block text-[10px] uppercase tracking-wider truncate max-w-full ${isSelected ? 'opacity-100 font-bold' : 'opacity-70'}`}>
                   {t[str]}
                 </span>
                 <span className="font-semibold text-[11px]">1:{presetRatio}</span>
