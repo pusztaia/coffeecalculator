@@ -11,7 +11,7 @@ import { BrewTimerModal } from './components/BrewTimerModal';
 import { SettingsModal } from './components/SettingsModal';
 import { BrewerPickerModal } from './components/BrewerPickerModal';
 import { sounds } from './utils/audio';
-import { Settings, Play, ChevronDown, Sparkles, Volume2, VolumeX, Flame, Sun, Moon, Snowflake } from 'lucide-react';
+import { Settings, Play, ChevronDown, Volume2, VolumeX, Flame, Sun, Moon, Snowflake } from 'lucide-react';
 
 const STRENGTH_RATIOS = {
   'moka-pot': { mild: 10, balanced: 8.5, strong: 7, concentrate: 6 },
@@ -238,22 +238,25 @@ export default function App() {
       <div className="w-full max-w-lg z-10 flex flex-col gap-3.5">
         {/* Top App Header / Scale Brand */}
         <header className="flex items-center justify-between gap-2 px-2 pt-1">
-          <div className="flex items-center gap-2 min-w-0">
-            <div className={`hidden sm:flex w-8 h-8 rounded-xl border items-center justify-center text-amber-500 shadow-md ${
-              settings.darkMode ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-zinc-200'
-            }`}>
-              <Sparkles className="w-4 h-4" />
-            </div>
+          <div className="flex items-center gap-2.5 min-w-0">
+            {/* App Logo - always visible in top-left corner */}
+            <img
+              src="favicon.svg"
+              alt="CoffeeCalculator logo"
+              className="w-8 h-8 rounded-xl shadow-md flex-shrink-0 object-cover border border-amber-500/20"
+              width={32}
+              height={32}
+            />
             <div className="min-w-0">
-              <h1 className={`truncate text-sm font-extrabold font-mono tracking-normal leading-none ${
+              <h1 className={`truncate text-sm font-extrabold font-mono tracking-tight leading-none ${
                 settings.darkMode ? 'text-zinc-100' : 'text-zinc-900'
               }`}>
-                {t.appTitle}
+                CoffeeCalculator
               </h1>
-              <p className={`truncate text-[11px] font-mono mt-0.5 leading-none ${
+              <p className={`truncate text-[10px] font-mono mt-0.5 leading-none ${
                 settings.darkMode ? 'text-zinc-500' : 'text-zinc-500'
               }`}>
-                {t.appSubtitle}
+                {t.appTitle}
               </p>
             </div>
           </div>
