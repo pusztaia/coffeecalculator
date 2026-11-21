@@ -81,7 +81,7 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
       {/* Scale header bar: TARE / LED dots / Status */}
       <div className="flex items-center justify-between pb-2 mb-2 border-b border-zinc-800/60 text-xs tracking-widest text-zinc-500 font-mono">
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]" />
           <span className="font-semibold text-zinc-400">SCALE ON</span>
           <span className="text-[11px] text-zinc-500">| NET</span>
         </div>
