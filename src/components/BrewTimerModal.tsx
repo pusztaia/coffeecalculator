@@ -50,6 +50,12 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
     ? '90–93°C'
     : '84–88°C';
 
+  // No thermometer: boil, then let the kettle cool for roughly this long (thin-walled kettle, ~0.5–1 L)
+  const waitSec = isColdBrew ? '' : roastLevel === 'light' ? '15–30' : roastLevel === 'medium' ? '45–60' : '90–120';
+  const tempHint = waitSec
+    ? (lang === 'hu' ? ` (forrald fel, majd várj ${waitSec} mp-et)` : ` (boil, then wait ${waitSec} s)`)
+    : '';
+
   // Scale any recipe steps dynamically according to the user's dialed coffee and water grams
   const steps = recipe.steps.map((st) => {
     let titleHu = st.titleHu;
@@ -70,12 +76,12 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
     descHu = descHu
       .replace(new RegExp(`${defaultC}g`, 'g'), `${coffeeGrams}g`)
       .replace(new RegExp(`${defaultW}g`, 'g'), `${waterGrams}g`)
-      .replace(/~?85°C|80-85°C|~?90°C|~?92°C|~?95°C|~?98°C/g, tempDisplay);
+      .replace(/~?85°C|80-85°C|~?90°C|~?92°C|~?95°C|~?98°C/g, tempDisplay + tempHint);
 
     descEn = descEn
       .replace(new RegExp(`${defaultC}g`, 'g'), `${coffeeGrams}g`)
       .replace(new RegExp(`${defaultW}g`, 'g'), `${waterGrams}g`)
-      .replace(/~?85°C|80-85°C|~?90°C|~?92°C|~?95°C|~?98°C/g, tempDisplay);
+      .replace(/~?85°C|80-85°C|~?90°C|~?92°C|~?95°C|~?98°C/g, tempDisplay + tempHint);
 
     titleHu = titleHu
       .replace(new RegExp(`${defaultC}g`, 'g'), `${coffeeGrams}g`)
@@ -271,7 +277,7 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
               <span className="font-semibold uppercase tracking-wider text-amber-500">
                 {lang === 'hu' ? 'Elkészítés Lépései' : 'Brewing Steps'} ({steps.length})
               </span>
-              <span>{lang === 'hu' ? `Vízhőfok: ${tempDisplay}` : `Water: ${tempDisplay}`}</span>
+              <span>{lang === 'hu' ? `Vízhőfok: ${tempDisplay}${tempHint}` : `Water: ${tempDisplay}${tempHint}`}</span>
             </div>
 
             <div className="flex flex-col gap-2.5 max-h-[52vh] overflow-y-auto pr-1">
