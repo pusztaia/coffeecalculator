@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { BREWERS, MOKA_POT_SIZES } from './data/brewers';
-import type { Brewer, Recipe, DisplayField, AppSettings, RoastLevel, GrindSize, MokaPotSize } from './types/coffee';
+import type { Brewer, Recipe, DisplayField, AppSettings, RoastLevel, GrindSize, MokaPotSize, Strength } from './types/coffee';
 import { TRANSLATIONS } from './data/translations';
 import { DigitalDisplay } from './components/DigitalDisplay';
 import { Keypad } from './components/Keypad';
@@ -13,12 +13,18 @@ import { BrewerPickerModal } from './components/BrewerPickerModal';
 import { sounds } from './utils/audio';
 import { Settings, Play, ChevronDown, Sparkles, Volume2, VolumeX, Flame, Sun, Moon } from 'lucide-react';
 
+const STRENGTH_RATIOS = {
+  'moka-pot': { mild: 10, balanced: 8.5, strong: 7, concentrate: 6 },
+  espresso: { mild: 2.5, balanced: 2, strong: 1.6, concentrate: 1.3 },
+  filter: { mild: 17.5, balanced: 15.5, strong: 13.5, concentrate: 8 },
+} satisfies Record<string, Record<Strength, number>>;
+
+const MOKA_BREWER = BREWERS.find((b) => b.id === 'moka-pot')!;
+
 export default function App() {
   // Application Settings
   const [settings, setSettings] = useState<AppSettings>({
-    weightUnit: 'g',
     volumeUnit: 'g',
-    tempUnit: 'C',
     soundEnabled: true,
     themeColor: 'amber',
     darkMode: true,
@@ -48,6 +54,7 @@ export default function App() {
   const [showBrewerPicker, setShowBrewerPicker] = useState<boolean>(false);
 
   const t = TRANSLATIONS[settings.lang];
+  const ratioKind = currentBrewer.id === 'moka-pot' || currentBrewer.id === 'espresso' ? currentBrewer.id : 'filter';
 
   // Helper to recompute dependent field
   const computeDependent = useCallback(
@@ -149,6 +156,7 @@ export default function App() {
       const size3 = MOKA_POT_SIZES.find((s) => s.cups === 3) || MOKA_POT_SIZES[2];
       setCoffeeInput(size3.coffeeGrams.toString());
       setWaterInput(size3.waterMl.toString());
+      setMokaCupSize(size3.cups);
       setRatio(parseFloat((size3.waterMl / size3.coffeeGrams).toFixed(1)));
     } else {
       setCoffeeInput(rec.defaultCoffee.toString());
@@ -167,26 +175,9 @@ export default function App() {
   };
 
   // Strength preset buttons
-  const handleSetStrength = (str: 'mild' | 'balanced' | 'strong' | 'concentrate') => {
+  const handleSetStrength = (str: Strength) => {
     sounds.playKeyClick();
-    let newRatio = ratio;
-    if (currentBrewer.id === 'moka-pot') {
-      if (str === 'mild') newRatio = 10;
-      else if (str === 'balanced') newRatio = 8.5;
-      else if (str === 'strong') newRatio = 7;
-      else newRatio = 6;
-    } else if (currentBrewer.id === 'espresso') {
-      if (str === 'mild') newRatio = 2.5;
-      else if (str === 'balanced') newRatio = 2.0;
-      else if (str === 'strong') newRatio = 1.6;
-      else newRatio = 1.3;
-    } else {
-      // Filter / AeroPress / V60
-      if (str === 'mild') newRatio = 17.5;
-      else if (str === 'balanced') newRatio = 15.5;
-      else if (str === 'strong') newRatio = 13.5;
-      else newRatio = 8.0;
-    }
+    const newRatio = STRENGTH_RATIOS[ratioKind][str];
     setRatio(newRatio);
     if (activeField === 'coffee') {
       computeDependent('coffee', coffeeInput, newRatio);
@@ -198,7 +189,7 @@ export default function App() {
   // Keyboard shortcut listener for desktop users
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (showTimer || showSettings || showBrewerPicker) return;
+      if (showTimer || showSettings || showBrewerPicker || e.ctrlKey || e.metaKey || e.altKey) return;
 
       if (e.key >= '0' && e.key <= '9') {
         handleDigit(e.key);
@@ -254,7 +245,7 @@ export default function App() {
               }`}>
                 {t.appTitle}
               </h1>
-              <p className={`text-[10px] font-mono mt-0.5 leading-none ${
+              <p className={`text-[11px] font-mono mt-0.5 leading-none ${
                 settings.darkMode ? 'text-zinc-500' : 'text-zinc-500'
               }`}>
                 {t.appSubtitle}
@@ -270,7 +261,7 @@ export default function App() {
                 sounds.playKeyClick();
                 setSettings((s) => ({ ...s, darkMode: !s.darkMode }));
               }}
-              className={`px-2 py-1 rounded-xl border text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1 ${
+              className={`min-h-11 px-2 py-1 rounded-xl border text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1 ${
                 settings.darkMode
                   ? 'bg-zinc-900 hover:bg-zinc-800 border-zinc-800 text-amber-400'
                   : 'bg-white hover:bg-zinc-50 border-zinc-300 text-zinc-800 shadow-sm'
@@ -288,14 +279,14 @@ export default function App() {
                 sounds.playKeyClick();
                 setSettings((s) => ({ ...s, lang: s.lang === 'hu' ? 'en' : 'hu' }));
               }}
-              className={`px-2 py-1 rounded-xl border text-xs font-mono font-bold transition-colors cursor-pointer ${
+              className={`min-h-11 min-w-11 px-2 py-1 rounded-xl border text-xs font-mono font-bold transition-colors cursor-pointer ${
                 settings.darkMode
                   ? 'bg-zinc-900 hover:bg-zinc-800 border-zinc-800 text-zinc-300'
                   : 'bg-white hover:bg-zinc-50 border-zinc-300 text-zinc-800 shadow-sm'
               }`}
               title="Váltás magyar / angol"
             >
-              {settings.lang === 'hu' ? 'HU 🇭🇺' : 'EN 🇬🇧'}
+              {settings.lang === 'hu' ? 'HU' : 'EN'}
             </button>
 
             {/* Sound Toggle */}
@@ -307,12 +298,13 @@ export default function App() {
                 setSettings((s) => ({ ...s, soundEnabled: next }));
                 if (next) sounds.playTareBeep();
               }}
-              className={`p-1.5 rounded-xl border transition-colors cursor-pointer ${
+              className={`min-h-11 min-w-11 flex items-center justify-center p-1.5 rounded-xl border transition-colors cursor-pointer ${
                 settings.darkMode
                   ? 'bg-zinc-900 hover:bg-zinc-800 border-zinc-800 text-zinc-400 hover:text-white'
                   : 'bg-white hover:bg-zinc-50 border-zinc-300 text-zinc-600 hover:text-zinc-900 shadow-sm'
               }`}
               title={settings.soundEnabled ? t.soundOn : t.soundOff}
+              aria-label={settings.soundEnabled ? t.soundOn : t.soundOff}
             >
               {settings.soundEnabled ? (
                 <Volume2 className="w-4 h-4 text-emerald-500" />
@@ -328,12 +320,13 @@ export default function App() {
                 sounds.playKeyClick();
                 setShowSettings(true);
               }}
-              className={`p-1.5 rounded-xl border transition-colors cursor-pointer ${
+              className={`min-h-11 min-w-11 flex items-center justify-center p-1.5 rounded-xl border transition-colors cursor-pointer ${
                 settings.darkMode
                   ? 'bg-zinc-900 hover:bg-zinc-800 border-zinc-800 text-zinc-400 hover:text-white'
                   : 'bg-white hover:bg-zinc-50 border-zinc-300 text-zinc-600 hover:text-zinc-900 shadow-sm'
               }`}
               title={t.settings}
+              aria-label={t.settings}
             >
               <Settings className="w-4 h-4" />
             </button>
@@ -359,13 +352,13 @@ export default function App() {
             }`}
           >
             <span>AeroPress</span>
-            <span className="text-[9px] font-normal opacity-70">1:15 Standard</span>
+            <span className="text-[11px] font-normal opacity-70">1:15 Standard</span>
           </button>
 
           {/* Moka Pot / Kotyogós Tab */}
           <button
             type="button"
-            onClick={() => handleSelectBrewer(BREWERS[2])}
+            onClick={() => handleSelectBrewer(MOKA_BREWER)}
             className={`py-2 px-1 rounded-xl font-mono text-xs font-bold transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer border ${
               currentBrewer.id === 'moka-pot'
                 ? settings.darkMode
@@ -380,7 +373,7 @@ export default function App() {
               <Flame className="w-3 h-3 text-amber-500" />
               Kotyogós (Moka)
             </span>
-            <span className="text-[9px] font-normal opacity-70">Bialetti 1:8.5</span>
+            <span className="text-[11px] font-normal opacity-70">Bialetti 1:8.5</span>
           </button>
 
           {/* More Brewers Dropdown Button */}
@@ -403,7 +396,7 @@ export default function App() {
                 : 'Többi / More'}
               <ChevronDown className="w-3 h-3" />
             </span>
-            <span className="text-[9px] font-normal opacity-70">V60, French, etc.</span>
+            <span className="text-[11px] font-normal opacity-70">V60, French, etc.</span>
           </button>
         </div>
 
@@ -423,7 +416,7 @@ export default function App() {
                   {settings.lang === 'hu' ? currentRecipe.nameHu : currentRecipe.nameEn}
                 </h2>
                 {currentRecipe.tag && (
-                  <span className="text-[9px] px-1.5 py-0.2 rounded-md bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 font-mono font-semibold">
+                  <span className="text-[11px] px-1.5 py-0.2 rounded-md bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 font-mono font-semibold">
                     {currentRecipe.tag}
                   </span>
                 )}
@@ -470,7 +463,6 @@ export default function App() {
           }}
           onSwap={handleSwap}
           themeColor={settings.themeColor}
-          weightUnit={settings.weightUnit}
           volumeUnit={settings.volumeUnit}
           darkMode={settings.darkMode}
           lang={settings.lang}
@@ -478,65 +470,25 @@ export default function App() {
 
         {/* Quick Strength Preset Selector */}
         <div className="grid grid-cols-4 gap-1.5 font-mono text-xs">
-          <button
-            type="button"
-            onClick={() => handleSetStrength('mild')}
-            className={`py-1.5 px-1 rounded-xl border active:scale-95 transition-all text-center ${
-              settings.darkMode
-                ? 'bg-zinc-950/70 border-zinc-800/80 text-zinc-400 hover:text-zinc-200'
-                : 'bg-white border-zinc-200 text-zinc-600 hover:text-zinc-900 shadow-sm'
-            }`}
-          >
-            <span className="block text-[10px] uppercase opacity-70">{t.mild}</span>
-            <span className="font-semibold text-[11px]">
-              {currentBrewer.id === 'moka-pot' ? '1:10' : currentBrewer.id === 'espresso' ? '1:2.5' : '1:17.5'}
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleSetStrength('balanced')}
-            className={`py-1.5 px-1 rounded-xl border active:scale-95 transition-all text-center ${
-              settings.darkMode
-                ? 'bg-zinc-950/70 border-zinc-800/80 text-amber-400 font-semibold'
-                : 'bg-amber-50 border-amber-300 text-amber-900 font-bold shadow-sm'
-            }`}
-          >
-            <span className="block text-[10px] uppercase opacity-70">{t.balanced}</span>
-            <span className="font-bold text-[11px]">
-              {currentBrewer.id === 'moka-pot' ? '1:8.5' : currentBrewer.id === 'espresso' ? '1:2.0' : '1:15.5'}
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleSetStrength('strong')}
-            className={`py-1.5 px-1 rounded-xl border active:scale-95 transition-all text-center ${
-              settings.darkMode
-                ? 'bg-zinc-950/70 border-zinc-800/80 text-zinc-400 hover:text-zinc-200'
-                : 'bg-white border-zinc-200 text-zinc-600 hover:text-zinc-900 shadow-sm'
-            }`}
-          >
-            <span className="block text-[10px] uppercase opacity-70">{t.strong}</span>
-            <span className="font-semibold text-[11px]">
-              {currentBrewer.id === 'moka-pot' ? '1:7' : currentBrewer.id === 'espresso' ? '1:1.6' : '1:13.5'}
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleSetStrength('concentrate')}
-            className={`py-1.5 px-1 rounded-xl border active:scale-95 transition-all text-center ${
-              settings.darkMode
-                ? 'bg-zinc-950/70 border-zinc-800/80 text-zinc-400 hover:text-zinc-200'
-                : 'bg-white border-zinc-200 text-zinc-600 hover:text-zinc-900 shadow-sm'
-            }`}
-          >
-            <span className="block text-[10px] uppercase opacity-70">{t.concentrate}</span>
-            <span className="font-semibold text-[11px]">
-              {currentBrewer.id === 'moka-pot' ? '1:6' : currentBrewer.id === 'espresso' ? '1:1.3' : '1:8.0'}
-            </span>
-          </button>
+          {(['mild', 'balanced', 'strong', 'concentrate'] as const).map((str) => (
+            <button
+              key={str}
+              type="button"
+              onClick={() => handleSetStrength(str)}
+              className={`py-1.5 px-1 rounded-xl border active:scale-95 transition-all text-center ${
+                str === 'balanced'
+                  ? settings.darkMode
+                    ? 'bg-zinc-950/70 border-zinc-800/80 text-amber-400 font-semibold'
+                    : 'bg-amber-50 border-amber-300 text-amber-900 font-bold shadow-sm'
+                  : settings.darkMode
+                    ? 'bg-zinc-950/70 border-zinc-800/80 text-zinc-400 hover:text-zinc-200'
+                    : 'bg-white border-zinc-200 text-zinc-600 hover:text-zinc-900 shadow-sm'
+              }`}
+            >
+              <span className="block text-[11px] uppercase opacity-70">{t[str]}</span>
+              <span className="font-semibold text-[11px]">1:{STRENGTH_RATIOS[ratioKind][str]}</span>
+            </button>
+          ))}
         </div>
 
         {/* Tactile Keypad */}
@@ -558,7 +510,6 @@ export default function App() {
           onSelectRoast={setRoastLevel}
           grindSize={grindSize}
           onSelectGrind={setGrindSize}
-          tempUnit={settings.tempUnit}
           themeColor={settings.themeColor}
           darkMode={settings.darkMode}
           lang={settings.lang}
@@ -586,10 +537,10 @@ export default function App() {
       {/* MODALS */}
       {showTimer && (
         <BrewTimerModal
+          darkMode={settings.darkMode}
           recipe={currentRecipe}
           coffeeGrams={coffeeNum}
           waterGrams={waterNum}
-          weightUnit={settings.weightUnit}
           themeColor={settings.themeColor}
           lang={settings.lang}
           onClose={() => setShowTimer(false)}

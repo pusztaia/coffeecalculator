@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { RoastLevel, GrindSize, TempUnit, ThemeColor } from '../types/coffee';
+import type { RoastLevel, GrindSize, ThemeColor } from '../types/coffee';
 import { TRANSLATIONS } from '../data/translations';
 import { TIMEMORE_C2_CLICKS } from '../data/brewers';
 import { Thermometer, Gauge, Disc3, Minus, Plus } from 'lucide-react';
@@ -10,7 +10,6 @@ interface RoastGrindGuideProps {
   onSelectRoast: (roast: RoastLevel) => void;
   grindSize: GrindSize;
   onSelectGrind: (grind: GrindSize) => void;
-  tempUnit: TempUnit;
   themeColor: ThemeColor;
   darkMode: boolean;
   lang: 'hu' | 'en';
@@ -21,7 +20,6 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
   onSelectRoast,
   grindSize,
   onSelectGrind,
-  tempUnit,
   themeColor,
   darkMode,
   lang,
@@ -40,18 +38,14 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
   // Temperatures based on roast
   const getTempDisplay = (roast: RoastLevel) => {
     let c = '92°C';
-    let f = '198°F';
     if (roast === 'light') {
       c = '94-96°C';
-      f = '201-205°F';
     } else if (roast === 'medium') {
       c = '90-93°C';
-      f = '194-200°F';
     } else if (roast === 'dark') {
       c = '84-88°C';
-      f = '183-190°F';
     }
-    return tempUnit === 'C' ? c : f;
+    return c;
   };
 
   const grindSizes: { id: GrindSize; label: string; dots: number }[] = [
@@ -186,7 +180,7 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
                     }}
                   />
                 </div>
-                <span className="text-[9px] font-mono leading-none truncate max-w-full text-center">
+                <span className="text-[11px] font-mono leading-none truncate max-w-full text-center">
                   {item.id === 'extra-fine' ? 'X-Fine' : item.id === 'medium-fine' ? 'M-Fine' : item.id === 'medium-coarse' ? 'M-Coarse' : item.id}
                 </span>
               </button>
@@ -202,14 +196,14 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
             <Disc3 className="w-4 h-4 animate-[spin_6s_linear_infinite]" />
             <span>{t.grinderC2Max}</span>
           </div>
-          <span className={`text-[10px] ${darkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
+          <span className={`text-[11px] ${darkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
             {lang === 'hu' ? c2Data.descHu : c2Data.descEn}
           </span>
         </div>
 
         <div className="flex items-center justify-between bg-zinc-950/20 p-2 rounded-lg border border-zinc-800/40">
           <div>
-            <span className={`text-[10px] block ${darkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
+            <span className={`text-[11px] block ${darkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
               {t.grinderClicks}:
             </span>
             <div className="flex items-baseline gap-1 mt-0.5">
@@ -242,7 +236,7 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
           </div>
         </div>
 
-        <span className={`text-[10px] italic ${darkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
+        <span className={`text-[11px] italic ${darkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
           ⚠️ {t.zeroPointNote}
         </span>
       </div>

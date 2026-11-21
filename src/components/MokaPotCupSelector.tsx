@@ -68,7 +68,7 @@ export const MokaPotCupSelector: React.FC<MokaPotCupSelectorProps> = ({
               }`}
             >
               <span className="block text-sm font-bold">{size.cups}</span>
-              <span className="text-[9px] opacity-75">{t.cups}</span>
+              <span className="text-[11px] opacity-75">{t.cups}</span>
             </button>
           );
         })}
@@ -77,41 +77,41 @@ export const MokaPotCupSelector: React.FC<MokaPotCupSelectorProps> = ({
       {/* Physical Capacity specs box */}
       <div className={`grid grid-cols-3 gap-2 p-2.5 rounded-xl border text-center font-mono ${specsBoxBg}`}>
         <div className="flex flex-col items-center">
-          <span className={`text-[10px] flex items-center gap-1 ${darkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>
+          <span className={`text-[11px] flex items-center gap-1 ${darkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>
             <Coffee className="w-3 h-3 text-amber-500" />
             {t.coffee}
           </span>
           <span className={`text-sm font-bold mt-0.5 ${darkMode ? 'text-zinc-200' : 'text-zinc-900'}`}>
             {currentSize.coffeeGrams}g
           </span>
-          <span className={`text-[9px] ${darkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>{t.basketCapacity}</span>
+          <span className={`text-[11px] ${darkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>{t.basketCapacity}</span>
         </div>
 
         <div className={`flex flex-col items-center border-x ${darkMode ? 'border-zinc-800/80' : 'border-zinc-200'}`}>
-          <span className={`text-[10px] flex items-center gap-1 ${darkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>
+          <span className={`text-[11px] flex items-center gap-1 ${darkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>
             <Droplet className="w-3 h-3 text-cyan-500" />
             {t.boilerWater}
           </span>
           <span className={`text-sm font-bold mt-0.5 ${darkMode ? 'text-zinc-200' : 'text-zinc-900'}`}>
             {currentSize.waterMl}ml
           </span>
-          <span className={`text-[9px] ${darkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>szelep alá</span>
+          <span className={`text-[11px] ${darkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>szelep alá</span>
         </div>
 
         <div className="flex flex-col items-center">
-          <span className={`text-[10px] flex items-center gap-1 ${darkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>
+          <span className={`text-[11px] flex items-center gap-1 ${darkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>
             <Flame className="w-3 h-3 text-emerald-500" />
             {t.expectedYield}
           </span>
           <span className={`text-sm font-bold mt-0.5 ${darkMode ? 'text-zinc-200' : 'text-zinc-900'}`}>
             ~{currentSize.yieldMl}ml
           </span>
-          <span className={`text-[9px] ${darkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>kész ital</span>
+          <span className={`text-[11px] ${darkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>kész ital</span>
         </div>
       </div>
 
       <p className={`text-[11px] leading-relaxed italic p-2 rounded-lg border ${tipBoxBg}`}>
-        💡 {t.tipMoka}
+        {t.tipMoka}
       </p>
     </div>
   );

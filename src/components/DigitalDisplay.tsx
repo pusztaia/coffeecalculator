@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowLeftRight } from 'lucide-react';
-import type { DisplayField, ThemeColor, WeightUnit, VolumeUnit } from '../types/coffee';
+import type { DisplayField, ThemeColor, VolumeUnit } from '../types/coffee';
 import { TRANSLATIONS } from '../data/translations';
 
 interface DigitalDisplayProps {
@@ -11,7 +11,6 @@ interface DigitalDisplayProps {
   onSelectField: (field: DisplayField) => void;
   onSwap: () => void;
   themeColor: ThemeColor;
-  weightUnit: WeightUnit;
   volumeUnit: VolumeUnit;
   darkMode: boolean;
   lang: 'hu' | 'en';
@@ -25,7 +24,6 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
   onSelectField,
   onSwap,
   themeColor,
-  weightUnit,
   volumeUnit,
   darkMode,
   lang,
@@ -94,7 +92,7 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           <span className="font-semibold text-zinc-400">SCALE ON</span>
-          <span className="text-[10px] text-zinc-600">| NET</span>
+          <span className="text-[11px] text-zinc-600">| NET</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-[11px] font-mono tracking-wider text-zinc-400">
@@ -125,7 +123,7 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
           {/* Active indicator dot */}
           {activeField === 'coffee' && (
             <div className="absolute top-2 right-2 flex items-center gap-1">
-              <span className={`text-[9px] font-mono uppercase px-1.5 py-0.2 rounded font-semibold ${styles.badge}`}>
+              <span className={`text-[11px] font-mono uppercase px-1.5 py-0.2 rounded font-semibold ${styles.badge}`}>
                 INPUT
               </span>
             </div>
@@ -133,7 +131,7 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
 
           <div className="text-[11px] sm:text-xs font-mono font-medium tracking-widest text-zinc-400 mb-1 flex items-center justify-between">
             <span>{t.coffee}</span>
-            <span className="text-zinc-500 font-normal">{weightUnit}</span>
+            <span className="text-zinc-500 font-normal">g</span>
           </div>
 
           <div className="mt-1 flex items-baseline justify-end overflow-hidden font-mono">
@@ -145,7 +143,7 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
               {formatDisplay(coffeeValue)}
             </span>
             <span className="ml-1 text-sm sm:text-base font-normal text-zinc-500">
-              {weightUnit}
+              g
             </span>
           </div>
         </button>
@@ -161,7 +159,7 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
           {/* Active indicator dot */}
           {activeField === 'water' && (
             <div className="absolute top-2 right-2 flex items-center gap-1">
-              <span className={`text-[9px] font-mono uppercase px-1.5 py-0.2 rounded font-semibold ${styles.badge}`}>
+              <span className={`text-[11px] font-mono uppercase px-1.5 py-0.2 rounded font-semibold ${styles.badge}`}>
                 INPUT
               </span>
             </div>
@@ -194,7 +192,7 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
             ? `${t.activeField}: ${t.coffee} → ${t.water}`
             : `${t.activeField}: ${t.water} → ${t.coffee}`}
         </span>
-        <span className="text-zinc-600 text-[10px]">TAP FIELD TO SWITCH</span>
+        <span className="text-zinc-600 text-[11px]">TAP FIELD TO SWITCH</span>
       </div>
     </div>
   );

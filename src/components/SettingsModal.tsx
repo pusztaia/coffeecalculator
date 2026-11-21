@@ -57,7 +57,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
               }`}
             >
-              🇭🇺 Magyar
+              Magyar
             </button>
             <button
               type="button"
@@ -68,7 +68,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700'
               }`}
             >
-              🇬🇧 English
+              English
             </button>
           </div>
         </div>

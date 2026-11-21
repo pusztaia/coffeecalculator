@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import type { Recipe, ThemeColor, WeightUnit } from '../types/coffee';
+import type { Recipe, ThemeColor } from '../types/coffee';
 import { TRANSLATIONS } from '../data/translations';
 import { sounds } from '../utils/audio';
 import confetti from 'canvas-confetti';
-import { Play, Pause, RotateCcw, SkipForward, SkipBack, X, CheckCircle2, Clock } from 'lucide-react';
+import { Play, Pause, RotateCcw, SkipForward, SkipBack, X, CheckCircle2, Clock, Droplet } from 'lucide-react';
 
 interface BrewTimerModalProps {
   recipe: Recipe;
   coffeeGrams: number;
   waterGrams: number;
-  weightUnit: WeightUnit;
   themeColor: ThemeColor;
+  darkMode: boolean;
   lang: 'hu' | 'en';
   onClose: () => void;
 }
@@ -20,6 +20,7 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
   coffeeGrams,
   waterGrams,
   themeColor,
+  darkMode,
   lang,
   onClose,
 }) => {
@@ -29,7 +30,8 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
 
-  const timerRef = useRef<number | null>(null);
+  const startRef = useRef(0); // wall-clock start, so the timer stays right when the tab is throttled
+  const D = (dark: string, light: string) => (darkMode ? dark : light);
 
   const steps = recipe.steps;
   const totalBrewSec = recipe.brewTimeSec || 180;
@@ -56,32 +58,34 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
         particleCount: 80,
         spread: 70,
         origin: { y: 0.6 },
+        disableForReducedMotion: true,
       });
     }
   }, [elapsedSec, steps, currentStepIndex, totalBrewSec, isFinished]);
 
   // Timer interval
   useEffect(() => {
-    if (isRunning) {
-      timerRef.current = setInterval(() => {
-        setElapsedSec((prev) => prev + 1);
-      }, 1000);
-    } else if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
+    if (!isRunning) return;
+    const id = setInterval(() => {
+      setElapsedSec(Math.floor((Date.now() - startRef.current) / 1000));
+    }, 250);
+    return () => clearInterval(id);
   }, [isRunning]);
+
+  const seek = (sec: number) => {
+    startRef.current = Date.now() - sec * 1000;
+    setElapsedSec(sec);
+  };
 
   const toggleRun = () => {
     sounds.playKeyClick();
     if (isFinished) {
-      setElapsedSec(0);
+      seek(0);
       setIsFinished(false);
       setCurrentStepIndex(0);
       setIsRunning(true);
     } else {
+      if (!isRunning) seek(elapsedSec);
       setIsRunning(!isRunning);
     }
   };
@@ -99,7 +103,7 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
     if (currentStepIndex < steps.length - 1) {
       const nextIdx = currentStepIndex + 1;
       setCurrentStepIndex(nextIdx);
-      setElapsedSec(steps[nextIdx].timeSec);
+      seek(steps[nextIdx].timeSec);
     }
   };
 
@@ -108,7 +112,8 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
     if (currentStepIndex > 0) {
       const prevIdx = currentStepIndex - 1;
       setCurrentStepIndex(prevIdx);
-      setElapsedSec(steps[prevIdx].timeSec);
+      seek(steps[prevIdx].timeSec);
+      setIsFinished(false);
     }
   };
 
@@ -142,44 +147,45 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
-      <div className="w-full max-w-lg bg-zinc-950 border border-zinc-800 rounded-3xl p-5 sm:p-6 shadow-2xl flex flex-col gap-5 relative max-h-[92vh] overflow-y-auto">
+      <div className={`w-full max-w-lg ${D('bg-zinc-950','bg-white')} border ${D('border-zinc-800','border-zinc-200')} rounded-3xl p-5 sm:p-6 shadow-2xl flex flex-col gap-5 relative max-h-[92vh] overflow-y-auto`}>
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-zinc-900">
+        <div className={`flex items-center justify-between pb-3 border-b ${D('border-zinc-900','border-zinc-200')}`}>
           <div>
-            <span className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase block">
+            <span className="text-[11px] font-mono tracking-widest text-zinc-500 uppercase block">
               {lang === 'hu' ? recipe.creatorHu : recipe.creatorEn}
             </span>
-            <h3 className="text-lg font-bold text-zinc-100">
+            <h3 className={`text-lg font-bold ${D('text-zinc-100','text-zinc-900')}`}>
               {lang === 'hu' ? recipe.nameHu : recipe.nameEn}
             </h3>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-full bg-zinc-900 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+            aria-label={t.close}
+            className={`p-2 rounded-full ${D('bg-zinc-900','bg-zinc-100')} ${D('text-zinc-400','text-zinc-600')} ${D('hover:text-white','hover:text-zinc-900')} ${D('hover:bg-zinc-800','hover:bg-zinc-200')} transition-colors`}
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Scaled dose summary badge */}
-        <div className="flex items-center justify-between bg-zinc-900/70 border border-zinc-800/80 px-4 py-2 rounded-xl text-xs font-mono text-zinc-300">
+        <div className={`flex items-center justify-between ${D('bg-zinc-900/70','bg-zinc-100')} border ${D('border-zinc-800/80','border-zinc-200')} px-4 py-2 rounded-xl text-xs font-mono ${D('text-zinc-300','text-zinc-700')}`}>
           <div>
             <span className="text-zinc-500">{t.coffee}: </span>
-            <span className="font-bold text-zinc-100">{coffeeGrams}g</span>
+            <span className={`font-bold ${D('text-zinc-100','text-zinc-900')}`}>{coffeeGrams}g</span>
           </div>
           <div>
             <span className="text-zinc-500">{t.water}: </span>
-            <span className="font-bold text-zinc-100">{waterGrams}g</span>
+            <span className={`font-bold ${D('text-zinc-100','text-zinc-900')}`}>{waterGrams}g</span>
           </div>
           <div>
             <span className="text-zinc-500">{t.ratio}: </span>
-            <span className="font-bold text-zinc-100">1:{(waterGrams / (coffeeGrams || 1)).toFixed(1)}</span>
+            <span className={`font-bold ${D('text-zinc-100','text-zinc-900')}`}>1:{(waterGrams / (coffeeGrams || 1)).toFixed(1)}</span>
           </div>
         </div>
 
         {/* Big Digital Scale Chronometer */}
-        <div className="flex flex-col items-center justify-center p-5 rounded-2xl bg-zinc-900/40 border border-zinc-800/60 font-mono">
+        <div className={`flex flex-col items-center justify-center p-5 rounded-2xl ${D('bg-zinc-900/40','bg-zinc-100')} border ${D('border-zinc-800/60','border-zinc-200')} font-mono`}>
           <div className="flex items-center gap-2 text-xs text-zinc-500 mb-1">
             <Clock className="w-3.5 h-3.5" />
             <span>ELAPSED / TOTAL: {formatTime(totalBrewSec)}</span>
@@ -190,7 +196,7 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
           </div>
 
           {/* Progress bar */}
-          <div className="w-full bg-zinc-800 rounded-full h-2 mt-3 overflow-hidden">
+          <div className={`w-full ${D('bg-zinc-800','bg-zinc-200')} rounded-full h-2 mt-3 overflow-hidden`}>
             <div
               className={`h-full transition-all duration-300 ${getProgressBarClass()}`}
               style={{ width: `${progressPercent}%` }}
@@ -200,7 +206,7 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
 
         {/* Step Guide Card */}
         {currentStep && (
-          <div className="rounded-2xl bg-zinc-900/60 border border-zinc-800 p-4 flex flex-col gap-2">
+          <div className={`rounded-2xl ${D('bg-zinc-900/60','bg-zinc-100')} border ${D('border-zinc-800','border-zinc-200')} p-4 flex flex-col gap-2`}>
             <div className="flex items-center justify-between text-xs font-mono">
               <span className="text-amber-400 font-semibold uppercase tracking-wider">
                 {t.step} {currentStepIndex + 1} / {steps.length}
@@ -210,17 +216,17 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
               </span>
             </div>
 
-            <h4 className="text-base sm:text-lg font-bold text-zinc-100">
+            <h4 className={`text-base sm:text-lg font-bold ${D('text-zinc-100','text-zinc-900')}`}>
               {lang === 'hu' ? currentStep.titleHu : currentStep.titleEn}
             </h4>
 
-            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+            <p className={`text-xs sm:text-sm ${D('text-zinc-400','text-zinc-600')} leading-relaxed`}>
               {lang === 'hu' ? currentStep.descHu : currentStep.descEn}
             </p>
 
             {currentStep.waterTarget && (
               <div className="mt-1 flex items-center gap-1.5 text-xs font-mono font-medium text-cyan-400 bg-cyan-950/30 border border-cyan-900/50 p-2 rounded-lg">
-                <span>💧 {t.water}: {currentStep.waterTarget}g target</span>
+                <span className="flex items-center gap-1.5"><Droplet className="w-3.5 h-3.5" aria-hidden="true" />{t.water}: {currentStep.waterTarget}g target</span>
               </div>
             )}
           </div>
@@ -240,7 +246,7 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
             type="button"
             onClick={handlePrevStep}
             disabled={currentStepIndex === 0}
-            className="p-3 rounded-2xl bg-zinc-900 hover:bg-zinc-800 disabled:opacity-30 border border-zinc-800 flex items-center justify-center text-zinc-300 active:scale-95 transition-all cursor-pointer"
+            className={`p-3 rounded-2xl ${D('bg-zinc-900','bg-zinc-100')} ${D('hover:bg-zinc-800','hover:bg-zinc-200')} disabled:opacity-30 border ${D('border-zinc-800','border-zinc-200')} flex items-center justify-center ${D('text-zinc-300','text-zinc-700')} active:scale-95 transition-all cursor-pointer`}
             title={t.previousStep}
           >
             <SkipBack className="w-5 h-5" />
@@ -272,7 +278,7 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
             type="button"
             onClick={handleNextStep}
             disabled={currentStepIndex === steps.length - 1}
-            className="p-3 rounded-2xl bg-zinc-900 hover:bg-zinc-800 disabled:opacity-30 border border-zinc-800 flex items-center justify-center text-zinc-300 active:scale-95 transition-all cursor-pointer"
+            className={`p-3 rounded-2xl ${D('bg-zinc-900','bg-zinc-100')} ${D('hover:bg-zinc-800','hover:bg-zinc-200')} disabled:opacity-30 border ${D('border-zinc-800','border-zinc-200')} flex items-center justify-center ${D('text-zinc-300','text-zinc-700')} active:scale-95 transition-all cursor-pointer`}
             title={t.nextStep}
           >
             <SkipForward className="w-5 h-5" />
@@ -284,7 +290,7 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
           <button
             type="button"
             onClick={handleReset}
-            className="flex items-center gap-1.5 hover:text-zinc-300 py-1 transition-colors"
+            className={`flex items-center gap-1.5 ${D('hover:text-zinc-300','hover:text-zinc-700')} py-1 transition-colors`}
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>{t.reset}</span>
@@ -292,7 +298,7 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="hover:text-zinc-300 py-1 transition-colors"
+            className={`${D('hover:text-zinc-300','hover:text-zinc-700')} py-1 transition-colors`}
           >
             {t.close}
           </button>

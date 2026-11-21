@@ -8,9 +8,7 @@ export type BrewerId =
   | 'chemex'
   | 'cold-brew';
 
-export type WeightUnit = 'g';
 export type VolumeUnit = 'ml' | 'g';
-export type TempUnit = 'C' | 'F';
 
 export type Strength = 'mild' | 'balanced' | 'strong' | 'concentrate';
 
@@ -77,9 +75,7 @@ export type DisplayField = 'coffee' | 'water';
 export type ThemeColor = 'amber' | 'cyan' | 'emerald' | 'white';
 
 export interface AppSettings {
-  weightUnit: WeightUnit;
   volumeUnit: VolumeUnit;
-  tempUnit: TempUnit;
   soundEnabled: boolean;
   themeColor: ThemeColor;
   darkMode: boolean;

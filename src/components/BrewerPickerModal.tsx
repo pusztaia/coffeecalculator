@@ -137,12 +137,12 @@ export const BrewerPickerModal: React.FC<BrewerPickerModalProps> = ({
                               {lang === 'hu' ? rec.nameHu : rec.nameEn}
                             </span>
                             {rec.tag && (
-                              <span className="text-[9px] px-1 py-0.2 rounded bg-zinc-800 text-amber-400 font-mono">
+                              <span className="text-[11px] px-1 py-0.2 rounded bg-zinc-800 text-amber-400 font-mono">
                                 {rec.tag}
                               </span>
                             )}
                           </div>
-                          <span className="text-[10px] text-zinc-400 block truncate">
+                          <span className="text-[11px] text-zinc-400 block truncate">
                             {rec.creatorEn} • 1:{rec.defaultRatio}
                           </span>
                         </div>
