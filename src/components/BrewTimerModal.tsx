@@ -4,7 +4,7 @@ import { TRANSLATIONS } from '../data/translations';
 import { sounds } from '../utils/audio';
 import { useModal } from '../utils/useModal';
 import confetti from 'canvas-confetti';
-import { Play, Pause, RotateCcw, SkipForward, SkipBack, X, CheckCircle2, Clock, Droplet } from 'lucide-react';
+import { Play, Pause, RotateCcw, SkipForward, SkipBack, X, CheckCircle2, Clock, Droplet, Volume2, VolumeX } from 'lucide-react';
 
 interface BrewTimerModalProps {
   recipe: Recipe;
@@ -31,6 +31,7 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
   const [isRunning, setIsRunning] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(sounds.enabled);
 
   const startRef = useRef(0); // wall-clock start, so the timer stays right when the tab is throttled
   const D = (dark: string, light: string) => (darkMode ? dark : light);
@@ -164,14 +165,30 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
               {lang === 'hu' ? recipe.nameHu : recipe.nameEn}
             </h3>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label={t.close}
-            className={`p-2 rounded-full ${D('bg-zinc-900','bg-zinc-100')} ${D('text-zinc-400','text-zinc-600')} ${D('hover:text-white','hover:text-zinc-900')} ${D('hover:bg-zinc-800','hover:bg-zinc-200')} transition-colors`}
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => {
+                const next = !soundEnabled;
+                sounds.enabled = next;
+                setSoundEnabled(next);
+                if (next) sounds.playTareBeep();
+              }}
+              aria-label={soundEnabled ? t.soundOn : t.soundOff}
+              title={soundEnabled ? t.soundOn : t.soundOff}
+              className={`p-2 rounded-full ${D('bg-zinc-900','bg-zinc-100')} ${D('text-zinc-400','text-zinc-600')} ${D('hover:text-white','hover:text-zinc-900')} ${D('hover:bg-zinc-800','hover:bg-zinc-200')} transition-colors`}
+            >
+              {soundEnabled ? <Volume2 className="w-4 h-4 text-emerald-500" /> : <VolumeX className="w-4 h-4 text-zinc-400" />}
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label={t.close}
+              className={`p-2 rounded-full ${D('bg-zinc-900','bg-zinc-100')} ${D('text-zinc-400','text-zinc-600')} ${D('hover:text-white','hover:text-zinc-900')} ${D('hover:bg-zinc-800','hover:bg-zinc-200')} transition-colors`}
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Scaled dose summary badge */}
@@ -197,9 +214,16 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
             <span>ELAPSED / TOTAL: {formatTime(totalBrewSec)}</span>
           </div>
 
-          <div className={`text-6xl sm:text-7xl font-bold tracking-tight tabular-nums py-2 ${getThemeText()}`}>
+          <div className={`text-5xl sm:text-7xl font-bold tracking-tight tabular-nums py-2 ${getThemeText()}`}>
             {formatTime(elapsedSec)}
           </div>
+
+          {totalBrewSec >= 3600 && isRunning && (
+            <div className="text-[11px] text-zinc-500 mt-0.5">
+              {lang === 'hu' ? 'Várható befejezés: ~' : 'Estimated completion: ~'}
+              {new Date(Date.now() + (totalBrewSec - elapsedSec) * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </div>
+          )}
 
           {/* Progress bar */}
           <div className={`w-full ${D('bg-zinc-800','bg-zinc-200')} rounded-full h-2 mt-3 overflow-hidden`}>

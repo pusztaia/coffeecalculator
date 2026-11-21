@@ -2,7 +2,7 @@ import React from 'react';
 import { MOKA_POT_SIZES } from '../data/brewers';
 import type { MokaPotSize, ThemeColor } from '../types/coffee';
 import { TRANSLATIONS } from '../data/translations';
-import { Flame, Droplet, Coffee } from 'lucide-react';
+import { Flame, Droplet, Coffee, Lightbulb } from 'lucide-react';
 
 interface MokaPotCupSelectorProps {
   selectedCups: number;
@@ -110,9 +110,10 @@ export const MokaPotCupSelector: React.FC<MokaPotCupSelectorProps> = ({
         </div>
       </div>
 
-      <p className={`text-[11px] leading-relaxed italic p-2 rounded-lg border ${tipBoxBg}`}>
-        {t.tipMoka}
-      </p>
+      <div className={`flex items-start gap-1.5 text-[11px] leading-relaxed italic p-2.5 rounded-lg border ${tipBoxBg}`}>
+        <Lightbulb className="w-3.5 h-3.5 text-amber-500 flex-shrink-0 mt-0.5" />
+        <span>{t.tipMoka}</span>
+      </div>
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import type { AppSettings, ThemeColor } from '../types/coffee';
 import { TRANSLATIONS } from '../data/translations';
 import { useModal } from '../utils/useModal';
-import { X, Volume2, VolumeX, Moon, Sun, Globe } from 'lucide-react';
+import { X, Volume2, VolumeX, Moon, Sun, Globe, Settings as SettingsIcon } from 'lucide-react';
 import { sounds } from '../utils/audio';
 
 interface SettingsModalProps {
@@ -31,8 +31,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       <div ref={dialogRef} role="dialog" aria-modal="true" aria-label={t.settings} tabIndex={-1} className="outline-none w-full max-w-md bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-5 shadow-2xl flex flex-col gap-5 max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-zinc-200 dark:border-zinc-900">
-          <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 font-mono">
-            ⚙️ {t.settings}
+          <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 font-mono flex items-center gap-2">
+            <SettingsIcon className="w-5 h-5 text-amber-500" />
+            <span>{t.settings}</span>
           </h3>
           <button
             type="button"

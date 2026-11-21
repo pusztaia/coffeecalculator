@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { RoastLevel, GrindSize, ThemeColor } from '../types/coffee';
 import { TRANSLATIONS } from '../data/translations';
 import { TIMEMORE_C2_CLICKS } from '../data/brewers';
-import { Thermometer, Gauge, Disc3, Minus, Plus } from 'lucide-react';
+import { Thermometer, Gauge, Disc3, Minus, Plus, AlertTriangle } from 'lucide-react';
 import { sounds } from '../utils/audio';
 
 interface RoastGrindGuideProps {
@@ -205,13 +205,13 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
           </span>
         </div>
 
-        <div className="flex items-center justify-between bg-zinc-950/20 p-2 rounded-lg border border-zinc-800/40">
+        <div className="flex items-center justify-between bg-zinc-950/20 p-2.5 rounded-lg border border-zinc-800/40">
           <div>
-            <span className={`text-[11px] block ${darkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
+            <span className={`text-[11px] block font-medium ${darkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
               {t.grinderClicks}:
             </span>
-            <div className="flex items-baseline gap-1 mt-0.5">
-              <span className="text-xl font-bold font-mono text-amber-500">
+            <div className="flex items-baseline gap-1.5 mt-0.5">
+              <span className="text-2xl font-bold font-mono text-amber-500">
                 {customClicks}
               </span>
               <span className={`text-xs ${darkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
@@ -220,29 +220,52 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             <button
               type="button"
               onClick={() => handleAdjustClick(-1)}
-              className={`p-1.5 rounded-lg border transition-all active:scale-95 ${darkMode ? 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border-zinc-700' : 'bg-white hover:bg-zinc-100 text-zinc-800 border-zinc-300'}`}
+              aria-label="Finomabb (-1 klikk)"
+              className={`p-2 rounded-lg border transition-all active:scale-95 cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 ${
+                darkMode ? 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border-zinc-700' : 'bg-white hover:bg-zinc-100 text-zinc-800 border-zinc-300 shadow-sm'
+              }`}
               title="1 klikkel finomabb (-1)"
             >
-              <Minus className="w-3.5 h-3.5" />
+              <Minus className="w-4 h-4" />
             </button>
             <button
               type="button"
               onClick={() => handleAdjustClick(1)}
-              className={`p-1.5 rounded-lg border transition-all active:scale-95 ${darkMode ? 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border-zinc-700' : 'bg-white hover:bg-zinc-100 text-zinc-800 border-zinc-300'}`}
+              aria-label="Durvább (+1 klikk)"
+              className={`p-2 rounded-lg border transition-all active:scale-95 cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 ${
+                darkMode ? 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border-zinc-700' : 'bg-white hover:bg-zinc-100 text-zinc-800 border-zinc-300 shadow-sm'
+              }`}
               title="1 klikkel durvább (+1)"
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        <span className={`text-[11px] italic ${darkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
-          ⚠️ {t.zeroPointNote}
-        </span>
+        {/* Visual Clicks Position Slider Track */}
+        <div className="px-1 pt-1">
+          <div className="flex items-center justify-between text-[9px] font-mono opacity-60 mb-1">
+            <span>8 (Fine)</span>
+            <span>16 (AeroPress)</span>
+            <span>24 (Filter)</span>
+            <span>28 (Cold)</span>
+          </div>
+          <div className="w-full bg-zinc-700/30 rounded-full h-1.5 relative overflow-hidden">
+            <div
+              className="h-full bg-amber-500 rounded-full transition-all duration-200"
+              style={{ width: `${Math.min(100, Math.max(0, ((customClicks - 8) / 22) * 100))}%` }}
+            />
+          </div>
+        </div>
+
+        <div className={`flex items-center gap-1.5 text-[11px] italic pt-1 ${darkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
+          <AlertTriangle className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
+          <span>{t.zeroPointNote}</span>
+        </div>
       </div>
     </div>
   );

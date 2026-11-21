@@ -239,20 +239,20 @@ export default function App() {
 
       <div className="w-full max-w-lg z-10 flex flex-col gap-3.5">
         {/* Top App Header / Scale Brand */}
-        <header className="flex items-center justify-between px-2 pt-1">
-          <div className="flex items-center gap-2">
-            <div className={`w-8 h-8 rounded-xl border flex items-center justify-center text-amber-500 shadow-md ${
+        <header className="flex items-center justify-between gap-2 px-2 pt-1">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className={`hidden sm:flex w-8 h-8 rounded-xl border items-center justify-center text-amber-500 shadow-md ${
               settings.darkMode ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-zinc-200'
             }`}>
               <Sparkles className="w-4 h-4" />
             </div>
-            <div>
-              <h1 className={`text-sm font-extrabold font-mono tracking-widest leading-none ${
+            <div className="min-w-0">
+              <h1 className={`truncate text-sm font-extrabold font-mono tracking-normal leading-none ${
                 settings.darkMode ? 'text-zinc-100' : 'text-zinc-900'
               }`}>
                 {t.appTitle}
               </h1>
-              <p className={`text-[11px] font-mono mt-0.5 leading-none ${
+              <p className={`truncate text-[11px] font-mono mt-0.5 leading-none ${
                 settings.darkMode ? 'text-zinc-500' : 'text-zinc-500'
               }`}>
                 {t.appSubtitle}
@@ -260,7 +260,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 flex-shrink-0">
             {/* Quick Theme Toggle (Light / Dark) */}
             <button
               type="button"
@@ -268,15 +268,16 @@ export default function App() {
                 sounds.playKeyClick();
                 setSettings((s) => ({ ...s, darkMode: !s.darkMode }));
               }}
-              className={`min-h-11 px-2 py-1 rounded-xl border text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1 ${
+              className={`min-h-11 min-w-11 justify-center px-2 py-1 rounded-xl border text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1 ${
                 settings.darkMode
                   ? 'bg-zinc-900 hover:bg-zinc-800 border-zinc-800 text-amber-400'
                   : 'bg-white hover:bg-zinc-50 border-zinc-300 text-zinc-800 shadow-sm'
               }`}
               title={settings.darkMode ? t.themeLight : t.themeDark}
+              aria-label={settings.darkMode ? t.themeLight : t.themeDark}
             >
               {settings.darkMode ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
-              <span>{settings.darkMode ? (settings.lang === 'hu' ? 'Világos' : 'Light') : (settings.lang === 'hu' ? 'Sötét' : 'Dark')}</span>
+              <span className="hidden sm:inline">{settings.darkMode ? (settings.lang === 'hu' ? 'Világos' : 'Light') : (settings.lang === 'hu' ? 'Sötét' : 'Dark')}</span>
             </button>
 
             {/* Quick Language Toggle */}
@@ -450,7 +451,7 @@ export default function App() {
                 )}
               </div>
               <p className={`text-[11px] truncate font-mono mt-0.5 ${settings.darkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>
-                {currentRecipe.creatorEn} • {currentRecipe.brewTimeSec}s
+                {currentRecipe.creatorEn} • {currentRecipe.brewTimeSec >= 3600 ? `${Math.round(currentRecipe.brewTimeSec / 3600)}h` : `${currentRecipe.brewTimeSec}s`}
               </p>
             </div>
           </div>
@@ -498,25 +499,32 @@ export default function App() {
 
         {/* Quick Strength Preset Selector */}
         <div className="grid grid-cols-4 gap-1.5 font-mono text-xs">
-          {(['mild', 'balanced', 'strong', 'concentrate'] as const).map((str) => (
-            <button
-              key={str}
-              type="button"
-              onClick={() => handleSetStrength(str)}
-              className={`py-1.5 px-1 rounded-xl border active:scale-95 transition-all text-center ${
-                str === 'balanced'
-                  ? settings.darkMode
-                    ? 'bg-zinc-950/70 border-zinc-800/80 text-amber-400 font-semibold'
-                    : 'bg-amber-50 border-amber-300 text-amber-900 font-bold shadow-sm'
-                  : settings.darkMode
-                    ? 'bg-zinc-950/70 border-zinc-800/80 text-zinc-400 hover:text-zinc-200'
-                    : 'bg-white border-zinc-200 text-zinc-600 hover:text-zinc-900 shadow-sm'
-              }`}
-            >
-              <span className="block text-[11px] uppercase opacity-70">{t[str]}</span>
-              <span className="font-semibold text-[11px]">1:{STRENGTH_RATIOS[ratioKind][str]}</span>
-            </button>
-          ))}
+          {(['mild', 'balanced', 'strong', 'concentrate'] as const).map((str) => {
+            const presetRatio = STRENGTH_RATIOS[ratioKind][str];
+            const isSelected = Math.abs(ratio - presetRatio) < 0.25;
+            return (
+              <button
+                key={str}
+                type="button"
+                onClick={() => handleSetStrength(str)}
+                aria-pressed={isSelected}
+                className={`py-2 px-1 rounded-xl border active:scale-95 transition-all text-center cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none ${
+                  isSelected
+                    ? settings.darkMode
+                      ? 'bg-zinc-900 border-amber-500/80 text-amber-400 font-bold shadow-md shadow-amber-500/10 ring-1 ring-amber-500/40'
+                      : 'bg-amber-50 border-amber-400 text-amber-900 font-bold shadow-sm ring-1 ring-amber-400/50'
+                    : settings.darkMode
+                      ? 'bg-zinc-950/70 border-zinc-800/80 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
+                      : 'bg-white border-zinc-200 text-zinc-600 hover:text-zinc-900 shadow-sm hover:border-zinc-300'
+                }`}
+              >
+                <span className={`block text-[10px] uppercase tracking-wider ${isSelected ? 'opacity-100 font-bold' : 'opacity-70'}`}>
+                  {t[str]}
+                </span>
+                <span className="font-semibold text-[11px]">1:{presetRatio}</span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Tactile Keypad */}

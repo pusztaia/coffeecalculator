@@ -117,14 +117,16 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
         <button
           type="button"
           onClick={() => onSelectField('coffee')}
-          className={`flex flex-col text-left p-3 rounded-xl border transition-all duration-200 cursor-pointer relative overflow-hidden group ${
+          aria-pressed={activeField === 'coffee'}
+          aria-label={`${t.coffee}: ${formatDisplay(coffeeValue)} g`}
+          className={`flex flex-col text-left p-3 rounded-xl border transition-all duration-200 cursor-pointer relative overflow-hidden group focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none ${
             activeField === 'coffee' ? styles.borderActive : styles.borderInactive
           }`}
         >
           {/* Active indicator dot */}
           {activeField === 'coffee' && (
             <div className="absolute top-2 right-2 flex items-center gap-1">
-              <span className={`text-[11px] font-mono uppercase px-1.5 py-0.2 rounded font-semibold ${styles.badge}`}>
+              <span className={`text-[10px] font-mono uppercase px-1.5 py-0.5 rounded font-semibold tracking-wider ${styles.badge}`}>
                 INPUT
               </span>
             </div>
@@ -132,7 +134,6 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
 
           <div className="text-[11px] sm:text-xs font-mono font-medium tracking-widest text-zinc-400 mb-1 flex items-center justify-between">
             <span>{t.coffee}</span>
-            <span className="text-zinc-500 font-normal">g</span>
           </div>
 
           <div className="mt-1 flex items-baseline justify-end overflow-hidden font-mono">
@@ -153,14 +154,16 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
         <button
           type="button"
           onClick={() => onSelectField('water')}
-          className={`flex flex-col text-left p-3 rounded-xl border transition-all duration-200 cursor-pointer relative overflow-hidden group ${
+          aria-pressed={activeField === 'water'}
+          aria-label={`${t.water}: ${formatDisplay(waterValue)} ${volumeUnit}`}
+          className={`flex flex-col text-left p-3 rounded-xl border transition-all duration-200 cursor-pointer relative overflow-hidden group focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none ${
             activeField === 'water' ? styles.borderActive : styles.borderInactive
           }`}
         >
           {/* Active indicator dot */}
           {activeField === 'water' && (
             <div className="absolute top-2 right-2 flex items-center gap-1">
-              <span className={`text-[11px] font-mono uppercase px-1.5 py-0.2 rounded font-semibold ${styles.badge}`}>
+              <span className={`text-[10px] font-mono uppercase px-1.5 py-0.5 rounded font-semibold tracking-wider ${styles.badge}`}>
                 INPUT
               </span>
             </div>
@@ -168,7 +171,6 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
 
           <div className="text-[11px] sm:text-xs font-mono font-medium tracking-widest text-zinc-400 mb-1 flex items-center justify-between">
             <span>{t.water}</span>
-            <span className="text-zinc-500 font-normal">{volumeUnit}</span>
           </div>
 
           <div className="mt-1 flex items-baseline justify-end overflow-hidden font-mono">

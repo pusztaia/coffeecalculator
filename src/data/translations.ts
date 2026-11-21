@@ -1,6 +1,6 @@
 export const TRANSLATIONS = {
   en: {
-    appTitle: 'COFFEE SCALE',
+    appTitle: 'CoffeeCalculator',
     appSubtitle: 'Bench Scale Ratio Calculator',
     coffee: 'COFFEE',
     water: 'WATER',
@@ -69,7 +69,7 @@ export const TRANSLATIONS = {
     zeroPointNote: '0 = fully closed (do not brew below 8 clicks to protect burrs)',
   },
   hu: {
-    appTitle: 'KÁVÉ MÉRLEG',
+    appTitle: 'CoffeeCalculator',
     appSubtitle: 'Digitális Kávéarány Kalkulátor',
     coffee: 'KÁVÉ',
     water: 'VÍZ',
