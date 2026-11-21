@@ -189,6 +189,8 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
   };
 
   const currentStep = steps[currentStepIndex] || steps[0];
+  const stepEndSec = steps[currentStepIndex + 1]?.timeSec ?? totalBrewSec;
+  const stepElapsedSec = Math.max(0, elapsedSec - currentStep.timeSec);
   const progressPercent = Math.min(100, Math.round((elapsedSec / totalBrewSec) * 100));
 
   const getThemeText = () => {
@@ -324,11 +326,11 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
             <div className={`flex flex-col items-center justify-center p-5 rounded-2xl ${D('bg-zinc-900/40','bg-zinc-100')} border ${D('border-zinc-800/60','border-zinc-200')} font-mono`}>
               <div className="flex items-center gap-2 text-xs text-zinc-500 mb-1">
                 <Clock className="w-3.5 h-3.5" />
-                <span>ELAPSED / TOTAL: {formatTime(totalBrewSec)}</span>
+                <span>{lang === 'hu' ? 'LÉPÉS' : 'STEP'}: {formatTime(stepEndSec - currentStep.timeSec)} · {lang === 'hu' ? 'ÖSSZ' : 'TOTAL'}: {formatTime(elapsedSec)} / {formatTime(totalBrewSec)}</span>
               </div>
 
               <div className={`text-5xl sm:text-7xl font-bold tracking-tight tabular-nums py-2 ${getThemeText()}`}>
-                {formatTime(elapsedSec)}
+                {formatTime(stepElapsedSec)}
               </div>
 
               {totalBrewSec >= 3600 && isRunning && (
