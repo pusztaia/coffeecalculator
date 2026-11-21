@@ -12,6 +12,7 @@ interface RoastGrindGuideProps {
   onSelectGrind: (grind: GrindSize) => void;
   themeColor: ThemeColor;
   darkMode: boolean;
+  isColdBrew?: boolean;
   lang: 'hu' | 'en';
 }
 
@@ -22,6 +23,7 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
   onSelectGrind,
   themeColor,
   darkMode,
+  isColdBrew = false,
   lang,
 }) => {
   const t = TRANSLATIONS[lang];
@@ -35,8 +37,11 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
     setCustomClicks(c2Data.recommended);
   }, [grindSize, c2Data.recommended]);
 
-  // Temperatures based on roast
+  // Temperatures based on roast or cold brew
   const getTempDisplay = (roast: RoastLevel) => {
+    if (isColdBrew) {
+      return lang === 'hu' ? '4–20°C (Hideg / Hűtő)' : '4–20°C (Cold / Fridge)';
+    }
     let c = '92°C';
     if (roast === 'light') {
       c = '94-96°C';

@@ -301,5 +301,95 @@ export const BREWERS: Brewer[] = [
         tag: 'Clean'
       }
     ]
+  },
+  {
+    id: 'cold-brew',
+    nameEn: 'Cold Brew',
+    nameHu: 'Cold Brew (Hideg Áztatás)',
+    category: 'cold',
+    subtitleEn: '12-24h smooth, ultra-low acidity cold brew',
+    subtitleHu: '12-24 órás selymes, savmentes hideg kávé',
+    defaultRatio: 10, // 1:10
+    minRatio: 5,
+    maxRatio: 18,
+    defaultCoffee: 80,
+    defaultWater: 800,
+    defaultGrind: 'coarse',
+    tempRangeC: [4, 20],
+    recipes: [
+      {
+        id: 'hoffmann-cold-brew',
+        nameEn: 'James Hoffmann 18h Concentrate',
+        nameHu: 'James Hoffmann 18 órás Koncentrátum',
+        creatorEn: 'James Hoffmann (calculate.coffee)',
+        creatorHu: 'James Hoffmann',
+        descEn: 'Coarse grind, 1:10 ratio, 18-24 hours cold steeping. Versatile concentrate to pour over ice with water, milk or tonic.',
+        descHu: 'Durva őrlés, 1:10 arány, 18-24 órás áztatás szobahőn vagy hűtőben. Sokoldalú koncentrátum jégre, vízzel, tejjel vagy tonikkal hígítva.',
+        defaultRatio: 10,
+        minRatio: 6,
+        maxRatio: 12,
+        defaultCoffee: 80,
+        defaultWater: 800,
+        recommendedTempC: 20,
+        grindSize: 'coarse',
+        brewTimeSec: 64800, // 18 hours
+        steps: [
+          { timeSec: 0, titleEn: 'Coarse Grind & Dose', titleHu: 'Durva Őrlés & Kimérés', descEn: 'Grind 80g coarsely (Timemore C2: 25-28 clicks). Place in a clean jar or cold brew vessel.', descHu: 'Őrölj 80g kávét durvára (Timemore C2: 25-28 klikk). Tedd tiszta üvegbe vagy cold brew edénybe.' },
+          { timeSec: 30, titleEn: 'Slow Cold Water Pour', titleHu: 'Lassú Hideg Felöntés', descEn: 'Slowly pour 800g fresh cold filtered water over grounds, ensuring all are submerged.', descHu: 'Lassan önts rá 800g friss hideg szűrt vizet, hogy minden kávé átnedvesedjen.', waterTarget: 800 },
+          { timeSec: 60, titleEn: 'Gently Stir', titleHu: 'Gyengéd Átkeverés', descEn: 'Stir gently for 30s with a spoon to break up any dry clumps and fully saturate.', descHu: 'Keverd át 30 másodpercig kanállal, hogy ne maradjon száraz csomó.' },
+          { timeSec: 120, titleEn: 'Seal & Steep 18h', titleHu: 'Lezárás & 18 Óra Áztatás', descEn: 'Seal jar with airtight lid. Let steep for 18h at room temp (or 24h in the fridge).', descHu: 'Zárd le légmentesen. Hagyd állni szobahőmérsékleten 18 órát (vagy hűtőben 24 órát).' },
+          { timeSec: 64800, titleEn: 'Filter & Dilute 1:1', titleHu: 'Leszűrés & 1:1 Fogyasztás', descEn: 'Filter through a fine sieve or paper filter. Dilute 1:1 with cold water, milk or tonic over ice!', descHu: 'Szűrd le finom szűrőn vagy papírfilteren. Hígítsd 1:1 arányban hideg vízzel, tejjel vagy tonikkal jégre töltve!' },
+        ],
+        tag: 'Concentrate'
+      },
+      {
+        id: 'classic-toddy-cold-brew',
+        nameEn: 'Classic Toddy Ready-to-Drink',
+        nameHu: 'Klasszikus Toddy (Azonnal Fogyasztható)',
+        creatorEn: 'Classic 1964 Toddy Recipe',
+        creatorHu: 'Klasszikus Toddy Recept',
+        descEn: '1:15 to 1:16 ratio, 12-16 hours steep. Smooth, refreshing cold brew you can pour straight over ice with zero dilution.',
+        descHu: '1:15 - 1:16 arány, 12-16 óra áztatás. Selymes, üdítő hideg kávé, amit hígítás nélkül közvetlenül jégre tölthetsz.',
+        defaultRatio: 15,
+        minRatio: 12,
+        maxRatio: 17,
+        defaultCoffee: 60,
+        defaultWater: 900,
+        recommendedTempC: 18,
+        grindSize: 'coarse',
+        brewTimeSec: 43200, // 12 hours
+        steps: [
+          { timeSec: 0, titleEn: 'Grind & Place in Brewer', titleHu: 'Őrlés & Edénybe Töltés', descEn: 'Coarse grind 60g coffee into cold brew vessel.', descHu: 'Őrölj 60g kávét durvára a Cold Brew edénybe.' },
+          { timeSec: 30, titleEn: 'Pour 900g Cold Water', titleHu: '900g Hideg Víz Felöntése', descEn: 'Pour 900g fresh cold water slowly in circles.', descHu: 'Önts rá körkörösen 900g friss hideg vizet.', waterTarget: 900 },
+          { timeSec: 60, titleEn: 'Stir & Cover', titleHu: 'Keverés & Lefedés', descEn: 'Stir to submerge all grounds, seal lid.', descHu: 'Keverd el, hogy minden szemcse átázzon, majd zárd le a tetejét.' },
+          { timeSec: 120, titleEn: 'Steep 12-16 Hours', titleHu: '12-16 Óra Áztatás', descEn: 'Leave undisturbed at room temperature for 12 hours or fridge for 16 hours.', descHu: 'Hagyd pihenni szobahőn 12 órát vagy a hűtőben 16 órát.' },
+          { timeSec: 43200, titleEn: 'Strain & Enjoy Straight', titleHu: 'Leszűrés & Jégre Töltés', descEn: 'Strain coffee through filter. Pour directly over ice cubes — no dilution required!', descHu: 'Engedd át a szűrőn. Töltsd egyenesen jégkockákra — nem igényel hígítást!' },
+        ],
+        tag: 'Ready-to-Drink'
+      },
+      {
+        id: 'aeropress-rapid-cold-brew',
+        nameEn: 'AeroPress 2-Min Cold Brew',
+        nameHu: 'AeroPress 2 Perces Gyors Hidegfőzet',
+        creatorEn: 'Alan Adler (AeroPress Creator)',
+        creatorHu: 'Alan Adler (AeroPress feltalálója)',
+        descEn: 'Medium-fine grind, room temp or chilled water, brisk 1-minute stir and smooth press over ice cubes. Delicious cold coffee in 2 minutes flat!',
+        descHu: 'Közepesen finom őrlemény, szoba-hőmérsékletű vagy hideg víz, 1 perces intenzív keverés, lassú préselés jégre. Frissítő hideg kávé 2 perc alatt!',
+        defaultRatio: 7.5,
+        minRatio: 6,
+        maxRatio: 10,
+        defaultCoffee: 16,
+        defaultWater: 120,
+        recommendedTempC: 20,
+        grindSize: 'medium-fine',
+        brewTimeSec: 120,
+        steps: [
+          { timeSec: 0, titleEn: 'Dose & Cold Water', titleHu: 'Kávé & Hideg Víz', descEn: 'Add 16g medium-fine coffee to AeroPress chamber. Pour 120g room-temp or cold water.', descHu: 'Tegyél 16g közepesen finom kávét a hengerbe. Önts rá 120g hideg/szoba-hőmérsékletű vizet.', waterTarget: 120 },
+          { timeSec: 15, titleEn: 'Brisk 1-Min Stir', titleHu: '1 Perces Intenzív Keverés', descEn: 'Stir briskly and continuously for 60 seconds. The agitation accelerates cold extraction.', descHu: 'Keverd intenzíven és folyamatosan 60 másodpercig. A turbulencia felgyorsítja a hideg kioldódást.' },
+          { timeSec: 75, titleEn: 'Insert Plunger & Press', titleHu: 'Dugattyú & Préselés', descEn: 'Insert plunger and press gently over 40 seconds directly into a glass filled with ice.', descHu: 'Helyezd be a dugattyút és nyomd le lassan 40 mp alatt közvetlenül egy jéggel teli pohárba.' },
+        ],
+        tag: 'Rapid Cold'
+      }
+    ]
   }
 ];

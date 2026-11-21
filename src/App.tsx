@@ -11,14 +11,16 @@ import { BrewTimerModal } from './components/BrewTimerModal';
 import { SettingsModal } from './components/SettingsModal';
 import { BrewerPickerModal } from './components/BrewerPickerModal';
 import { sounds } from './utils/audio';
-import { Settings, Play, ChevronDown, Sparkles, Volume2, VolumeX, Flame, Sun, Moon } from 'lucide-react';
+import { Settings, Play, ChevronDown, Sparkles, Volume2, VolumeX, Flame, Sun, Moon, Snowflake } from 'lucide-react';
 
 const STRENGTH_RATIOS = {
   'moka-pot': { mild: 10, balanced: 8.5, strong: 7, concentrate: 6 },
+  'cold-brew': { mild: 15, balanced: 10, strong: 8, concentrate: 5 },
   filter: { mild: 17.5, balanced: 15.5, strong: 13.5, concentrate: 8 },
 } satisfies Record<string, Record<Strength, number>>;
 
 const MOKA_BREWER = BREWERS.find((b) => b.id === 'moka-pot')!;
+const COLD_BREW_BREWER = BREWERS.find((b) => b.id === 'cold-brew')!;
 
 export default function App() {
   // Application Settings
@@ -59,7 +61,7 @@ export default function App() {
     document.documentElement.classList.toggle('dark', settings.darkMode);
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', settings.darkMode ? '#09090b' : '#f4f4f5');
   }, [settings.darkMode]);
-  const ratioKind = currentBrewer.id === 'moka-pot' ? 'moka-pot' : 'filter';
+  const ratioKind = currentBrewer.id === 'moka-pot' ? 'moka-pot' : currentBrewer.id === 'cold-brew' ? 'cold-brew' : 'filter';
 
   // Helper to recompute dependent field
   const computeDependent = useCallback(
@@ -338,8 +340,8 @@ export default function App() {
           </div>
         </header>
 
-        {/* Primary Brewer Switcher Tabs: Focused on AeroPress & Moka Pot */}
-        <div className={`grid grid-cols-3 gap-1.5 p-1 rounded-2xl border backdrop-blur-md transition-colors ${
+        {/* Primary Brewer Switcher Tabs: Focused on AeroPress, Moka Pot & Cold Brew */}
+        <div className={`grid grid-cols-4 gap-1 p-1 rounded-2xl border backdrop-blur-md transition-colors ${
           settings.darkMode ? 'bg-zinc-950/80 border-zinc-800/80' : 'bg-white border-zinc-200 shadow-sm'
         }`}>
           {/* AeroPress Tab */}
@@ -356,8 +358,8 @@ export default function App() {
                   : 'text-zinc-600 hover:text-zinc-900 border-transparent hover:bg-zinc-100'
             }`}
           >
-            <span>AeroPress</span>
-            <span className="text-[11px] font-normal opacity-70">1:15 Standard</span>
+            <span className="truncate max-w-full">AeroPress</span>
+            <span className="text-[10px] font-normal opacity-70">1:15</span>
           </button>
 
           {/* Moka Pot / Kotyogós Tab */}
@@ -374,11 +376,32 @@ export default function App() {
                   : 'text-zinc-600 hover:text-zinc-900 border-transparent hover:bg-zinc-100'
             }`}
           >
-            <span className="flex items-center gap-1">
-              <Flame className="w-3 h-3 text-amber-500" />
-              Kotyogós (Moka)
+            <span className="flex items-center gap-1 truncate max-w-full">
+              <Flame className="w-3 h-3 text-amber-500 flex-shrink-0" />
+              <span>{settings.lang === 'hu' ? 'Kotyogós' : 'Moka'}</span>
             </span>
-            <span className="text-[11px] font-normal opacity-70">Bialetti 1:8.5</span>
+            <span className="text-[10px] font-normal opacity-70">1:8.5</span>
+          </button>
+
+          {/* Cold Brew Tab */}
+          <button
+            type="button"
+            onClick={() => handleSelectBrewer(COLD_BREW_BREWER)}
+            className={`py-2 px-1 rounded-xl font-mono text-xs font-bold transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer border ${
+              currentBrewer.id === 'cold-brew'
+                ? settings.darkMode
+                  ? 'bg-zinc-900 text-cyan-400 border-cyan-500/40 shadow-sm'
+                  : 'bg-cyan-50 text-cyan-900 border-cyan-400/80 shadow-sm'
+                : settings.darkMode
+                  ? 'text-zinc-400 hover:text-zinc-200 border-transparent hover:bg-zinc-900/40'
+                  : 'text-zinc-600 hover:text-zinc-900 border-transparent hover:bg-zinc-100'
+            }`}
+          >
+            <span className="flex items-center gap-1 truncate max-w-full">
+              <Snowflake className="w-3 h-3 text-cyan-500 flex-shrink-0" />
+              <span>ColdBrew</span>
+            </span>
+            <span className="text-[10px] font-normal opacity-70">1:10</span>
           </button>
 
           {/* More Brewers Dropdown Button */}
@@ -386,7 +409,7 @@ export default function App() {
             type="button"
             onClick={() => setShowBrewerPicker(true)}
             className={`py-2 px-1 rounded-xl font-mono text-xs font-bold transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer border ${
-              currentBrewer.id !== 'aeropress' && currentBrewer.id !== 'moka-pot'
+              currentBrewer.id !== 'aeropress' && currentBrewer.id !== 'moka-pot' && currentBrewer.id !== 'cold-brew'
                 ? settings.darkMode
                   ? 'bg-zinc-900 text-amber-400 border-amber-500/40'
                   : 'bg-amber-50 text-amber-900 border-amber-400/80 shadow-sm'
@@ -395,13 +418,13 @@ export default function App() {
                   : 'text-zinc-600 hover:text-zinc-900 border-transparent hover:bg-zinc-100'
             }`}
           >
-            <span className="flex items-center gap-1">
-              {currentBrewer.id !== 'aeropress' && currentBrewer.id !== 'moka-pot'
+            <span className="flex items-center gap-1 truncate max-w-full">
+              {currentBrewer.id !== 'aeropress' && currentBrewer.id !== 'moka-pot' && currentBrewer.id !== 'cold-brew'
                 ? currentBrewer.nameEn.split(' ')[0]
-                : 'Többi / More'}
-              <ChevronDown className="w-3 h-3" />
+                : (settings.lang === 'hu' ? 'Többi' : 'More')}
+              <ChevronDown className="w-3 h-3 flex-shrink-0" />
             </span>
-            <span className="text-[11px] font-normal opacity-70">V60, French, etc.</span>
+            <span className="text-[10px] font-normal opacity-70">V60, French</span>
           </button>
         </div>
 
@@ -517,6 +540,7 @@ export default function App() {
           onSelectGrind={setGrindSize}
           themeColor={settings.themeColor}
           darkMode={settings.darkMode}
+          isColdBrew={currentBrewer.id === 'cold-brew'}
           lang={settings.lang}
         />
 
@@ -530,12 +554,20 @@ export default function App() {
           className="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-mono font-bold text-sm sm:text-base shadow-xl shadow-amber-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
         >
           <Play className="w-5 h-5 fill-current" />
-          <span>{t.startTimer} ({currentRecipe.brewTimeSec}s)</span>
+          <span>
+            {t.startTimer} ({currentRecipe.brewTimeSec >= 3600 ? `${Math.round(currentRecipe.brewTimeSec / 3600)}h` : `${currentRecipe.brewTimeSec}s`})
+          </span>
         </button>
 
         {/* Footer tip */}
         <footer className={`text-center text-[11px] font-mono py-3 ${settings.darkMode ? 'text-zinc-500' : 'text-zinc-500'}`}>
-          {currentBrewer.id === 'aeropress' ? t.tipAeroPress : currentBrewer.id === 'moka-pot' ? t.tipMoka : 'Coffee Calculator • Bench Scale Ratio Engine'}
+          {currentBrewer.id === 'aeropress'
+            ? t.tipAeroPress
+            : currentBrewer.id === 'moka-pot'
+            ? t.tipMoka
+            : currentBrewer.id === 'cold-brew'
+            ? t.tipColdBrew
+            : 'Coffee Calculator • Bench Scale Ratio Engine'}
         </footer>
       </div>
 

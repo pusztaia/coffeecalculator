@@ -56,36 +56,36 @@ export const BrewerPickerModal: React.FC<BrewerPickerModalProps> = ({
           </button>
         </div>
 
-        {/* Highlighted Top Two: AeroPress & Moka Pot */}
+        {/* Highlighted Top: AeroPress, Moka Pot & Cold Brew */}
         <div className="flex flex-col gap-1.5">
           <span className="text-[11px] font-mono uppercase tracking-wider text-amber-700 dark:text-amber-500/90 font-semibold">
             ★ Kiemelt Módszerek / Featured
           </span>
-          <div className="grid grid-cols-2 gap-2.5">
-            {BREWERS.filter((b) => b.id === 'aeropress' || b.id === 'moka-pot').map((brewer) => {
+          <div className="grid grid-cols-3 gap-2">
+            {BREWERS.filter((b) => b.id === 'aeropress' || b.id === 'moka-pot' || b.id === 'cold-brew').map((brewer) => {
               const isSelected = currentBrewer.id === brewer.id;
               return (
                 <button
                   key={brewer.id}
                   type="button"
                   onClick={() => handleSelect(brewer, brewer.recipes[0])}
-                  className={`p-3 rounded-2xl border flex flex-col items-center text-center transition-all cursor-pointer relative ${
+                  className={`p-2.5 rounded-2xl border flex flex-col items-center text-center transition-all cursor-pointer relative ${
                     isSelected
                       ? 'bg-zinc-100 dark:bg-zinc-900 border-amber-500/70 ring-1 ring-amber-500/40 shadow-lg'
                       : 'bg-zinc-100 dark:bg-zinc-900/60 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700'
                   }`}
                 >
                   {isSelected && (
-                    <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-amber-500 text-zinc-950 flex items-center justify-center">
-                      <Check className="w-3.5 h-3.5 stroke-[3]" />
+                    <div className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-amber-500 text-zinc-950 flex items-center justify-center">
+                      <Check className="w-3 h-3 stroke-[3]" />
                     </div>
                   )}
-                  <BrewerArtwork brewerId={brewer.id} themeColor={themeColor} size={64} />
-                  <span className="font-bold text-zinc-900 dark:text-zinc-100 text-sm mt-1">
-                    {lang === 'hu' ? brewer.nameHu : brewer.nameEn}
+                  <BrewerArtwork brewerId={brewer.id} themeColor={themeColor} size={50} />
+                  <span className="font-bold text-zinc-900 dark:text-zinc-100 text-xs mt-1 truncate max-w-full">
+                    {lang === 'hu' ? brewer.nameHu.split(' ')[0] : brewer.nameEn.split(' ')[0]}
                   </span>
-                  <span className="text-[11px] text-zinc-500 font-mono mt-0.5">
-                    1:{brewer.defaultRatio} {t.ratio}
+                  <span className="text-[10px] text-zinc-500 font-mono mt-0.5">
+                    1:{brewer.defaultRatio}
                   </span>
                 </button>
               );

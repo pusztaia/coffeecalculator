@@ -119,10 +119,14 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
     }
   };
 
-  // Format seconds to mm:ss
+  // Format seconds to mm:ss or hh:mm:ss for long steeping (cold brew)
   const formatTime = (totalSeconds: number) => {
-    const mins = Math.floor(totalSeconds / 60);
+    const hrs = Math.floor(totalSeconds / 3600);
+    const mins = Math.floor((totalSeconds % 3600) / 60);
     const secs = totalSeconds % 60;
+    if (hrs > 0) {
+      return `${hrs}h ${String(mins).padStart(2, '0')}m ${String(secs).padStart(2, '0')}s`;
+    }
     return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
 

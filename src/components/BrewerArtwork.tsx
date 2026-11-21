@@ -182,7 +182,42 @@ export const BrewerArtwork: React.FC<BrewerArtworkProps> = ({
         </svg>
       )}
 
-      {brewerId !== 'aeropress' && brewerId !== 'aeropress-inverted' && brewerId !== 'moka-pot' && brewerId !== 'v60' && brewerId !== 'french-press' && (
+      {brewerId === 'cold-brew' && (
+        <svg viewBox="0 0 120 140" width={size} height={size} fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Cold Brew Mason Jar / Carafe */}
+          <rect x="32" y="38" width="56" height="90" rx="8" stroke="currentColor" strokeWidth="2.5" className="text-zinc-700 dark:text-zinc-300" />
+          
+          {/* Jar Neck and Rim */}
+          <rect x="40" y="28" width="40" height="10" stroke="currentColor" strokeWidth="2" className="text-zinc-700 dark:text-zinc-300" />
+          
+          {/* Metal Lid */}
+          <rect x="36" y="20" width="48" height="8" rx="2" fill="currentColor" stroke="currentColor" strokeWidth="2" className="text-zinc-800 dark:text-zinc-200" />
+          <line x1="42" y1="24" x2="78" y2="24" stroke={accent} strokeWidth="1.5" strokeLinecap="round" />
+
+          {/* Measurement notches on side of jar */}
+          <line x1="36" y1="60" x2="44" y2="60" stroke="currentColor" strokeWidth="1.5" opacity="0.6" />
+          <line x1="36" y1="80" x2="48" y2="80" stroke="currentColor" strokeWidth="1.5" opacity="0.6" />
+          <line x1="36" y1="100" x2="44" y2="100" stroke="currentColor" strokeWidth="1.5" opacity="0.6" />
+
+          {/* Cold Brew Liquid Fill */}
+          <path d="M34 68H86V120C86 124 82 126 78 126H42C38 126 34 124 34 120V68Z" fill={accent} fillOpacity="0.35" />
+
+          {/* Ice Cubes floating inside */}
+          <rect x="44" y="74" width="14" height="14" rx="2.5" stroke="currentColor" strokeWidth="1.5" fill="currentColor" fillOpacity="0.15" className="text-zinc-400 dark:text-zinc-200" transform="rotate(8 44 74)" />
+          <rect x="62" y="82" width="13" height="13" rx="2.5" stroke="currentColor" strokeWidth="1.5" fill="currentColor" fillOpacity="0.15" className="text-zinc-400 dark:text-zinc-200" transform="rotate(-12 62 82)" />
+          <rect x="48" y="98" width="12" height="12" rx="2.5" stroke="currentColor" strokeWidth="1.5" fill="currentColor" fillOpacity="0.15" className="text-zinc-400 dark:text-zinc-200" transform="rotate(15 48 98)" />
+
+          {/* Subtle snowflake / chill icon in upper right corner */}
+          <g opacity="0.85">
+            <line x1="100" y1="24" x2="100" y2="36" stroke="#06b6d4" strokeWidth="1.5" strokeLinecap="round" />
+            <line x1="94" y1="30" x2="106" y2="30" stroke="#06b6d4" strokeWidth="1.5" strokeLinecap="round" />
+            <line x1="96" y1="26" x2="104" y2="34" stroke="#06b6d4" strokeWidth="1.2" strokeLinecap="round" />
+            <line x1="96" y1="34" x2="104" y2="26" stroke="#06b6d4" strokeWidth="1.2" strokeLinecap="round" />
+          </g>
+        </svg>
+      )}
+
+      {brewerId !== 'aeropress' && brewerId !== 'aeropress-inverted' && brewerId !== 'moka-pot' && brewerId !== 'v60' && brewerId !== 'french-press' && brewerId !== 'cold-brew' && (
         <svg viewBox="0 0 120 140" width={size} height={size} fill="none" xmlns="http://www.w3.org/2000/svg">
           {/* Generic coffee beaker */}
           <rect x="36" y="32" width="48" height="88" rx="6" stroke="currentColor" strokeWidth="2.5" className="text-zinc-600 dark:text-zinc-400" />

@@ -2,7 +2,7 @@
 
 Egy professzionális, digitális mérleg felületű kávéarány-kalkulátor és lépésről lépésre időzítő, amelyet a **Coffee Calculator: Brew Ratios** (iOS app), a **calculate.coffee** és a **Coffee Bros** aránykalkulátorok legjobb funkciói ihlettek.
 
-Kifejezetten az **AeroPress** és a **Kotyogós (Moka Pot / Bialetti)** szerelmeseinek tervezve, de támogatja a **V60, French Press és Chemex** filteres módszereket is.
+Kifejezetten az **AeroPress**, a **Kotyogós (Moka Pot / Bialetti)** és a **Cold Brew (Hideg Áztatás)** szerelmeseinek tervezve, de támogatja a **V60, French Press és Chemex** filteres módszereket is.
 
 ---
 
@@ -17,7 +17,15 @@ Kifejezetten az **AeroPress** és a **Kotyogós (Moka Pot / Bialetti)** szerelme
 - **Valódi billentyűzet támogatás**: Asztali gépen vagy laptopon a számbillentyűkkel, Backspace-szel, ESC-cel (AC) és 'S'-sel (Swap) is közvetlenül kezelhető.
 - **Szintetizált haptikus és audio hanghatások** (Web Audio API): Finom mérleg-kattintások és tára sípolás (némítható).
 
-### 2. 🫖 Kiemelt Kotyogós (Moka Pot) Modul
+### 2. ❄️ Kiemelt Cold Brew Modul (calculate.coffee alapján)
+- **Receptek**:
+  - **James Hoffmann 18h Concentrate (1:10)**: Durva őrlemény, 18 órás áztatás szobahőn (vagy 24 óra hűtőben). Intenzív alap jéggel, tonikkal, tejjel hígítva.
+  - **Klasszikus Toddy (1:15 - 1:16)**: Hígítás nélküli, azonnal jégre tölthető, lágy és édeskés hideg kávé.
+  - **AeroPress 2 perces Expressz Cold Brew (Alan Adler)**: Finomabb őrlés, hideg vizes keverés, azonnali frissítő ital 2 perc alatt!
+- **Hűtött vízhőfok útmutató**: 4–20°C hideg / hűtős vízhőmérséklet.
+- **Timemore C2 Max ajánlás**: 25–28 klikk (durva őrlés a tiszta, üledékmentes szűrésért).
+
+### 3. 🫖 Kiemelt Kotyogós (Moka Pot) Modul
 - **Csészetérfogat gyorsválasztó**:
   - **1 csésze**: ~7g kávé, 60ml víz (40ml kihozatal)
   - **2 csésze**: ~11g kávé, 100ml víz (70ml kihozatal)
