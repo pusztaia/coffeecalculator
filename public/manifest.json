@@ -1,6 +1,6 @@
 {
-  "short_name": "Kávé Mérleg",
-  "name": "Coffee Calculator & Timer",
+  "short_name": "CoffeeCalculator",
+  "name": "CoffeeCalculator",
   "icons": [
     { "src": "icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any" },
     { "src": "icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any" },
