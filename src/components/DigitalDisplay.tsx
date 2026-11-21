@@ -13,6 +13,7 @@ interface DigitalDisplayProps {
   themeColor: ThemeColor;
   weightUnit: WeightUnit;
   volumeUnit: VolumeUnit;
+  darkMode: boolean;
   lang: 'hu' | 'en';
 }
 
@@ -26,6 +27,7 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
   themeColor,
   weightUnit,
   volumeUnit,
+  darkMode,
   lang,
 }) => {
   const t = TRANSLATIONS[lang];
@@ -81,8 +83,12 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
     return val;
   };
 
+  const containerClass = darkMode
+    ? 'bg-zinc-950 border-zinc-800/80 shadow-2xl'
+    : 'bg-zinc-950 border-zinc-700/80 shadow-xl ring-2 ring-zinc-300';
+
   return (
-    <div className="w-full relative rounded-2xl bg-zinc-950 border border-zinc-800/80 p-3 sm:p-4 shadow-2xl backdrop-blur-md">
+    <div className={`w-full relative rounded-2xl p-3 sm:p-4 backdrop-blur-md border ${containerClass}`}>
       {/* Scale header bar: TARE / LED dots / Status */}
       <div className="flex items-center justify-between pb-2 mb-2 border-b border-zinc-800/60 text-xs tracking-widest text-zinc-500 font-mono">
         <div className="flex items-center gap-1.5">

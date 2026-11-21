@@ -11,7 +11,7 @@ import { BrewTimerModal } from './components/BrewTimerModal';
 import { SettingsModal } from './components/SettingsModal';
 import { BrewerPickerModal } from './components/BrewerPickerModal';
 import { sounds } from './utils/audio';
-import { Settings, Play, ChevronDown, Sparkles, Volume2, VolumeX, Flame } from 'lucide-react';
+import { Settings, Play, ChevronDown, Sparkles, Volume2, VolumeX, Flame, Sun, Moon } from 'lucide-react';
 
 export default function App() {
   // Application Settings
@@ -221,7 +221,9 @@ export default function App() {
   const waterNum = parseFloat(waterInput) || 0;
 
   return (
-    <div className="min-h-screen w-full bg-zinc-950 text-zinc-100 flex flex-col items-center justify-start p-3 sm:p-5 selection:bg-amber-500 selection:text-black font-sans antialiased">
+    <div className={`min-h-screen w-full flex flex-col items-center justify-start p-3 sm:p-5 selection:bg-amber-500 selection:text-black font-sans antialiased transition-colors duration-200 ${
+      settings.darkMode ? 'bg-zinc-950 text-zinc-100' : 'bg-zinc-100 text-zinc-900'
+    }`}>
       {/* Background ambient scale glow */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div
@@ -241,20 +243,44 @@ export default function App() {
         {/* Top App Header / Scale Brand */}
         <header className="flex items-center justify-between px-2 pt-1">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-amber-500 shadow-md">
+            <div className={`w-8 h-8 rounded-xl border flex items-center justify-center text-amber-500 shadow-md ${
+              settings.darkMode ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-zinc-200'
+            }`}>
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
-              <h1 className="text-sm font-extrabold font-mono tracking-widest text-zinc-100 leading-none">
+              <h1 className={`text-sm font-extrabold font-mono tracking-widest leading-none ${
+                settings.darkMode ? 'text-zinc-100' : 'text-zinc-900'
+              }`}>
                 {t.appTitle}
               </h1>
-              <p className="text-[10px] font-mono text-zinc-500 mt-0.5 leading-none">
+              <p className={`text-[10px] font-mono mt-0.5 leading-none ${
+                settings.darkMode ? 'text-zinc-500' : 'text-zinc-500'
+              }`}>
                 {t.appSubtitle}
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-1.5">
+            {/* Quick Theme Toggle (Light / Dark) */}
+            <button
+              type="button"
+              onClick={() => {
+                sounds.playKeyClick();
+                setSettings((s) => ({ ...s, darkMode: !s.darkMode }));
+              }}
+              className={`px-2 py-1 rounded-xl border text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                settings.darkMode
+                  ? 'bg-zinc-900 hover:bg-zinc-800 border-zinc-800 text-amber-400'
+                  : 'bg-white hover:bg-zinc-50 border-zinc-300 text-zinc-800 shadow-sm'
+              }`}
+              title={settings.darkMode ? t.themeLight : t.themeDark}
+            >
+              {settings.darkMode ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
+              <span>{settings.darkMode ? (settings.lang === 'hu' ? 'Világos' : 'Light') : (settings.lang === 'hu' ? 'Sötét' : 'Dark')}</span>
+            </button>
+
             {/* Quick Language Toggle */}
             <button
               type="button"
@@ -262,7 +288,11 @@ export default function App() {
                 sounds.playKeyClick();
                 setSettings((s) => ({ ...s, lang: s.lang === 'hu' ? 'en' : 'hu' }));
               }}
-              className="px-2.5 py-1 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-mono font-bold text-zinc-300 transition-colors cursor-pointer"
+              className={`px-2 py-1 rounded-xl border text-xs font-mono font-bold transition-colors cursor-pointer ${
+                settings.darkMode
+                  ? 'bg-zinc-900 hover:bg-zinc-800 border-zinc-800 text-zinc-300'
+                  : 'bg-white hover:bg-zinc-50 border-zinc-300 text-zinc-800 shadow-sm'
+              }`}
               title="Váltás magyar / angol"
             >
               {settings.lang === 'hu' ? 'HU 🇭🇺' : 'EN 🇬🇧'}
@@ -277,13 +307,17 @@ export default function App() {
                 setSettings((s) => ({ ...s, soundEnabled: next }));
                 if (next) sounds.playTareBeep();
               }}
-              className="p-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+              className={`p-1.5 rounded-xl border transition-colors cursor-pointer ${
+                settings.darkMode
+                  ? 'bg-zinc-900 hover:bg-zinc-800 border-zinc-800 text-zinc-400 hover:text-white'
+                  : 'bg-white hover:bg-zinc-50 border-zinc-300 text-zinc-600 hover:text-zinc-900 shadow-sm'
+              }`}
               title={settings.soundEnabled ? t.soundOn : t.soundOff}
             >
               {settings.soundEnabled ? (
-                <Volume2 className="w-4 h-4 text-emerald-400" />
+                <Volume2 className="w-4 h-4 text-emerald-500" />
               ) : (
-                <VolumeX className="w-4 h-4 text-zinc-600" />
+                <VolumeX className="w-4 h-4 text-zinc-400" />
               )}
             </button>
 
@@ -294,7 +328,11 @@ export default function App() {
                 sounds.playKeyClick();
                 setShowSettings(true);
               }}
-              className="p-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+              className={`p-1.5 rounded-xl border transition-colors cursor-pointer ${
+                settings.darkMode
+                  ? 'bg-zinc-900 hover:bg-zinc-800 border-zinc-800 text-zinc-400 hover:text-white'
+                  : 'bg-white hover:bg-zinc-50 border-zinc-300 text-zinc-600 hover:text-zinc-900 shadow-sm'
+              }`}
               title={t.settings}
             >
               <Settings className="w-4 h-4" />
@@ -303,15 +341,21 @@ export default function App() {
         </header>
 
         {/* Primary Brewer Switcher Tabs: Focused on AeroPress & Moka Pot */}
-        <div className="grid grid-cols-3 gap-1.5 p-1 rounded-2xl bg-zinc-950/80 border border-zinc-800/80 backdrop-blur-md">
+        <div className={`grid grid-cols-3 gap-1.5 p-1 rounded-2xl border backdrop-blur-md transition-colors ${
+          settings.darkMode ? 'bg-zinc-950/80 border-zinc-800/80' : 'bg-white border-zinc-200 shadow-sm'
+        }`}>
           {/* AeroPress Tab */}
           <button
             type="button"
             onClick={() => handleSelectBrewer(BREWERS[0])}
             className={`py-2 px-1 rounded-xl font-mono text-xs font-bold transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer border ${
               currentBrewer.id === 'aeropress'
-                ? 'bg-zinc-900 text-amber-400 border-amber-500/40 shadow-sm'
-                : 'text-zinc-400 hover:text-zinc-200 border-transparent hover:bg-zinc-900/40'
+                ? settings.darkMode
+                  ? 'bg-zinc-900 text-amber-400 border-amber-500/40 shadow-sm'
+                  : 'bg-amber-50 text-amber-900 border-amber-400/80 shadow-sm'
+                : settings.darkMode
+                  ? 'text-zinc-400 hover:text-zinc-200 border-transparent hover:bg-zinc-900/40'
+                  : 'text-zinc-600 hover:text-zinc-900 border-transparent hover:bg-zinc-100'
             }`}
           >
             <span>AeroPress</span>
@@ -324,8 +368,12 @@ export default function App() {
             onClick={() => handleSelectBrewer(BREWERS[2])}
             className={`py-2 px-1 rounded-xl font-mono text-xs font-bold transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer border ${
               currentBrewer.id === 'moka-pot'
-                ? 'bg-zinc-900 text-amber-400 border-amber-500/40 shadow-sm'
-                : 'text-zinc-400 hover:text-zinc-200 border-transparent hover:bg-zinc-900/40'
+                ? settings.darkMode
+                  ? 'bg-zinc-900 text-amber-400 border-amber-500/40 shadow-sm'
+                  : 'bg-amber-50 text-amber-900 border-amber-400/80 shadow-sm'
+                : settings.darkMode
+                  ? 'text-zinc-400 hover:text-zinc-200 border-transparent hover:bg-zinc-900/40'
+                  : 'text-zinc-600 hover:text-zinc-900 border-transparent hover:bg-zinc-100'
             }`}
           >
             <span className="flex items-center gap-1">
@@ -341,8 +389,12 @@ export default function App() {
             onClick={() => setShowBrewerPicker(true)}
             className={`py-2 px-1 rounded-xl font-mono text-xs font-bold transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer border ${
               currentBrewer.id !== 'aeropress' && currentBrewer.id !== 'moka-pot'
-                ? 'bg-zinc-900 text-amber-400 border-amber-500/40'
-                : 'text-zinc-400 hover:text-zinc-200 border-transparent hover:bg-zinc-900/40'
+                ? settings.darkMode
+                  ? 'bg-zinc-900 text-amber-400 border-amber-500/40'
+                  : 'bg-amber-50 text-amber-900 border-amber-400/80 shadow-sm'
+                : settings.darkMode
+                  ? 'text-zinc-400 hover:text-zinc-200 border-transparent hover:bg-zinc-900/40'
+                  : 'text-zinc-600 hover:text-zinc-900 border-transparent hover:bg-zinc-100'
             }`}
           >
             <span className="flex items-center gap-1">
@@ -356,23 +408,27 @@ export default function App() {
         </div>
 
         {/* Selected Brewer & Recipe Banner Card */}
-        <div className="w-full rounded-2xl bg-zinc-950/70 border border-zinc-800/80 p-3.5 flex items-center justify-between gap-3 shadow-sm">
+        <div className={`w-full rounded-2xl border p-3.5 flex items-center justify-between gap-3 shadow-sm transition-colors ${
+          settings.darkMode ? 'bg-zinc-950/70 border-zinc-800/80 text-zinc-100' : 'bg-white border-zinc-200 text-zinc-900'
+        }`}>
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-14 h-14 rounded-2xl bg-zinc-900 border border-zinc-800/80 flex items-center justify-center flex-shrink-0 shadow-inner">
+            <div className={`w-14 h-14 rounded-2xl border flex items-center justify-center flex-shrink-0 shadow-inner ${
+              settings.darkMode ? 'bg-zinc-900 border-zinc-800/80' : 'bg-zinc-50 border-zinc-200'
+            }`}>
               <BrewerArtwork brewerId={currentBrewer.id} themeColor={settings.themeColor} size={46} />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-1.5">
-                <h2 className="text-sm sm:text-base font-bold text-zinc-100 truncate">
+                <h2 className="text-sm sm:text-base font-bold truncate">
                   {settings.lang === 'hu' ? currentRecipe.nameHu : currentRecipe.nameEn}
                 </h2>
                 {currentRecipe.tag && (
-                  <span className="text-[9px] px-1.5 py-0.2 rounded-md bg-amber-500/20 text-amber-400 border border-amber-500/30 font-mono font-semibold">
+                  <span className="text-[9px] px-1.5 py-0.2 rounded-md bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 font-mono font-semibold">
                     {currentRecipe.tag}
                   </span>
                 )}
               </div>
-              <p className="text-[11px] text-zinc-400 truncate font-mono mt-0.5">
+              <p className={`text-[11px] truncate font-mono mt-0.5 ${settings.darkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>
                 {currentRecipe.creatorEn} • {currentRecipe.brewTimeSec}s
               </p>
             </div>
@@ -381,7 +437,11 @@ export default function App() {
           <button
             type="button"
             onClick={() => setShowBrewerPicker(true)}
-            className="flex-shrink-0 px-2.5 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-[11px] font-mono text-zinc-300 hover:text-white transition-colors"
+            className={`flex-shrink-0 px-2.5 py-1.5 rounded-xl border text-[11px] font-mono transition-colors ${
+              settings.darkMode
+                ? 'bg-zinc-900 hover:bg-zinc-800 border-zinc-800 text-zinc-300 hover:text-white'
+                : 'bg-zinc-100 hover:bg-zinc-200 border-zinc-200 text-zinc-800'
+            }`}
           >
             {t.recipe} ▾
           </button>
@@ -393,6 +453,7 @@ export default function App() {
             selectedCups={mokaCupSize}
             onSelectSize={handleSelectMokaSize}
             themeColor={settings.themeColor}
+            darkMode={settings.darkMode}
             lang={settings.lang}
           />
         )}
@@ -411,6 +472,7 @@ export default function App() {
           themeColor={settings.themeColor}
           weightUnit={settings.weightUnit}
           volumeUnit={settings.volumeUnit}
+          darkMode={settings.darkMode}
           lang={settings.lang}
         />
 
@@ -419,9 +481,13 @@ export default function App() {
           <button
             type="button"
             onClick={() => handleSetStrength('mild')}
-            className="py-1.5 px-1 rounded-xl bg-zinc-950/70 border border-zinc-800/80 text-zinc-400 hover:text-zinc-200 active:scale-95 transition-all text-center"
+            className={`py-1.5 px-1 rounded-xl border active:scale-95 transition-all text-center ${
+              settings.darkMode
+                ? 'bg-zinc-950/70 border-zinc-800/80 text-zinc-400 hover:text-zinc-200'
+                : 'bg-white border-zinc-200 text-zinc-600 hover:text-zinc-900 shadow-sm'
+            }`}
           >
-            <span className="block text-[10px] text-zinc-500 uppercase">{t.mild}</span>
+            <span className="block text-[10px] uppercase opacity-70">{t.mild}</span>
             <span className="font-semibold text-[11px]">
               {currentBrewer.id === 'moka-pot' ? '1:10' : currentBrewer.id === 'espresso' ? '1:2.5' : '1:17.5'}
             </span>
@@ -430,9 +496,13 @@ export default function App() {
           <button
             type="button"
             onClick={() => handleSetStrength('balanced')}
-            className="py-1.5 px-1 rounded-xl bg-zinc-950/70 border border-zinc-800/80 text-amber-400 font-semibold active:scale-95 transition-all text-center"
+            className={`py-1.5 px-1 rounded-xl border active:scale-95 transition-all text-center ${
+              settings.darkMode
+                ? 'bg-zinc-950/70 border-zinc-800/80 text-amber-400 font-semibold'
+                : 'bg-amber-50 border-amber-300 text-amber-900 font-bold shadow-sm'
+            }`}
           >
-            <span className="block text-[10px] text-zinc-500 uppercase">{t.balanced}</span>
+            <span className="block text-[10px] uppercase opacity-70">{t.balanced}</span>
             <span className="font-bold text-[11px]">
               {currentBrewer.id === 'moka-pot' ? '1:8.5' : currentBrewer.id === 'espresso' ? '1:2.0' : '1:15.5'}
             </span>
@@ -441,9 +511,13 @@ export default function App() {
           <button
             type="button"
             onClick={() => handleSetStrength('strong')}
-            className="py-1.5 px-1 rounded-xl bg-zinc-950/70 border border-zinc-800/80 text-zinc-400 hover:text-zinc-200 active:scale-95 transition-all text-center"
+            className={`py-1.5 px-1 rounded-xl border active:scale-95 transition-all text-center ${
+              settings.darkMode
+                ? 'bg-zinc-950/70 border-zinc-800/80 text-zinc-400 hover:text-zinc-200'
+                : 'bg-white border-zinc-200 text-zinc-600 hover:text-zinc-900 shadow-sm'
+            }`}
           >
-            <span className="block text-[10px] text-zinc-500 uppercase">{t.strong}</span>
+            <span className="block text-[10px] uppercase opacity-70">{t.strong}</span>
             <span className="font-semibold text-[11px]">
               {currentBrewer.id === 'moka-pot' ? '1:7' : currentBrewer.id === 'espresso' ? '1:1.6' : '1:13.5'}
             </span>
@@ -452,9 +526,13 @@ export default function App() {
           <button
             type="button"
             onClick={() => handleSetStrength('concentrate')}
-            className="py-1.5 px-1 rounded-xl bg-zinc-950/70 border border-zinc-800/80 text-zinc-400 hover:text-zinc-200 active:scale-95 transition-all text-center"
+            className={`py-1.5 px-1 rounded-xl border active:scale-95 transition-all text-center ${
+              settings.darkMode
+                ? 'bg-zinc-950/70 border-zinc-800/80 text-zinc-400 hover:text-zinc-200'
+                : 'bg-white border-zinc-200 text-zinc-600 hover:text-zinc-900 shadow-sm'
+            }`}
           >
-            <span className="block text-[10px] text-zinc-500 uppercase">{t.concentrate}</span>
+            <span className="block text-[10px] uppercase opacity-70">{t.concentrate}</span>
             <span className="font-semibold text-[11px]">
               {currentBrewer.id === 'moka-pot' ? '1:6' : currentBrewer.id === 'espresso' ? '1:1.3' : '1:8.0'}
             </span>
@@ -470,10 +548,11 @@ export default function App() {
           onSwap={handleSwap}
           onNudgeRatio={handleNudgeRatio}
           themeColor={settings.themeColor}
+          darkMode={settings.darkMode}
           ratio={ratio}
         />
 
-        {/* Roast Level & Grind Size Helper Guide */}
+        {/* Roast Level & Grind Size Helper Guide (with Timemore C2 Max support!) */}
         <RoastGrindGuide
           roastLevel={roastLevel}
           onSelectRoast={setRoastLevel}
@@ -481,6 +560,7 @@ export default function App() {
           onSelectGrind={setGrindSize}
           tempUnit={settings.tempUnit}
           themeColor={settings.themeColor}
+          darkMode={settings.darkMode}
           lang={settings.lang}
         />
 
@@ -498,7 +578,7 @@ export default function App() {
         </button>
 
         {/* Footer tip */}
-        <footer className="text-center text-[11px] font-mono text-zinc-600 py-3">
+        <footer className={`text-center text-[11px] font-mono py-3 ${settings.darkMode ? 'text-zinc-600' : 'text-zinc-500'}`}>
           {currentBrewer.id === 'aeropress' ? t.tipAeroPress : currentBrewer.id === 'moka-pot' ? t.tipMoka : 'Coffee Calculator • Bench Scale Ratio Engine'}
         </footer>
       </div>

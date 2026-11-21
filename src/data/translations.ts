@@ -63,6 +63,12 @@ export const TRANSLATIONS = {
     viewTimer: 'Brew Guide & Timer',
     quickRatios: 'Quick Ratios',
     customRatio: 'Custom Ratio',
+    themeLight: 'Light Mode',
+    themeDark: 'Dark Mode',
+    grinderC2Max: 'Timemore Chestnut C2 Max',
+    grinderClicks: 'Clicks from Zero',
+    clicks: 'clicks',
+    zeroPointNote: '0 = fully closed (do not brew below 8 clicks to protect burrs)',
   },
   hu: {
     appTitle: 'KÁVÉ MÉRLEG',
@@ -128,5 +134,11 @@ export const TRANSLATIONS = {
     viewTimer: 'Lépésről lépésre időzítő',
     quickRatios: 'Gyors Arányok',
     customRatio: 'Egyéni Arány',
+    themeLight: 'Világos Mód',
+    themeDark: 'Sötét Mód',
+    grinderC2Max: 'Timemore Chestnut C2 Max',
+    grinderClicks: 'Kattintás nullától',
+    clicks: 'klikk',
+    zeroPointNote: '0 = teljesen zárt (a kések védelmében 8 klikk alatt ne használd)',
   }
 };

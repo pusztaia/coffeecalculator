@@ -1,5 +1,14 @@
 import type { Brewer, MokaPotSize } from '../types/coffee';
 
+export const TIMEMORE_C2_CLICKS = {
+  'extra-fine': { min: 8, max: 11, recommended: 10, descHu: 'Eszpresszó jellegű (8-11 klikk)', descEn: 'Espresso style (8-11 clicks)' },
+  'fine': { min: 12, max: 15, recommended: 13, descHu: 'Kotyogós / Moka (13-14 klikk az ideális!)', descEn: 'Moka Pot sweet spot (13-14 clicks)' },
+  'medium-fine': { min: 15, max: 18, recommended: 16, descHu: 'AeroPress standard (15-18 klikk)', descEn: 'AeroPress standard (15-18 clicks)' },
+  'medium': { min: 18, max: 22, recommended: 20, descHu: 'Filter / V60 (19-21 klikk)', descEn: 'Pour over / V60 (19-21 clicks)' },
+  'medium-coarse': { min: 22, max: 25, recommended: 24, descHu: 'Chemex / Cold Brew (23-25 klikk)', descEn: 'Chemex / Cold brew (23-25 clicks)' },
+  'coarse': { min: 25, max: 28, recommended: 26, descHu: 'French Press (25-28 klikk)', descEn: 'French Press (25-28 clicks)' },
+};
+
 export const MOKA_POT_SIZES: MokaPotSize[] = [
   { cups: 1, label: '1-Cup (Bialetti Express)', coffeeGrams: 7, waterMl: 60, yieldMl: 40 },
   { cups: 2, label: '2-Cup (Bialetti Express)', coffeeGrams: 11, waterMl: 100, yieldMl: 70 },
