@@ -108,30 +108,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         {/* Units Configuration */}
         <div className="flex flex-col gap-3 pt-2 border-t border-zinc-900 font-mono text-xs">
           <div className="flex items-center justify-between">
-            <span className="text-zinc-400">{t.weightUnit}</span>
-            <div className="flex rounded-lg bg-zinc-900 p-0.5 border border-zinc-800">
-              <button
-                type="button"
-                onClick={() => onUpdateSettings({ weightUnit: 'g' })}
-                className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${
-                  settings.weightUnit === 'g' ? 'bg-zinc-800 text-white' : 'text-zinc-500'
-                }`}
-              >
-                Grams (g)
-              </button>
-              <button
-                type="button"
-                onClick={() => onUpdateSettings({ weightUnit: 'oz' })}
-                className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${
-                  settings.weightUnit === 'oz' ? 'bg-zinc-800 text-white' : 'text-zinc-500'
-                }`}
-              >
-                Ounces (oz)
-              </button>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between">
             <span className="text-zinc-400">{t.volumeUnit}</span>
             <div className="flex rounded-lg bg-zinc-900 p-0.5 border border-zinc-800">
               <button
@@ -151,39 +127,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 }`}
               >
                 ml
-              </button>
-              <button
-                type="button"
-                onClick={() => onUpdateSettings({ volumeUnit: 'floz' })}
-                className={`px-2.5 py-1 rounded-md text-xs font-bold transition-all ${
-                  settings.volumeUnit === 'floz' ? 'bg-zinc-800 text-white' : 'text-zinc-500'
-                }`}
-              >
-                fl oz
-              </button>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <span className="text-zinc-400">{t.tempUnit}</span>
-            <div className="flex rounded-lg bg-zinc-900 p-0.5 border border-zinc-800">
-              <button
-                type="button"
-                onClick={() => onUpdateSettings({ tempUnit: 'C' })}
-                className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${
-                  settings.tempUnit === 'C' ? 'bg-zinc-800 text-white' : 'text-zinc-500'
-                }`}
-              >
-                °C
-              </button>
-              <button
-                type="button"
-                onClick={() => onUpdateSettings({ tempUnit: 'F' })}
-                className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${
-                  settings.tempUnit === 'F' ? 'bg-zinc-800 text-white' : 'text-zinc-500'
-                }`}
-              >
-                °F
               </button>
             </div>
           </div>

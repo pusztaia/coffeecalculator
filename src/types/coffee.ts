@@ -8,8 +8,8 @@ export type BrewerId =
   | 'chemex'
   | 'cold-brew';
 
-export type WeightUnit = 'g' | 'oz';
-export type VolumeUnit = 'ml' | 'g' | 'floz';
+export type WeightUnit = 'g';
+export type VolumeUnit = 'ml' | 'g';
 export type TempUnit = 'C' | 'F';
 
 export type Strength = 'mild' | 'balanced' | 'strong' | 'concentrate';
