@@ -50,10 +50,11 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
     ? '90–93°C'
     : '84–88°C';
 
+  const TEMP_RE = /~?85°C|80-85°C|~?90°C|~?92°C|~?95°C|~?98°C/g;
   // No thermometer: boil, then let the kettle cool for roughly this long (thin-walled kettle, ~0.5–1 L)
   const waitSec = isColdBrew ? '' : roastLevel === 'light' ? '15–30' : roastLevel === 'medium' ? '45–60' : '90–120';
   const tempHint = waitSec
-    ? (lang === 'hu' ? ` (forrald fel, majd várj ${waitSec} mp-et)` : ` (boil, then wait ${waitSec} s)`)
+    ? (lang === 'hu' ? ` (forrald fel, majd várj kb. ${waitSec} mp-et)` : ` (boil, then wait about ${waitSec} s)`)
     : '';
 
   // Scale any recipe steps dynamically according to the user's dialed coffee and water grams
@@ -76,12 +77,12 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
     descHu = descHu
       .replace(new RegExp(`${defaultC}g`, 'g'), `${coffeeGrams}g`)
       .replace(new RegExp(`${defaultW}g`, 'g'), `${waterGrams}g`)
-      .replace(/~?85°C|80-85°C|~?90°C|~?92°C|~?95°C|~?98°C/g, tempDisplay + tempHint);
+      .replace(TEMP_RE, tempDisplay);
 
     descEn = descEn
       .replace(new RegExp(`${defaultC}g`, 'g'), `${coffeeGrams}g`)
       .replace(new RegExp(`${defaultW}g`, 'g'), `${waterGrams}g`)
-      .replace(/~?85°C|80-85°C|~?90°C|~?92°C|~?95°C|~?98°C/g, tempDisplay + tempHint);
+      .replace(TEMP_RE, tempDisplay);
 
     titleHu = titleHu
       .replace(new RegExp(`${defaultC}g`, 'g'), `${coffeeGrams}g`)
