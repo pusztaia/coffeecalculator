@@ -226,13 +226,14 @@ export default function App() {
       {/* Background ambient scale glow */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div
-          className={`absolute -top-32 left-1/2 -translate-x-1/2 w-[550px] h-[550px] rounded-full blur-[140px] opacity-15 transition-colors duration-700 ${
+          className={`absolute -top-32 left-1/2 -translate-x-1/2 w-[550px] h-[550px] opacity-15 transition-colors duration-700 ${
             settings.themeColor === 'amber'
-              ? 'bg-amber-500'
+              ? 'text-amber-500'
               : settings.themeColor === 'emerald'
-              ? 'bg-emerald-500'
-              : 'bg-zinc-200'
+              ? 'text-emerald-500'
+              : 'text-zinc-200'
           }`}
+          style={{ background: 'radial-gradient(closest-side, currentColor, transparent)' }}
         />
       </div>
 
@@ -344,7 +345,7 @@ export default function App() {
         </header>
 
         {/* Primary Brewer Switcher Tabs: Focused on AeroPress, Moka Pot & Cold Brew */}
-        <div className={`grid grid-cols-4 gap-1 p-1 rounded-2xl border backdrop-blur-md transition-colors ${
+        <div className={`grid grid-cols-4 gap-1 p-1 rounded-2xl border transition-colors ${
           settings.darkMode ? 'bg-zinc-950/80 border-zinc-800/80' : 'bg-white border-zinc-200 shadow-sm'
         }`}>
           {/* AeroPress Tab */}

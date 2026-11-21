@@ -26,7 +26,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
+    <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-3 sm:p-4">
       <div ref={dialogRef} role="dialog" aria-modal="true" aria-label={t.settings} tabIndex={-1} className="outline-none w-full max-w-md bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-5 shadow-2xl flex flex-col gap-5 max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-zinc-200 dark:border-zinc-900">

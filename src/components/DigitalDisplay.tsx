@@ -35,7 +35,7 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
     switch (themeColor) {
       case 'amber':
         return {
-          glow: 'text-amber-400 drop-shadow-[0_0_12px_rgba(245,158,11,0.55)]',
+          glow: 'text-amber-400 [text-shadow:0_0_12px_rgba(245,158,11,0.55)]',
           dim: 'text-amber-950/40 dark:text-amber-500/20',
           borderActive: 'border-amber-500/60 ring-2 ring-amber-500/30 bg-amber-500/5',
           borderInactive: 'border-zinc-800/60 hover:border-zinc-700 bg-zinc-950/40',
@@ -44,7 +44,7 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
         };
       case 'emerald':
         return {
-          glow: 'text-emerald-400 drop-shadow-[0_0_12px_rgba(16,185,129,0.55)]',
+          glow: 'text-emerald-400 [text-shadow:0_0_12px_rgba(16,185,129,0.55)]',
           dim: 'text-emerald-950/40 dark:text-emerald-500/20',
           borderActive: 'border-emerald-500/60 ring-2 ring-emerald-500/30 bg-emerald-500/5',
           borderInactive: 'border-zinc-800/60 hover:border-zinc-700 bg-zinc-950/40',
@@ -54,7 +54,7 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
       case 'white':
       default:
         return {
-          glow: 'text-zinc-100 drop-shadow-[0_0_10px_rgba(255,255,255,0.45)]',
+          glow: 'text-zinc-100 [text-shadow:0_0_10px_rgba(255,255,255,0.45)]',
           dim: 'text-zinc-800/40 dark:text-zinc-600/20',
           borderActive: 'border-zinc-300/60 ring-2 ring-zinc-400/30 bg-zinc-500/5',
           borderInactive: 'border-zinc-800/60 hover:border-zinc-700 bg-zinc-950/40',
@@ -77,7 +77,7 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
     : 'bg-zinc-950 border-zinc-700/80 shadow-xl ring-2 ring-zinc-300';
 
   return (
-    <div className={`w-full relative rounded-2xl p-3 sm:p-4 backdrop-blur-md border ${containerClass}`}>
+    <div className={`w-full relative rounded-2xl p-3 sm:p-4 border ${containerClass}`}>
       {/* Scale header bar: TARE / LED dots / Status */}
       <div className="flex items-center justify-between pb-2 mb-2 border-b border-zinc-800/60 text-xs tracking-widest text-zinc-500 font-mono">
         <div className="flex items-center gap-1.5">
