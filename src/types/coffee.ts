@@ -71,7 +71,7 @@ export interface Brewer {
 
 export type DisplayField = 'coffee' | 'water';
 
-export type ThemeColor = 'amber' | 'cyan' | 'emerald' | 'white';
+export type ThemeColor = 'amber' | 'emerald' | 'white';
 
 export interface AppSettings {
   volumeUnit: VolumeUnit;

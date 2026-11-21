@@ -67,10 +67,6 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
         return darkMode
           ? 'text-amber-400 border-amber-500/50 bg-amber-500/10'
           : 'text-amber-800 border-amber-500 bg-amber-50';
-      case 'cyan':
-        return darkMode
-          ? 'text-cyan-400 border-cyan-500/50 bg-cyan-500/10'
-          : 'text-cyan-800 border-cyan-500 bg-cyan-50';
       case 'emerald':
         return darkMode
           ? 'text-emerald-400 border-emerald-500/50 bg-emerald-500/10'
@@ -149,7 +145,7 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
       <div className={`pt-2 border-t ${darkMode ? 'border-zinc-900' : 'border-zinc-200'}`}>
         <div className="flex items-center justify-between mb-2">
           <span className={`flex items-center gap-1.5 font-medium ${darkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
-            <Gauge className="w-4 h-4 text-cyan-500" />
+            <Gauge className="w-4 h-4 text-amber-500" />
             {t.grindSize}
           </span>
           <span className={`font-semibold text-[11px] capitalize ${darkMode ? 'text-zinc-300' : 'text-zinc-800'}`}>

@@ -228,8 +228,6 @@ export default function App() {
           className={`absolute -top-32 left-1/2 -translate-x-1/2 w-[550px] h-[550px] rounded-full blur-[140px] opacity-15 transition-colors duration-700 ${
             settings.themeColor === 'amber'
               ? 'bg-amber-500'
-              : settings.themeColor === 'cyan'
-              ? 'bg-cyan-500'
               : settings.themeColor === 'emerald'
               ? 'bg-emerald-500'
               : 'bg-zinc-200'
@@ -391,15 +389,15 @@ export default function App() {
             className={`py-2 px-1 rounded-xl font-mono text-xs font-bold transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer border ${
               currentBrewer.id === 'cold-brew'
                 ? settings.darkMode
-                  ? 'bg-zinc-900 text-cyan-400 border-cyan-500/40 shadow-sm'
-                  : 'bg-cyan-50 text-cyan-900 border-cyan-400/80 shadow-sm'
+                  ? 'bg-zinc-900 text-amber-400 border-amber-500/40 shadow-sm'
+                  : 'bg-amber-50 text-amber-900 border-amber-400/80 shadow-sm'
                 : settings.darkMode
                   ? 'text-zinc-400 hover:text-zinc-200 border-transparent hover:bg-zinc-900/40'
                   : 'text-zinc-600 hover:text-zinc-900 border-transparent hover:bg-zinc-100'
             }`}
           >
             <span className="flex items-center gap-1 truncate max-w-full">
-              <Snowflake className="w-3 h-3 text-cyan-500 flex-shrink-0" />
+              <Snowflake className="w-3 h-3 text-amber-500 flex-shrink-0" />
               <span>ColdBrew</span>
             </span>
             <span className="text-[10px] font-normal opacity-70">1:10</span>

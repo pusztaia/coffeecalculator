@@ -27,8 +27,6 @@ export const MokaPotCupSelector: React.FC<MokaPotCupSelectorProps> = ({
     switch (themeColor) {
       case 'amber':
         return 'bg-amber-500 text-zinc-950 font-bold shadow-lg shadow-amber-500/20';
-      case 'cyan':
-        return 'bg-cyan-500 text-zinc-950 font-bold shadow-lg shadow-cyan-500/20';
       case 'emerald':
         return 'bg-emerald-500 text-zinc-950 font-bold shadow-lg shadow-emerald-500/20';
       case 'white':
@@ -89,7 +87,7 @@ export const MokaPotCupSelector: React.FC<MokaPotCupSelectorProps> = ({
 
         <div className={`flex flex-col items-center border-x ${darkMode ? 'border-zinc-800/80' : 'border-zinc-200'}`}>
           <span className={`text-[11px] flex items-center gap-1 ${darkMode ? 'text-zinc-400' : 'text-zinc-500'}`}>
-            <Droplet className="w-3 h-3 text-cyan-500" />
+            <Droplet className="w-3 h-3 text-blue-500" />
             {t.boilerWater}
           </span>
           <span className={`text-sm font-bold mt-0.5 ${darkMode ? 'text-zinc-200' : 'text-zinc-900'}`}>

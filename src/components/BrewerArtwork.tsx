@@ -17,7 +17,6 @@ export const BrewerArtwork: React.FC<BrewerArtworkProps> = ({
   const getAccentColor = () => {
     switch (themeColor) {
       case 'amber': return '#f59e0b';
-      case 'cyan': return '#06b6d4';
       case 'emerald': return '#10b981';
       case 'white': return '#e2e8f0';
       default: return '#f59e0b';
@@ -209,10 +208,10 @@ export const BrewerArtwork: React.FC<BrewerArtworkProps> = ({
 
           {/* Subtle snowflake / chill icon in upper right corner */}
           <g opacity="0.85">
-            <line x1="100" y1="24" x2="100" y2="36" stroke="#06b6d4" strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="94" y1="30" x2="106" y2="30" stroke="#06b6d4" strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="96" y1="26" x2="104" y2="34" stroke="#06b6d4" strokeWidth="1.2" strokeLinecap="round" />
-            <line x1="96" y1="34" x2="104" y2="26" stroke="#06b6d4" strokeWidth="1.2" strokeLinecap="round" />
+            <line x1="100" y1="24" x2="100" y2="36" stroke={accent} strokeWidth="1.5" strokeLinecap="round" />
+            <line x1="94" y1="30" x2="106" y2="30" stroke={accent} strokeWidth="1.5" strokeLinecap="round" />
+            <line x1="96" y1="26" x2="104" y2="34" stroke={accent} strokeWidth="1.2" strokeLinecap="round" />
+            <line x1="96" y1="34" x2="104" y2="26" stroke={accent} strokeWidth="1.2" strokeLinecap="round" />
           </g>
         </svg>
       )}

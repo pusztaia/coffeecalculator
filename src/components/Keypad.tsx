@@ -37,10 +37,6 @@ export const Keypad: React.FC<KeypadProps> = ({
         return darkMode
           ? 'text-amber-400 border-amber-500/30 hover:bg-amber-500/10 active:bg-amber-500/20'
           : 'text-amber-800 border-amber-500/40 bg-amber-50 hover:bg-amber-100/80 active:bg-amber-200';
-      case 'cyan':
-        return darkMode
-          ? 'text-cyan-400 border-cyan-500/30 hover:bg-cyan-500/10 active:bg-cyan-500/20'
-          : 'text-cyan-800 border-cyan-500/40 bg-cyan-50 hover:bg-cyan-100/80 active:bg-cyan-200';
       case 'emerald':
         return darkMode
           ? 'text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/10 active:bg-emerald-500/20'

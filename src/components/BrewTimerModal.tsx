@@ -137,7 +137,6 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
   const getThemeText = () => {
     switch (themeColor) {
       case 'amber': return 'text-amber-400 drop-shadow-[0_0_15px_rgba(245,158,11,0.6)]';
-      case 'cyan': return 'text-cyan-400 drop-shadow-[0_0_15px_rgba(6,182,212,0.6)]';
       case 'emerald': return 'text-emerald-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.6)]';
       case 'white': default: return 'text-zinc-100 drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]';
     }
@@ -146,7 +145,6 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
   const getProgressBarClass = () => {
     switch (themeColor) {
       case 'amber': return 'bg-amber-500';
-      case 'cyan': return 'bg-cyan-500';
       case 'emerald': return 'bg-emerald-500';
       case 'white': default: return 'bg-zinc-100';
     }
@@ -255,7 +253,7 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
             </p>
 
             {currentStep.waterTarget && (
-              <div className="mt-1 flex items-center gap-1.5 text-xs font-mono font-medium text-cyan-400 bg-cyan-950/30 border border-cyan-900/50 p-2 rounded-lg">
+              <div className={`mt-1 flex items-center gap-1.5 text-xs font-mono font-medium p-2 rounded-lg ${D('text-blue-400 bg-blue-950/30 border border-blue-900/50', 'text-blue-700 bg-blue-50 border border-blue-200')}`}>
                 <span className="flex items-center gap-1.5"><Droplet className="w-3.5 h-3.5" aria-hidden="true" />{t.water}: {currentStep.waterTarget}g target</span>
               </div>
             )}

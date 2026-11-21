@@ -21,7 +21,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
   const colors: { id: ThemeColor; labelEn: string; labelHu: string; colorHex: string }[] = [
     { id: 'amber', labelEn: 'Amber Glow', labelHu: 'Borostyán Sárga', colorHex: '#f59e0b' },
-    { id: 'cyan', labelEn: 'Ice Cyan', labelHu: 'Jég Kék', colorHex: '#06b6d4' },
     { id: 'emerald', labelEn: 'Phosphor Green', labelHu: 'Foszfor Zöld', colorHex: '#10b981' },
     { id: 'white', labelEn: 'Pearl White', labelHu: 'Gyöngyház Fehér', colorHex: '#e2e8f0' },
   ];
@@ -48,7 +47,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         {/* Language Selection */}
         <div className="flex flex-col gap-2">
           <span className="text-xs font-mono font-medium text-zinc-600 dark:text-zinc-400 flex items-center gap-1.5">
-            <Globe className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+            <Globe className="w-4 h-4 text-amber-500" />
             Nyelv / Language
           </span>
           <div className="grid grid-cols-2 gap-2">
@@ -82,7 +81,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           <span className="text-xs font-mono font-medium text-zinc-600 dark:text-zinc-400">
             {t.theme}
           </span>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-3 gap-2">
             {colors.map((c) => {
               const isSelected = settings.themeColor === c.id;
               return (

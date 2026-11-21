@@ -42,15 +42,6 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
           badge: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
           accent: 'text-amber-400',
         };
-      case 'cyan':
-        return {
-          glow: 'text-cyan-400 drop-shadow-[0_0_12px_rgba(6,182,212,0.55)]',
-          dim: 'text-cyan-950/40 dark:text-cyan-500/20',
-          borderActive: 'border-cyan-500/60 ring-2 ring-cyan-500/30 bg-cyan-500/5',
-          borderInactive: 'border-zinc-800/60 hover:border-zinc-700 bg-zinc-950/40',
-          badge: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
-          accent: 'text-cyan-400',
-        };
       case 'emerald':
         return {
           glow: 'text-emerald-400 drop-shadow-[0_0_12px_rgba(16,185,129,0.55)]',
