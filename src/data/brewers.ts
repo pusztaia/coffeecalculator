@@ -1,7 +1,6 @@
 import type { Brewer, MokaPotSize } from '../types/coffee';
 
 export const TIMEMORE_C2_CLICKS = {
-  'extra-fine': { min: 8, max: 11, recommended: 10, descHu: 'Eszpresszó jellegű (8-11 klikk)', descEn: 'Espresso style (8-11 clicks)' },
   'fine': { min: 12, max: 15, recommended: 13, descHu: 'Kotyogós / Moka (13-14 klikk az ideális!)', descEn: 'Moka Pot sweet spot (13-14 clicks)' },
   'medium-fine': { min: 15, max: 18, recommended: 16, descHu: 'AeroPress standard (15-18 klikk)', descEn: 'AeroPress standard (15-18 clicks)' },
   'medium': { min: 18, max: 22, recommended: 20, descHu: 'Filter / V60 (19-21 klikk)', descEn: 'Pour over / V60 (19-21 clicks)' },
@@ -86,11 +85,11 @@ export const BREWERS: Brewer[] = [
       },
       {
         id: 'concentrate-aeropress',
-        nameEn: 'Espresso-Style Concentrate',
-        nameHu: 'Espresso Jellegű Koncentrátum',
-        creatorEn: 'Aerobie / Alan Adler',
+        nameEn: 'Intense Short Shot / Concentrate',
+        nameHu: 'Intenzív Sűrítmény / Koncentrátum',
+        creatorEn: 'Alan Adler (AeroPress Creator)',
         creatorHu: 'Alan Adler (AeroPress feltalálója)',
-        descEn: 'Short, intense shot (1:5 to 1:6 ratio). Perfect for Americanos, Lattes or Cappuccinos.',
+        descEn: 'Short, intense shot (1:5 to 1:6 ratio). Perfect for Americanos, Lattes or Iced Coffee.',
         descHu: 'Rövid, sűrű koncentrátum (1:5 - 1:6). Kiváló tejeskávéhoz, jegeskávéhoz vagy americanóhoz.',
         defaultRatio: 5.5,
         minRatio: 4,
@@ -106,7 +105,7 @@ export const BREWERS: Brewer[] = [
           { timeSec: 20, titleEn: 'Vigorous Stir', titleHu: 'Intenzív Keverés', descEn: 'Stir vigorously for 10 seconds to fully extract.', descHu: 'Keverd intenzíven 10 másodpercig az extrakcióért.' },
           { timeSec: 35, titleEn: 'Firm Press', titleHu: 'Határozott Lenyomás', descEn: 'Press firmly all the way down into your cup (~25s).', descHu: 'Nyomd le határozott mozdulattal (~25 mp).' },
         ],
-        tag: 'Espresso'
+        tag: 'Shot'
       }
     ]
   },
@@ -157,7 +156,7 @@ export const BREWERS: Brewer[] = [
     nameEn: 'Moka Pot / Kotyogós',
     nameHu: 'Kotyogós (Moka Pot)',
     category: 'stovetop',
-    subtitleEn: 'Iconic stovetop espresso-strength brewer',
+    subtitleEn: 'Iconic rich & bold stovetop brewer',
     subtitleHu: 'Klasszikus kotyogós intenzív, testes kávéélmény',
     defaultRatio: 8.5, // ~ 1:8.5 (e.g. 16g coffee to 140g water in 3-cup)
     minRatio: 6,
@@ -300,46 +299,6 @@ export const BREWERS: Brewer[] = [
           { timeSec: 480, titleEn: 'Insert Screen (Don\'t Compress)', titleHu: 'Szűrő Behelyezése', descEn: 'Place the plunger just under the liquid surface to act as a sieve. Pour gently!', descHu: 'Csak a folyadék tetejéig engedd a szűrőt, ne nyomd le a zaccig. Óvatosan töltsd ki!' },
         ],
         tag: 'Clean'
-      }
-    ]
-  },
-  {
-    id: 'espresso',
-    nameEn: 'Espresso (Machine)',
-    nameHu: 'Eszpresszó (Karos gép)',
-    category: 'espresso',
-    subtitleEn: 'High pressure 9-bar extraction with rich crema',
-    subtitleHu: '9 baros nagynyomású extrakció aranyló cremával',
-    defaultRatio: 2, // 1:2 (18g in -> 36g out)
-    minRatio: 1.5,
-    maxRatio: 3,
-    defaultCoffee: 18,
-    defaultWater: 36,
-    defaultGrind: 'extra-fine',
-    tempRangeC: [90, 94],
-    recipes: [
-      {
-        id: 'standard-espresso',
-        nameEn: 'Standard 1:2 Shot',
-        nameHu: 'Hagyományos 1:2 Arányú Dupla',
-        creatorEn: 'Specialty Coffee Standard',
-        creatorHu: 'Specialty Szabvány',
-        descEn: '18g dose to 36g yield in 25-30 seconds. Balanced sweetness and acidity.',
-        descHu: '18g kávéból 36g ital 25-30 másodperc alatt. Kiegyensúlyozott édesség és testesség.',
-        defaultRatio: 2,
-        minRatio: 1.5,
-        maxRatio: 2.5,
-        defaultCoffee: 18,
-        defaultWater: 36,
-        recommendedTempC: 93,
-        grindSize: 'extra-fine',
-        brewTimeSec: 30,
-        steps: [
-          { timeSec: 0, titleEn: 'Prep & Tamp', titleHu: 'Előkészítés és Tömörítés', descEn: 'Distribute 18g evenly in basket, tamp level with consistent pressure.', descHu: 'Oszlasd el egyenletesen a 18g kávét a kosárban, tömörítsd vízszintesen.' },
-          { timeSec: 5, titleEn: 'Start Pump', titleHu: 'Szivattyú Indítása', descEn: 'Lock portafilter into grouphead and start extraction immediately with scale under cup.', descHu: 'Tedd be a kart, azonnal indítsd a csapolást, a mérleg legyen a csésze alatt.' },
-          { timeSec: 28, titleEn: 'Stop at 36g Yield', titleHu: 'Leállítás 36g-nál', descEn: 'Stop flow right as scale reads 36g (approx 26-30s total).', descHu: 'Állítsd le pontosan 36g-nál (kb. 26-30 másodpercnél).' },
-        ],
-        tag: 'Double'
       }
     ]
   }

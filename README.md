@@ -2,7 +2,7 @@
 
 Egy professzionális, digitális mérleg felületű kávéarány-kalkulátor és lépésről lépésre időzítő, amelyet a **Coffee Calculator: Brew Ratios** (iOS app), a **calculate.coffee** és a **Coffee Bros** aránykalkulátorok legjobb funkciói ihlettek.
 
-Kifejezetten az **AeroPress** és a **Kotyogós (Moka Pot / Bialetti)** szerelmeseinek tervezve, de támogatja a **V60, French Press, Eszpresszó és Chemex** módszereket is.
+Kifejezetten az **AeroPress** és a **Kotyogós (Moka Pot / Bialetti)** szerelmeseinek tervezve, de támogatja a **V60, French Press és Chemex** filteres módszereket is.
 
 ---
 

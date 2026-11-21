@@ -4,7 +4,6 @@ export type BrewerId =
   | 'moka-pot' 
   | 'v60' 
   | 'french-press' 
-  | 'espresso'
   | 'chemex'
   | 'cold-brew';
 
@@ -14,7 +13,7 @@ export type Strength = 'mild' | 'balanced' | 'strong' | 'concentrate';
 
 export type RoastLevel = 'light' | 'medium' | 'dark';
 
-export type GrindSize = 'extra-fine' | 'fine' | 'medium-fine' | 'medium' | 'medium-coarse' | 'coarse';
+export type GrindSize = 'fine' | 'medium-fine' | 'medium' | 'medium-coarse' | 'coarse';
 
 export interface MokaPotSize {
   cups: number;
@@ -57,7 +56,7 @@ export interface Brewer {
   id: BrewerId;
   nameEn: string;
   nameHu: string;
-  category: 'immersion' | 'stovetop' | 'pourover' | 'espresso' | 'cold';
+  category: 'immersion' | 'stovetop' | 'pourover' | 'cold';
   subtitleEn: string;
   subtitleHu: string;
   defaultRatio: number;

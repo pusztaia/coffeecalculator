@@ -182,24 +182,7 @@ export const BrewerArtwork: React.FC<BrewerArtworkProps> = ({
         </svg>
       )}
 
-      {brewerId === 'espresso' && (
-        <svg viewBox="0 0 120 140" width={size} height={size} fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Portafilter Body */}
-          <path d="M36 40H84L80 70C80 74 76 78 70 78H50C44 78 40 74 40 70L36 40Z" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="2.5" className="text-zinc-700 dark:text-zinc-300" />
-          {/* Ears / Wings */}
-          <path d="M30 44H36M84 44H90" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-zinc-800 dark:text-zinc-200" />
-          {/* Spout */}
-          <path d="M54 78V90M66 78V90" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-zinc-800 dark:text-zinc-300" />
-          {/* Espresso stream */}
-          <line x1="54" y1="92" x2="54" y2="108" stroke={accent} strokeWidth="2.5" strokeLinecap="round" />
-          <line x1="66" y1="92" x2="66" y2="108" stroke={accent} strokeWidth="2.5" strokeLinecap="round" />
-          {/* Espresso cup with crema */}
-          <path d="M42 110H78V126C78 130 74 134 70 134H50C46 134 42 130 42 126V110Z" stroke="currentColor" strokeWidth="2" className="text-zinc-600 dark:text-zinc-400" />
-          <ellipse cx="60" cy="112" rx="14" ry="3" fill={accent} opacity="0.8" />
-        </svg>
-      )}
-
-      {brewerId !== 'aeropress' && brewerId !== 'aeropress-inverted' && brewerId !== 'moka-pot' && brewerId !== 'v60' && brewerId !== 'french-press' && brewerId !== 'espresso' && (
+      {brewerId !== 'aeropress' && brewerId !== 'aeropress-inverted' && brewerId !== 'moka-pot' && brewerId !== 'v60' && brewerId !== 'french-press' && (
         <svg viewBox="0 0 120 140" width={size} height={size} fill="none" xmlns="http://www.w3.org/2000/svg">
           {/* Generic coffee beaker */}
           <rect x="36" y="32" width="48" height="88" rx="6" stroke="currentColor" strokeWidth="2.5" className="text-zinc-600 dark:text-zinc-400" />

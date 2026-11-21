@@ -49,7 +49,6 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
   };
 
   const grindSizes: { id: GrindSize; label: string; dots: number }[] = [
-    { id: 'extra-fine', label: t.extraFine, dots: 1 },
     { id: 'fine', label: t.fine, dots: 2 },
     { id: 'medium-fine', label: t.mediumFine, dots: 3 },
     { id: 'medium', label: t.medium, dots: 4 },
@@ -154,7 +153,7 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
         </div>
 
         {/* Visual particle size indicator */}
-        <div className="grid grid-cols-6 gap-1">
+        <div className="grid grid-cols-5 gap-1.5">
           {grindSizes.map((item) => {
             const isSelected = grindSize === item.id;
             return (
@@ -181,7 +180,7 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
                   />
                 </div>
                 <span className="text-[11px] font-mono leading-none truncate max-w-full text-center">
-                  {item.id === 'extra-fine' ? 'X-Fine' : item.id === 'medium-fine' ? 'M-Fine' : item.id === 'medium-coarse' ? 'M-Coarse' : item.id}
+                  {item.id === 'medium-fine' ? 'M-Fine' : item.id === 'medium-coarse' ? 'M-Coarse' : item.id}
                 </span>
               </button>
             );

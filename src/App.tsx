@@ -15,7 +15,6 @@ import { Settings, Play, ChevronDown, Sparkles, Volume2, VolumeX, Flame, Sun, Mo
 
 const STRENGTH_RATIOS = {
   'moka-pot': { mild: 10, balanced: 8.5, strong: 7, concentrate: 6 },
-  espresso: { mild: 2.5, balanced: 2, strong: 1.6, concentrate: 1.3 },
   filter: { mild: 17.5, balanced: 15.5, strong: 13.5, concentrate: 8 },
 } satisfies Record<string, Record<Strength, number>>;
 
@@ -60,7 +59,7 @@ export default function App() {
     document.documentElement.classList.toggle('dark', settings.darkMode);
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', settings.darkMode ? '#09090b' : '#f4f4f5');
   }, [settings.darkMode]);
-  const ratioKind = currentBrewer.id === 'moka-pot' || currentBrewer.id === 'espresso' ? currentBrewer.id : 'filter';
+  const ratioKind = currentBrewer.id === 'moka-pot' ? 'moka-pot' : 'filter';
 
   // Helper to recompute dependent field
   const computeDependent = useCallback(
