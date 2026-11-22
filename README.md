@@ -63,7 +63,11 @@ Kifejezetten az **AeroPress**, a **Kotyogós (Moka Pot / Bialetti)** és a **Col
 
 ---
 
-## 🚀 Futtatás
+---
+
+## 🎨 Design
+
+Minimalista (Swiss) stílus, narancs (#EA580C) hangsúlyszín sötét témán, Outfit/Work Sans tipográfia, 4.5:1 kontraszt, `prefers-reduced-motion` tiszteletben tartva.
 
 Fejlesztői szerver indítása:
 ```bash
