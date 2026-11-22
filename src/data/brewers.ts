@@ -1,11 +1,193 @@
-import type { Brewer, MokaPotSize } from '../types/coffee';
+import type { Brewer, MokaPotSize, RoastLevel, GrindSize } from '../types/coffee';
 
-export const TIMEMORE_C2_CLICKS = {
-  'fine': { min: 12, max: 15, recommended: 13, descHu: 'Kotyogós / Moka (13-14 klikk az ideális!)', descEn: 'Moka Pot sweet spot (13-14 clicks)' },
-  'medium-fine': { min: 15, max: 18, recommended: 16, descHu: 'AeroPress standard (15-18 klikk)', descEn: 'AeroPress standard (15-18 clicks)' },
-  'medium': { min: 18, max: 22, recommended: 20, descHu: 'Filter / V60 (19-21 klikk)', descEn: 'Pour over / V60 (19-21 clicks)' },
-  'medium-coarse': { min: 22, max: 25, recommended: 24, descHu: 'Chemex / Cold Brew (23-25 klikk)', descEn: 'Chemex / Cold brew (23-25 clicks)' },
-  'coarse': { min: 25, max: 28, recommended: 26, descHu: 'French Press (25-28 klikk)', descEn: 'French Press (25-28 clicks)' },
+export interface GrinderClickRecommendation {
+  min: number;
+  max: number;
+  recommended: number;
+  descHu: string;
+  descEn: string;
+}
+
+export const TIMEMORE_C2_CLICKS: Record<GrindSize, GrinderClickRecommendation> = {
+  'fine': {
+    min: 11,
+    max: 15,
+    recommended: 13,
+    descHu: 'Kotyogós / Moka (C2 = C2 Max: 11 klikk világos, 12-14 klikk közepes)',
+    descEn: 'Moka Pot (C2 = C2 Max: 11 clicks light, 12-14 clicks medium)'
+  },
+  'medium-fine': {
+    min: 11,
+    max: 18,
+    recommended: 13,
+    descHu: 'AeroPress (C2 = C2 Max: 11 klikk világos, 12-14 klikk közepes)',
+    descEn: 'AeroPress (C2 = C2 Max: 11 clicks light, 12-14 clicks medium)'
+  },
+  'medium': {
+    min: 13,
+    max: 22,
+    recommended: 18,
+    descHu: 'Filter / V60 (13-22 klikk)',
+    descEn: 'Pour over / V60 (13-22 clicks)'
+  },
+  'medium-coarse': {
+    min: 20,
+    max: 26,
+    recommended: 24,
+    descHu: 'Chemex / Áztatás (20-26 klikk)',
+    descEn: 'Chemex / Steep (20-26 clicks)'
+  },
+  'coarse': {
+    min: 22,
+    max: 30,
+    recommended: 26,
+    descHu: 'French Press & Cold Brew (22-30 klikk)',
+    descEn: 'French Press & Cold Brew (22-30 clicks)'
+  },
+};
+
+export const getC2Clicks = (grindSize: GrindSize, roastLevel?: RoastLevel): GrinderClickRecommendation => {
+  const roast = roastLevel || 'medium';
+
+  switch (grindSize) {
+    case 'fine':
+      if (roast === 'light') {
+        return {
+          min: 11,
+          max: 11,
+          recommended: 11,
+          descHu: 'Timemore C2 / C2 Max: 11 klikk világos pörköléshez (Kotyogós / Fine)',
+          descEn: 'Timemore C2 / C2 Max: 11 clicks for light roast (Moka / Fine)',
+        };
+      }
+      if (roast === 'medium') {
+        return {
+          min: 12,
+          max: 14,
+          recommended: 13,
+          descHu: 'Timemore C2 / C2 Max: 12-14 klikk közepes pörköléshez (Kotyogós / Fine)',
+          descEn: 'Timemore C2 / C2 Max: 12-14 clicks for medium roast (Moka / Fine)',
+        };
+      }
+      return {
+        min: 14,
+        max: 15,
+        recommended: 14,
+        descHu: 'Timemore C2 / C2 Max: 14-15 klikk sötét pörköléshez (Kotyogós / Fine)',
+        descEn: 'Timemore C2 / C2 Max: 14-15 clicks for dark roast (Moka / Fine)',
+      };
+
+    case 'medium-fine':
+      if (roast === 'light') {
+        return {
+          min: 11,
+          max: 12,
+          recommended: 11,
+          descHu: 'Timemore C2 / C2 Max: 11 klikk világos pörköléshez (AeroPress)',
+          descEn: 'Timemore C2 / C2 Max: 11 clicks for light roast (AeroPress)',
+        };
+      }
+      if (roast === 'medium') {
+        return {
+          min: 12,
+          max: 14,
+          recommended: 13,
+          descHu: 'Timemore C2 / C2 Max: 12-14 klikk közepes pörköléshez (AeroPress)',
+          descEn: 'Timemore C2 / C2 Max: 12-14 clicks for medium roast (AeroPress)',
+        };
+      }
+      return {
+        min: 15,
+        max: 17,
+        recommended: 16,
+        descHu: 'Timemore C2 / C2 Max: 15-17 klikk sötét pörköléshez (AeroPress)',
+        descEn: 'Timemore C2 / C2 Max: 15-17 clicks for dark roast (AeroPress)',
+      };
+
+    case 'medium':
+      if (roast === 'light') {
+        return {
+          min: 13,
+          max: 16,
+          recommended: 15,
+          descHu: 'Timemore C2 / C2 Max: 14-16 klikk világos pörköléshez (Filter / V60)',
+          descEn: 'Timemore C2 / C2 Max: 14-16 clicks for light roast (Filter / V60)',
+        };
+      }
+      if (roast === 'medium') {
+        return {
+          min: 16,
+          max: 20,
+          recommended: 18,
+          descHu: 'Timemore C2 / C2 Max: 17-19 klikk közepes pörköléshez (Filter / V60)',
+          descEn: 'Timemore C2 / C2 Max: 17-19 clicks for medium roast (Filter / V60)',
+        };
+      }
+      return {
+        min: 20,
+        max: 22,
+        recommended: 21,
+        descHu: 'Timemore C2 / C2 Max: 20-22 klikk sötét pörköléshez (Filter / V60)',
+        descEn: 'Timemore C2 / C2 Max: 20-22 clicks for dark roast (Filter / V60)',
+      };
+
+    case 'medium-coarse':
+      if (roast === 'light') {
+        return {
+          min: 20,
+          max: 23,
+          recommended: 21,
+          descHu: 'Timemore C2 / C2 Max: 20-23 klikk világos pörköléshez (Chemex)',
+          descEn: 'Timemore C2 / C2 Max: 20-23 clicks for light roast (Chemex)',
+        };
+      }
+      if (roast === 'medium') {
+        return {
+          min: 23,
+          max: 25,
+          recommended: 24,
+          descHu: 'Timemore C2 / C2 Max: 23-25 klikk közepes pörköléshez (Chemex)',
+          descEn: 'Timemore C2 / C2 Max: 23-25 clicks for medium roast (Chemex)',
+        };
+      }
+      return {
+        min: 25,
+        max: 27,
+        recommended: 26,
+        descHu: 'Timemore C2 / C2 Max: 25-27 klikk sötét pörköléshez (Chemex)',
+        descEn: 'Timemore C2 / C2 Max: 25-27 clicks for dark roast (Chemex)',
+      };
+
+    case 'coarse':
+      if (roast === 'light') {
+        return {
+          min: 22,
+          max: 26,
+          recommended: 24,
+          descHu: 'Timemore C2 / C2 Max: 23-25 klikk világos pörköléshez (French / Cold)',
+          descEn: 'Timemore C2 / C2 Max: 23-25 clicks for light roast (French / Cold)',
+        };
+      }
+      if (roast === 'medium') {
+        return {
+          min: 25,
+          max: 28,
+          recommended: 27,
+          descHu: 'Timemore C2 / C2 Max: 26-28 klikk közepes pörköléshez (French / Cold)',
+          descEn: 'Timemore C2 / C2 Max: 26-28 clicks for medium roast (French / Cold)',
+        };
+      }
+      return {
+        min: 28,
+        max: 30,
+        recommended: 29,
+        descHu: 'Timemore C2 / C2 Max: 28-30 klikk sötét pörköléshez (French / Cold)',
+        descEn: 'Timemore C2 / C2 Max: 28-30 clicks for dark roast (French / Cold)',
+      };
+
+    default:
+      return TIMEMORE_C2_CLICKS[grindSize];
+  }
 };
 
 export const MOKA_POT_SIZES: MokaPotSize[] = [
@@ -39,8 +221,8 @@ export const BREWERS: Brewer[] = [
         nameHu: 'James Hoffmann Mesterfőzete',
         creatorEn: 'James Hoffmann (World Barista Champion)',
         creatorHu: 'James Hoffmann (Világbajnok barista)',
-        descEn: 'Low temperature (80-85°C), fine-medium grind, no bloom stir needed, gentle 30s press.',
-        descHu: 'Alacsonyabb hőfok (80-85°C), közepesen finom őrlemény, 2 perc áztatás, kíméletes lassú lenyomás.',
+        descEn: 'Low temperature (80-85°C), Timemore C2: 11 clicks for light roast, 12-14 clicks for medium roast (C2 = C2 Max), gentle 30s press.',
+        descHu: 'Alacsonyabb hőfok (80-85°C), Timemore C2: 11 klikk világos, 12-14 klikk közepes pörköléshez (C2 = C2 Max), kíméletes lassú lenyomás.',
         defaultRatio: 18, // 11g to 200g water (approx 1:18.2)
         minRatio: 14,
         maxRatio: 20,
@@ -50,7 +232,7 @@ export const BREWERS: Brewer[] = [
         grindSize: 'medium-fine',
         brewTimeSec: 150,
         steps: [
-          { timeSec: 0, titleEn: 'Rinse & Prep', titleHu: 'Öblítés és Előkészület', descEn: 'Rinse paper filter into cap. Place AeroPress on mug, add 11g coffee.', descHu: 'Nedvesítsd be a szűrőpapírt, tedd a bögrére, önts bele 11g kávét.' },
+          { timeSec: 0, titleEn: 'Rinse & Prep', titleHu: 'Öblítés és Előkészület', descEn: 'Rinse paper filter into cap. Place AeroPress on mug, add 11g coffee (Timemore C2: 11 clicks for light roast, 12-14 clicks for medium roast; C2 = C2 Max).', descHu: 'Nedvesítsd be a szűrőpapírt, tedd a bögrére, önts bele 11g kávét (Timemore C2: 11 klikk világos, 12-14 klikk közepes pörköléshez; C2 = C2 Max).' },
           { timeSec: 10, titleEn: 'Pour Water', titleHu: 'Víz Felöntése', descEn: 'Pour 200g water at ~85°C, ensuring all grounds are saturated.', descHu: 'Önts rá 200g 85°C körüli vizet, hogy minden kávé átnedvesedjen.', waterTarget: 200 },
           { timeSec: 25, titleEn: 'Insert Plunger (Seal)', titleHu: 'Dugattyú behelyezése (Vákuum)', descEn: 'Insert plunger just a few mm to stop coffee dripping through.', descHu: 'Helyezd be a dugattyút pár mm mélyen, hogy a vákuum megfogja a csepegést.' },
           { timeSec: 120, titleEn: 'Gentle Swirl', titleHu: 'Gyengéd Körözés', descEn: 'At 2:00, gently swirl the AeroPress and wait 30s for grounds to settle.', descHu: '2 percnél óvatosan mozgasd körbe az eszközt, hagyd leülepedni 30 mp-ig.' },
@@ -184,7 +366,7 @@ export const BREWERS: Brewer[] = [
         brewTimeSec: 180,
         steps: [
           { timeSec: 0, titleEn: 'Preheat Boiler Water', titleHu: 'Víz Felforralása', descEn: 'Boil water in a kettle. Fill moka base up to safety valve.', descHu: 'Forralj vizet vízforralóban. Töltsd a biztonsági szelep alá a tartályba.', waterTarget: 140 },
-          { timeSec: 30, titleEn: 'Fill Funnel Basket', titleHu: 'Szűrőkosár Töltése', descEn: 'Fill basket with fine/medium-fine coffee. Level flat with finger — DO NOT TAMP!', descHu: 'Töltsd meg a kosarat őrleménnyel. Simítsd el egyenesre — NE tömörítsd/tampereld!' },
+          { timeSec: 30, titleEn: 'Fill Funnel Basket', titleHu: 'Szűrőkosár Töltése', descEn: 'Fill basket with fine coffee (Timemore C2: 11 clicks for light roast, 12-14 clicks for medium roast). Level flat with finger — DO NOT TAMP!', descHu: 'Töltsd meg a kosarat finom őrleménnyel (Timemore C2: 11 klikk világos pörköléshez, 12-14 klikk közepes pörköléshez). Simítsd el egyenesre — NE tömörítsd/tampereld!' },
           { timeSec: 60, titleEn: 'Assemble Safely', titleHu: 'Összeszerelés Konyharuhával', descEn: 'Use a towel (base is hot!) to screw the upper chamber tightly.', descHu: 'Használj konyharuhát a forró alsó részhez, és szorosan csavard rá a felsőt.' },
           { timeSec: 90, titleEn: 'Low Heat Extraction', titleHu: 'Kíméletes Melegítés', descEn: 'Place on low/medium-low heat with lid open. Watch the spout.', descHu: 'Tedd alacsony lángra nyitott fedéllel. Figyeld a kifolyócsövet.' },
           { timeSec: 150, titleEn: 'Golden Flow to Crema', titleHu: 'Krémes Folyás', descEn: 'Coffee should flow rich and dark, gradually turning honey-colored.', descHu: 'A kávé sötét, szirupos sugárban indul, majd mézszínűvé válik.' },
@@ -210,7 +392,7 @@ export const BREWERS: Brewer[] = [
         brewTimeSec: 240,
         steps: [
           { timeSec: 0, titleEn: 'Cold Water to Valve', titleHu: 'Hideg Víz a Szelep Alá', descEn: 'Fill boiler with fresh cold filtered water just below the brass valve.', descHu: 'Tölts hideg szűrt vizet a réz biztonsági szelep alsó pereméig.', waterTarget: 145 },
-          { timeSec: 20, titleEn: 'Heaping Coffee Basket', titleHu: 'Laza Kávékúp a Kosárba', descEn: 'Fill the funnel loosely, tap sides gently to settle.', descHu: 'Töltsd meg lazán a kosarat, finoman kocogtasd meg az oldalát.' },
+          { timeSec: 20, titleEn: 'Heaping Coffee Basket', titleHu: 'Laza Kávékúp a Kosárba', descEn: 'Fill the funnel loosely (Timemore C2: 11 clicks for light roast, 12-14 clicks for medium roast), tap sides gently to settle.', descHu: 'Töltsd meg lazán a kosarat (Timemore C2: 11 klikk világos pörköléshez, 12-14 klikk közepes pörköléshez), finoman kocogtasd meg az oldalát.' },
           { timeSec: 40, titleEn: 'Screw Tight', titleHu: 'Szoros Összetekerés', descEn: 'Screw top and bottom together firmly to ensure airtight pressure.', descHu: 'Teker össze szorosan, hogy a gumi megfelelően tömítsen.' },
           { timeSec: 60, titleEn: 'Medium-Low Stovetop', titleHu: 'Közepes Tűzhely', descEn: 'Put on heat. Keep flame within the base diameter.', descHu: 'Helyezd a tűzhelyre, a láng ne érjen túl az alján.' },
           { timeSec: 210, titleEn: 'Listen for Gurgle', titleHu: 'Kotyogás Figyelése', descEn: 'When the classic gurgle sound starts, remove from flame immediately.', descHu: 'Amikor meghallod a klasszikus kotyogó hangot, azonnal zárd el a lángot.' },

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { RoastLevel, GrindSize, ThemeColor } from '../types/coffee';
 import { TRANSLATIONS } from '../data/translations';
-import { TIMEMORE_C2_CLICKS } from '../data/brewers';
+import { getC2Clicks } from '../data/brewers';
 import { Thermometer, Gauge, Disc3, Minus, Plus, AlertTriangle } from 'lucide-react';
 import { sounds } from '../utils/audio';
 
@@ -27,15 +27,12 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
   lang,
 }) => {
   const t = TRANSLATIONS[lang];
-  const c2Data = TIMEMORE_C2_CLICKS[grindSize];
+  const c2Data = getC2Clicks(grindSize, roastLevel);
+  const currentKey = `${grindSize}-${roastLevel}`;
 
   // User's custom click offset if they fine-tune their Timemore C2
-  const [customClicks, setCustomClicks] = useState<number>(c2Data.recommended);
-
-  // When grind size changes, reset to recommended
-  React.useEffect(() => {
-    setCustomClicks(c2Data.recommended);
-  }, [grindSize, c2Data.recommended]);
+  const [userClicks, setUserClicks] = useState<{ key: string; clicks: number } | null>(null);
+  const customClicks = userClicks?.key === currentKey ? userClicks.clicks : c2Data.recommended;
 
   // Temperatures based on roast or cold brew
   const getTempDisplay = (roast: RoastLevel) => {
@@ -85,7 +82,10 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
 
   const handleAdjustClick = (delta: number) => {
     sounds.playKeyClick();
-    setCustomClicks((prev) => Math.max(8, Math.min(32, prev + delta)));
+    setUserClicks({
+      key: currentKey,
+      clicks: Math.max(6, Math.min(30, customClicks + delta)),
+    });
   };
 
   return (
@@ -134,6 +134,9 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
                       ? t.mediumRoast
                       : t.darkRoast}
                   </span>
+                </div>
+                <div className="text-[10px] opacity-75 font-mono mt-0.5">
+                  {getC2Clicks(grindSize, level).recommended} {t.clicks}
                 </div>
               </button>
             );
@@ -195,6 +198,7 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
           <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-500">
             <Disc3 className="w-4 h-4 animate-[spin_6s_linear_infinite]" />
             <span>{t.grinderC2Max}</span>
+            <span className="text-[10px] font-normal opacity-70">(C2 = C2 Max)</span>
           </div>
           <span className={`text-[11px] ${darkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
             {lang === 'hu' ? c2Data.descHu : c2Data.descEn}
@@ -211,7 +215,7 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
                 {customClicks}
               </span>
               <span className={`text-xs ${darkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
-                {t.clicks} (ajánlott: {c2Data.min}–{c2Data.max})
+                {t.clicks} ({t.recommended}: {c2Data.min === c2Data.max ? c2Data.recommended : `${c2Data.min}–${c2Data.max}`})
               </span>
             </div>
           </div>
@@ -242,18 +246,82 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
           </div>
         </div>
 
-        {/* Visual Clicks Position Slider Track */}
+        {/* Quick Roast & Clicks Reference Guide for Current Grind Size */}
+        {(() => {
+          const lightData = getC2Clicks(grindSize, 'light');
+          const mediumData = getC2Clicks(grindSize, 'medium');
+          const darkData = getC2Clicks(grindSize, 'dark');
+
+          const lightLabel = lightData.min === lightData.max ? `${lightData.recommended}` : `${lightData.min}–${lightData.max}`;
+          const mediumLabel = mediumData.min === mediumData.max ? `${mediumData.recommended}` : `${mediumData.min}–${mediumData.max}`;
+          const darkLabel = darkData.min === darkData.max ? `${darkData.recommended}` : `${darkData.min}–${darkData.max}`;
+
+          return (
+            <div className={`flex flex-wrap items-center gap-1.5 text-[10px] p-2 rounded-lg border ${
+              darkMode ? 'bg-zinc-900/80 border-zinc-800 text-zinc-300' : 'bg-zinc-100 border-zinc-200 text-zinc-700'
+            }`}>
+              <span className="font-semibold text-amber-500">Timemore C2 / C2 Max:</span>
+              <button
+                type="button"
+                onClick={() => {
+                  sounds.playKeyClick();
+                  onSelectRoast('light');
+                }}
+                className={`px-1.5 py-0.5 rounded transition-all cursor-pointer ${
+                  roastLevel === 'light'
+                    ? 'bg-amber-500/20 text-amber-500 dark:text-amber-400 font-bold border border-amber-500/40'
+                    : 'opacity-70 hover:opacity-100'
+                }`}
+              >
+                {lightLabel} {t.clicks} ({t.lightRoast})
+              </button>
+              <span>•</span>
+              <button
+                type="button"
+                onClick={() => {
+                  sounds.playKeyClick();
+                  onSelectRoast('medium');
+                }}
+                className={`px-1.5 py-0.5 rounded transition-all cursor-pointer ${
+                  roastLevel === 'medium'
+                    ? 'bg-amber-500/20 text-amber-500 dark:text-amber-400 font-bold border border-amber-500/40'
+                    : 'opacity-70 hover:opacity-100'
+                }`}
+              >
+                {mediumLabel} {t.clicks} ({t.mediumRoast})
+              </button>
+              <span>•</span>
+              <button
+                type="button"
+                onClick={() => {
+                  sounds.playKeyClick();
+                  onSelectRoast('dark');
+                }}
+                className={`px-1.5 py-0.5 rounded transition-all cursor-pointer ${
+                  roastLevel === 'dark'
+                    ? 'bg-amber-500/20 text-amber-500 dark:text-amber-400 font-bold border border-amber-500/40'
+                    : 'opacity-70 hover:opacity-100'
+                }`}
+              >
+                {darkLabel} {t.clicks} ({t.darkRoast})
+              </button>
+            </div>
+          );
+        })()}
+
+        {/* Visual Clicks Position Slider Track (Honest Coffee Guide: 6 to 30 clicks) */}
         <div className="px-1 pt-1">
           <div className="flex items-center justify-between text-[9px] font-mono opacity-60 mb-1">
-            <span>8 (Fine)</span>
-            <span>16 (AeroPress)</span>
-            <span>24 (Filter)</span>
-            <span>28 (Cold)</span>
+            <span>6 (Min)</span>
+            <span>11 (Light)</span>
+            <span>13 (Medium)</span>
+            <span>18 (V60)</span>
+            <span>30 (Max)</span>
           </div>
           <div className="w-full bg-zinc-700/30 rounded-full h-1.5 relative overflow-hidden">
             <div
               className="h-full bg-amber-500 rounded-full transition-all duration-200"
-              style={{ width: `${Math.min(100, Math.max(0, ((customClicks - 8) / 22) * 100))}%` }}
+              style={{ width: `${Math.min(100, Math.max(0, ((customClicks - 6) / 24) * 100))}%` }}
             />
           </div>
         </div>
