@@ -8,186 +8,164 @@ export interface GrinderClickRecommendation {
   descEn: string;
 }
 
+export interface HonestCoffeeMethod {
+  id: string;
+  nameEn: string;
+  nameHu: string;
+  min: number;
+  max: number;
+}
+
+export const HONEST_COFFEE_METHODS: HonestCoffeeMethod[] = [
+  { id: 'turkish', nameEn: 'Turkish', nameHu: 'Török kávé', min: 2, max: 6 },
+  { id: 'espresso', nameEn: 'Espresso', nameHu: 'Eszpresszó', min: 6, max: 12 },
+  { id: 'v60', nameEn: 'V60', nameHu: 'Hario V60', min: 13, max: 22 },
+  { id: 'aeropress', nameEn: 'Aeropress', nameHu: 'AeroPress', min: 11, max: 30 },
+  { id: 'moka-pot', nameEn: 'Moka Pot', nameHu: 'Kotyogós (Moka Pot)', min: 12, max: 20 },
+  { id: 'pour-over', nameEn: 'Pour Over', nameHu: 'Pour Over', min: 13, max: 29 },
+  { id: 'siphon', nameEn: 'Siphon', nameHu: 'Szifon', min: 12, max: 25 },
+  { id: 'filter-machine', nameEn: 'Filter Coffee Machine', nameHu: 'Filter kávéfőző gép', min: 10, max: 28 },
+  { id: 'french-press', nameEn: 'French Press', nameHu: 'French Press', min: 22, max: 30 },
+  { id: 'cupping', nameEn: 'Cupping', nameHu: 'Cupping (Kóstolás)', min: 15, max: 26 },
+  { id: 'cold-brew', nameEn: 'Cold Brew', nameHu: 'Cold Brew', min: 26, max: 30 },
+  { id: 'cold-drip', nameEn: 'Cold Drip', nameHu: 'Cold Drip', min: 26, max: 30 },
+  { id: 'steep-release', nameEn: 'Steep-and-release', nameHu: 'Steep-and-release', min: 15, max: 26 },
+];
+
+export const calculateThirds = (min: number, max: number, roast: RoastLevel = 'medium') => {
+  const n = max - min + 1;
+  const p1 = Math.round(n / 3);
+  const p2 = Math.round((2 * n) / 3);
+
+  const lightMin = min;
+  const lightMax = min + p1 - 1;
+
+  const mediumMin = lightMax + 1;
+  const mediumMax = min + p2 - 1;
+
+  const darkMin = Math.max(mediumMax + 1, min + p2);
+  const darkMax = max;
+
+  if (roast === 'light') {
+    return {
+      min: lightMin,
+      max: lightMax,
+      recommended: Math.round((lightMin + lightMax) / 2),
+    };
+  }
+  if (roast === 'medium') {
+    return {
+      min: mediumMin,
+      max: mediumMax,
+      recommended: Math.round((mediumMin + mediumMax) / 2),
+    };
+  }
+  return {
+    min: darkMin,
+    max: darkMax,
+    recommended: Math.round((darkMin + darkMax) / 2),
+  };
+};
+
 export const TIMEMORE_C2_CLICKS: Record<GrindSize, GrinderClickRecommendation> = {
   'fine': {
-    min: 11,
-    max: 15,
-    recommended: 13,
-    descHu: 'Kotyogós / Moka (C2: 11 klikk világos, 12-14 klikk közepes)',
-    descEn: 'Moka Pot (C2: 11 clicks light, 12-14 clicks medium)'
+    min: 12,
+    max: 20,
+    recommended: 16,
+    descHu: 'Moka Pot / Kotyogós (12-20 klikk)',
+    descEn: 'Moka Pot (12-20 clicks)'
   },
   'medium-fine': {
     min: 11,
-    max: 18,
-    recommended: 13,
-    descHu: 'AeroPress (C2: 11 klikk világos, 12-14 klikk közepes)',
-    descEn: 'AeroPress (C2: 11 clicks light, 12-14 clicks medium)'
+    max: 30,
+    recommended: 20,
+    descHu: 'AeroPress (11-30 klikk)',
+    descEn: 'AeroPress (11-30 clicks)'
   },
   'medium': {
     min: 13,
     max: 22,
     recommended: 18,
-    descHu: 'Filter / V60 (13-22 klikk)',
-    descEn: 'Pour over / V60 (13-22 clicks)'
+    descHu: 'V60 (13-22 klikk)',
+    descEn: 'V60 (13-22 clicks)'
   },
   'medium-coarse': {
-    min: 20,
-    max: 26,
-    recommended: 24,
-    descHu: 'Chemex / Áztatás (20-26 klikk)',
-    descEn: 'Chemex / Steep (20-26 clicks)'
+    min: 13,
+    max: 29,
+    recommended: 21,
+    descHu: 'Pour Over / Chemex (13-29 klikk)',
+    descEn: 'Pour Over / Chemex (13-29 clicks)'
   },
   'coarse': {
     min: 22,
     max: 30,
     recommended: 26,
-    descHu: 'French Press & Cold Brew (22-30 klikk)',
-    descEn: 'French Press & Cold Brew (22-30 clicks)'
+    descHu: 'French Press (22-30 klikk)',
+    descEn: 'French Press (22-30 clicks)'
   },
 };
 
-export const getC2Clicks = (grindSize: GrindSize, roastLevel?: RoastLevel): GrinderClickRecommendation => {
+export const getC2Clicks = (
+  grindSize: GrindSize,
+  roastLevel?: RoastLevel,
+  brewerId?: string
+): GrinderClickRecommendation => {
   const roast = roastLevel || 'medium';
 
-  switch (grindSize) {
-    case 'fine':
-      if (roast === 'light') {
-        return {
-          min: 11,
-          max: 11,
-          recommended: 11,
-          descHu: 'Timemore C2: 11 klikk világos pörköléshez (Kotyogós / Fine)',
-          descEn: 'Timemore C2: 11 clicks for light roast (Moka / Fine)',
-        };
-      }
-      if (roast === 'medium') {
-        return {
-          min: 12,
-          max: 14,
-          recommended: 13,
-          descHu: 'Timemore C2: 12-14 klikk közepes pörköléshez (Kotyogós / Fine)',
-          descEn: 'Timemore C2: 12-14 clicks for medium roast (Moka / Fine)',
-        };
-      }
-      return {
-        min: 14,
-        max: 15,
-        recommended: 14,
-        descHu: 'Timemore C2: 14-15 klikk sötét pörköléshez (Kotyogós / Fine)',
-        descEn: 'Timemore C2: 14-15 clicks for dark roast (Moka / Fine)',
-      };
+  let method: HonestCoffeeMethod | undefined;
 
-    case 'medium-fine':
-      if (roast === 'light') {
-        return {
-          min: 11,
-          max: 12,
-          recommended: 11,
-          descHu: 'Timemore C2: 11 klikk világos pörköléshez (AeroPress)',
-          descEn: 'Timemore C2: 11 clicks for light roast (AeroPress)',
-        };
-      }
-      if (roast === 'medium') {
-        return {
-          min: 12,
-          max: 14,
-          recommended: 13,
-          descHu: 'Timemore C2: 12-14 klikk közepes pörköléshez (AeroPress)',
-          descEn: 'Timemore C2: 12-14 clicks for medium roast (AeroPress)',
-        };
-      }
-      return {
-        min: 15,
-        max: 17,
-        recommended: 16,
-        descHu: 'Timemore C2: 15-17 klikk sötét pörköléshez (AeroPress)',
-        descEn: 'Timemore C2: 15-17 clicks for dark roast (AeroPress)',
-      };
-
-    case 'medium':
-      if (roast === 'light') {
-        return {
-          min: 13,
-          max: 16,
-          recommended: 15,
-          descHu: 'Timemore C2: 14-16 klikk világos pörköléshez (Filter / V60)',
-          descEn: 'Timemore C2: 14-16 clicks for light roast (Filter / V60)',
-        };
-      }
-      if (roast === 'medium') {
-        return {
-          min: 16,
-          max: 20,
-          recommended: 18,
-          descHu: 'Timemore C2: 17-19 klikk közepes pörköléshez (Filter / V60)',
-          descEn: 'Timemore C2: 17-19 clicks for medium roast (Filter / V60)',
-        };
-      }
-      return {
-        min: 20,
-        max: 22,
-        recommended: 21,
-        descHu: 'Timemore C2: 20-22 klikk sötét pörköléshez (Filter / V60)',
-        descEn: 'Timemore C2: 20-22 clicks for dark roast (Filter / V60)',
-      };
-
-    case 'medium-coarse':
-      if (roast === 'light') {
-        return {
-          min: 20,
-          max: 23,
-          recommended: 21,
-          descHu: 'Timemore C2: 20-23 klikk világos pörköléshez (Chemex)',
-          descEn: 'Timemore C2: 20-23 clicks for light roast (Chemex)',
-        };
-      }
-      if (roast === 'medium') {
-        return {
-          min: 23,
-          max: 25,
-          recommended: 24,
-          descHu: 'Timemore C2: 23-25 klikk közepes pörköléshez (Chemex)',
-          descEn: 'Timemore C2: 23-25 clicks for medium roast (Chemex)',
-        };
-      }
-      return {
-        min: 25,
-        max: 27,
-        recommended: 26,
-        descHu: 'Timemore C2: 25-27 klikk sötét pörköléshez (Chemex)',
-        descEn: 'Timemore C2: 25-27 clicks for dark roast (Chemex)',
-      };
-
-    case 'coarse':
-      if (roast === 'light') {
-        return {
-          min: 22,
-          max: 26,
-          recommended: 24,
-          descHu: 'Timemore C2: 23-25 klikk világos pörköléshez (French / Cold)',
-          descEn: 'Timemore C2: 23-25 clicks for light roast (French / Cold)',
-        };
-      }
-      if (roast === 'medium') {
-        return {
-          min: 25,
-          max: 28,
-          recommended: 27,
-          descHu: 'Timemore C2: 26-28 klikk közepes pörköléshez (French / Cold)',
-          descEn: 'Timemore C2: 26-28 clicks for medium roast (French / Cold)',
-        };
-      }
-      return {
-        min: 28,
-        max: 30,
-        recommended: 29,
-        descHu: 'Timemore C2: 28-30 klikk sötét pörköléshez (French / Cold)',
-        descEn: 'Timemore C2: 28-30 clicks for dark roast (French / Cold)',
-      };
-
-    default:
-      return TIMEMORE_C2_CLICKS[grindSize];
+  if (brewerId === 'moka-pot') {
+    method = HONEST_COFFEE_METHODS.find((m) => m.id === 'moka-pot');
+  } else if (brewerId === 'aeropress' || brewerId === 'aeropress-inverted') {
+    method = HONEST_COFFEE_METHODS.find((m) => m.id === 'aeropress');
+  } else if (brewerId === 'v60') {
+    method = HONEST_COFFEE_METHODS.find((m) => m.id === 'v60');
+  } else if (brewerId === 'chemex') {
+    method = HONEST_COFFEE_METHODS.find((m) => m.id === 'pour-over');
+  } else if (brewerId === 'french-press') {
+    method = HONEST_COFFEE_METHODS.find((m) => m.id === 'french-press');
+  } else if (brewerId === 'cold-brew') {
+    method = HONEST_COFFEE_METHODS.find((m) => m.id === 'cold-brew');
   }
+
+  if (!method) {
+    if (grindSize === 'fine') {
+      method = HONEST_COFFEE_METHODS.find((m) => m.id === 'moka-pot');
+    } else if (grindSize === 'medium-fine') {
+      method = HONEST_COFFEE_METHODS.find((m) => m.id === 'aeropress');
+    } else if (grindSize === 'medium') {
+      method = HONEST_COFFEE_METHODS.find((m) => m.id === 'v60');
+    } else if (grindSize === 'medium-coarse') {
+      method = HONEST_COFFEE_METHODS.find((m) => m.id === 'pour-over');
+    } else {
+      method = HONEST_COFFEE_METHODS.find((m) => m.id === 'french-press');
+    }
+  }
+
+  const m = method || HONEST_COFFEE_METHODS[3];
+  const thirds = calculateThirds(m.min, m.max, roast);
+
+  const thirdDescHu =
+    roast === 'light'
+      ? 'Alsó harmad (Light)'
+      : roast === 'medium'
+      ? 'Középső harmad (Medium)'
+      : 'Felső harmad (Dark)';
+
+  const thirdDescEn =
+    roast === 'light'
+      ? 'Lower third (Light)'
+      : roast === 'medium'
+      ? 'Middle third (Medium)'
+      : 'Upper third (Dark)';
+
+  return {
+    min: thirds.min,
+    max: thirds.max,
+    recommended: thirds.recommended,
+    descHu: `${m.nameHu}: ${thirds.min === thirds.max ? thirds.min : `${thirds.min}–${thirds.max}`} klikk (${thirdDescHu})`,
+    descEn: `${m.nameEn}: ${thirds.min === thirds.max ? thirds.min : `${thirds.min}–${thirds.max}`} clicks (${thirdDescEn})`,
+  };
 };
 
 export const MOKA_POT_SIZES: MokaPotSize[] = [

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { RoastLevel, GrindSize, ThemeColor } from '../types/coffee';
 import { TRANSLATIONS } from '../data/translations';
-import { getC2Clicks } from '../data/brewers';
+import { getC2Clicks, HONEST_COFFEE_METHODS, calculateThirds } from '../data/brewers';
 import { Thermometer, Gauge, Disc3, Minus, Plus, AlertTriangle } from 'lucide-react';
 import { sounds } from '../utils/audio';
 
@@ -10,6 +10,7 @@ interface RoastGrindGuideProps {
   onSelectRoast: (roast: RoastLevel) => void;
   grindSize: GrindSize;
   onSelectGrind: (grind: GrindSize) => void;
+  brewerId?: string;
   themeColor: ThemeColor;
   darkMode: boolean;
   isColdBrew?: boolean;
@@ -21,17 +22,19 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
   onSelectRoast,
   grindSize,
   onSelectGrind,
+  brewerId,
   themeColor,
   darkMode,
   isColdBrew = false,
   lang,
 }) => {
   const t = TRANSLATIONS[lang];
-  const c2Data = getC2Clicks(grindSize, roastLevel);
-  const currentKey = `${grindSize}-${roastLevel}`;
+  const c2Data = getC2Clicks(grindSize, roastLevel, brewerId);
+  const currentKey = `${grindSize}-${roastLevel}-${brewerId || ''}`;
 
   // User's custom click offset if they fine-tune their Timemore C2
   const [userClicks, setUserClicks] = useState<{ key: string; clicks: number } | null>(null);
+  const [showAllMethods, setShowAllMethods] = useState(false);
   const customClicks = userClicks?.key === currentKey ? userClicks.clicks : c2Data.recommended;
 
   // Temperatures based on roast or cold brew
@@ -136,7 +139,7 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
                   </span>
                 </div>
                 <div className="text-[10px] opacity-75 font-mono mt-0.5">
-                  {getC2Clicks(grindSize, level).recommended} {t.clicks}
+                  {getC2Clicks(grindSize, level, brewerId).recommended} {t.clicks}
                 </div>
               </button>
             );
@@ -192,18 +195,17 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
         </div>
       </div>
 
-      {/* 3. TIMEMORE CHESTNUT C2 MAX DEDICATED DIAL & CLICK CARD */}
-      <div className={`p-3 rounded-xl border flex flex-col gap-2 ${subCardBg}`}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-500">
-            <Disc3 className="w-4 h-4 animate-[spin_6s_linear_infinite]" />
-            <span>{t.grinderC2Max}</span>
-            <span className="text-[10px] font-normal opacity-70">(C2 = C2 Max)</span>
+        {/* 3. TIMEMORE CHESTNUT C2 DEDICATED DIAL & CLICK CARD */}
+        <div className={`p-3 rounded-xl border flex flex-col gap-2 ${subCardBg}`}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-500">
+              <Disc3 className="w-4 h-4 animate-[spin_6s_linear_infinite]" />
+              <span>{t.grinderC2Max}</span>
+            </div>
+            <span className={`text-[11px] ${darkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
+              {lang === 'hu' ? c2Data.descHu : c2Data.descEn}
+            </span>
           </div>
-          <span className={`text-[11px] ${darkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
-            {lang === 'hu' ? c2Data.descHu : c2Data.descEn}
-          </span>
-        </div>
 
         <div className="flex items-center justify-between bg-zinc-950/20 p-2.5 rounded-lg border border-zinc-800/40">
           <div>
@@ -246,11 +248,11 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
           </div>
         </div>
 
-        {/* Quick Roast & Clicks Reference Guide for Current Grind Size */}
+        {/* Quick Roast & Clicks Reference Guide for Current Grind Size / Brewer */}
         {(() => {
-          const lightData = getC2Clicks(grindSize, 'light');
-          const mediumData = getC2Clicks(grindSize, 'medium');
-          const darkData = getC2Clicks(grindSize, 'dark');
+          const lightData = getC2Clicks(grindSize, 'light', brewerId);
+          const mediumData = getC2Clicks(grindSize, 'medium', brewerId);
+          const darkData = getC2Clicks(grindSize, 'dark', brewerId);
 
           const lightLabel = lightData.min === lightData.max ? `${lightData.recommended}` : `${lightData.min}–${lightData.max}`;
           const mediumLabel = mediumData.min === mediumData.max ? `${mediumData.recommended}` : `${mediumData.min}–${mediumData.max}`;
@@ -310,25 +312,94 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
         })()}
 
         {/* Visual Clicks Position Slider Track (Honest Coffee Guide: 6 to 30 clicks) */}
-        <div className="px-1 pt-1">
-          <div className="flex items-center justify-between text-[9px] font-mono opacity-60 mb-1">
-            <span>6 (Min)</span>
-            <span>11 (Light)</span>
-            <span>13 (Medium)</span>
-            <span>18 (V60)</span>
-            <span>30 (Max)</span>
-          </div>
-          <div className="w-full bg-zinc-700/30 rounded-full h-1.5 relative overflow-hidden">
-            <div
-              className="h-full bg-amber-500 rounded-full transition-all duration-200"
-              style={{ width: `${Math.min(100, Math.max(0, ((customClicks - 6) / 24) * 100))}%` }}
-            />
-          </div>
-        </div>
+        {(() => {
+          const data = { min: 6, max: 30 };
+          const range = data.max - data.min;
+          return (
+            <div className="px-1 pt-1">
+              <div className="flex items-center justify-between text-[9px] font-mono opacity-60 mb-1">
+                <span>{data.min} (Min)</span>
+                <span>{Math.floor(data.min + range / 3)} (Light)</span>
+                <span>{Math.floor(data.min + (2 * range) / 3)} (Medium)</span>
+                <span>{data.max} (Max)</span>
+              </div>
+              <div className="w-full bg-zinc-700/30 rounded-full h-1.5 relative overflow-hidden">
+                <div
+                  className="h-full bg-amber-500 rounded-full transition-all duration-200"
+                  style={{ width: `${Math.min(100, Math.max(0, ((customClicks - data.min) / range) * 100))}%` }}
+                />
+              </div>
+            </div>
+          );
+        })()}
 
         <div className={`flex items-center gap-1.5 text-[11px] italic pt-1 ${darkMode ? 'text-zinc-400' : 'text-zinc-600'}`}>
           <AlertTriangle className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
           <span>{t.zeroPointNote}</span>
+        </div>
+
+        {/* Honest Coffee Guide Complete Table Toggle */}
+        <div className="pt-1 border-t border-zinc-800/20">
+          <button
+            type="button"
+            onClick={() => {
+              sounds.playKeyClick();
+              setShowAllMethods(!showAllMethods);
+            }}
+            className={`w-full py-1.5 px-2.5 rounded-lg border text-[11px] font-sans flex items-center justify-between transition-all cursor-pointer ${
+              darkMode ? 'bg-zinc-800/80 hover:bg-zinc-800 text-zinc-300 border-zinc-700/60' : 'bg-white hover:bg-zinc-100 text-zinc-700 border-zinc-300 shadow-sm'
+            }`}
+          >
+            <span className="font-semibold text-amber-500">
+              {lang === 'hu' ? 'Honest Coffee Guide (Mind a 13 módszer)' : 'Honest Coffee Guide (All 13 Methods)'}
+            </span>
+            <span className="text-[10px] opacity-75">{showAllMethods ? '▲' : '▼'}</span>
+          </button>
+
+          {showAllMethods && (
+            <div className={`mt-2 rounded-lg border overflow-hidden text-[10px] font-mono ${
+              darkMode ? 'bg-zinc-950/40 border-zinc-800' : 'bg-white border-zinc-200 shadow-sm'
+            }`}>
+              <div className={`grid grid-cols-5 p-2 font-semibold border-b ${
+                darkMode ? 'bg-zinc-900 border-zinc-800 text-zinc-300' : 'bg-zinc-100 border-zinc-200 text-zinc-700'
+              }`}>
+                <span className="col-span-2">{lang === 'hu' ? 'Módszer' : 'Brew Method'}</span>
+                <span className="text-center text-amber-500">{lang === 'hu' ? 'Világos (1/3)' : 'Light (1/3)'}</span>
+                <span className="text-center text-amber-600">{lang === 'hu' ? 'Közepes (2/3)' : 'Med (2/3)'}</span>
+                <span className="text-center text-amber-700">{lang === 'hu' ? 'Sötét (3/3)' : 'Dark (3/3)'}</span>
+              </div>
+              <div className="divide-y divide-zinc-800/40 max-h-56 overflow-y-auto">
+                {HONEST_COFFEE_METHODS.map((m) => {
+                  const l = calculateThirds(m.min, m.max, 'light');
+                  const med = calculateThirds(m.min, m.max, 'medium');
+                  const d = calculateThirds(m.min, m.max, 'dark');
+
+                  return (
+                    <div
+                      key={m.id}
+                      className={`grid grid-cols-5 p-1.5 items-center hover:bg-amber-500/10 transition-colors ${
+                        darkMode ? 'text-zinc-300' : 'text-zinc-800'
+                      }`}
+                    >
+                      <div className="col-span-2">
+                        <span className="font-semibold block">{lang === 'hu' ? m.nameHu : m.nameEn}</span>
+                        <span className="text-[9px] opacity-60">({m.min}–{m.max})</span>
+                      </div>
+                      <span className="text-center font-bold text-amber-500">
+                        {l.min === l.max ? l.min : `${l.min}–${l.max}`}
+                      </span>
+                      <span className="text-center font-bold text-amber-600">
+                        {med.min === med.max ? med.min : `${med.min}–${med.max}`}
+                      </span>
+                      <span className="text-center font-bold text-amber-700">
+                        {d.min === d.max ? d.min : `${d.min}–${d.max}`}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

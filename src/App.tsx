@@ -558,6 +558,7 @@ export default function App() {
           onSelectRoast={setRoastLevel}
           grindSize={grindSize}
           onSelectGrind={setGrindSize}
+          brewerId={currentBrewer.id}
           themeColor={settings.themeColor}
           darkMode={settings.darkMode}
           isColdBrew={currentBrewer.id === 'cold-brew'}
