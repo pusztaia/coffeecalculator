@@ -53,13 +53,13 @@ export const Keypad: React.FC<KeypadProps> = ({
 
   // Primary circular key styling
   const numKeyClass = darkMode
-    ? 'h-14 sm:h-16 w-full rounded-2xl bg-zinc-900/90 hover:bg-zinc-800 text-zinc-100 border border-zinc-800/80 hover:border-zinc-700 font-mono text-2xl sm:text-3xl font-semibold shadow-md active:scale-95 active:bg-zinc-700 transition-all flex items-center justify-center select-none cursor-pointer'
-    : 'h-14 sm:h-16 w-full rounded-2xl bg-white hover:bg-zinc-50 text-zinc-900 border border-zinc-200/90 font-mono text-2xl sm:text-3xl font-semibold shadow-sm active:scale-95 active:bg-zinc-100 transition-all flex items-center justify-center select-none cursor-pointer';
+    ? 'h-14 sm:h-16 w-full rounded-2xl bg-zinc-900/90 hover:bg-zinc-800 text-zinc-100 border border-zinc-800/80 hover:border-zinc-700 font-mono text-2xl sm:text-3xl font-semibold shadow-md active:scale-95 active:bg-zinc-700 transition-all flex items-center justify-center select-none cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none'
+    : 'h-14 sm:h-16 w-full rounded-2xl bg-white hover:bg-zinc-50 text-zinc-900 border border-zinc-200/90 font-mono text-2xl sm:text-3xl font-semibold shadow-sm active:scale-95 active:bg-zinc-100 transition-all flex items-center justify-center select-none cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none';
 
   // Function / utility key styling
   const funcKeyClass = darkMode
-    ? 'h-14 sm:h-16 w-full rounded-2xl bg-zinc-950/80 hover:bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-zinc-200 font-mono text-lg font-medium shadow-sm active:scale-95 transition-all flex items-center justify-center select-none cursor-pointer'
-    : 'h-14 sm:h-16 w-full rounded-2xl bg-zinc-100/90 hover:bg-zinc-200/80 border border-zinc-200 text-zinc-600 hover:text-zinc-900 font-mono text-lg font-medium shadow-sm active:scale-95 transition-all flex items-center justify-center select-none cursor-pointer';
+    ? 'h-14 sm:h-16 w-full rounded-2xl bg-zinc-950/80 hover:bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-zinc-200 font-mono text-lg font-medium shadow-sm active:scale-95 transition-all flex items-center justify-center select-none cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none'
+    : 'h-14 sm:h-16 w-full rounded-2xl bg-zinc-100/90 hover:bg-zinc-200/80 border border-zinc-200 text-zinc-600 hover:text-zinc-900 font-mono text-lg font-medium shadow-sm active:scale-95 transition-all flex items-center justify-center select-none cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none';
 
   const nudgeBarClass = darkMode
     ? 'bg-zinc-950/70 border-zinc-800/70 text-zinc-400'

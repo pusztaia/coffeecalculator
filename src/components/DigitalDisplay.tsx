@@ -83,10 +83,10 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]" />
           <span className="font-semibold text-zinc-400">SCALE ON</span>
-          <span className="text-[11px] text-zinc-500">| NET</span>
+          <span className="text-xs text-zinc-500">| NET</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-mono tracking-wider text-zinc-400">
+          <span className="text-xs font-mono tracking-wider text-zinc-400">
             RATIO 1:{ratio.toFixed(1)}
           </span>
           <button
@@ -94,9 +94,9 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
             onClick={onSwap}
             title={t.swap}
             aria-label={t.swap}
-            className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-700/60 text-zinc-300 hover:text-white hover:border-zinc-500 transition-colors active:scale-95 text-[11px]"
+            className="flex items-center gap-1 px-2.5 py-1 min-h-[32px] rounded-md bg-zinc-900 border border-zinc-700/60 text-zinc-300 hover:text-white hover:border-zinc-500 transition-colors active:scale-95 text-xs focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none"
           >
-            <ArrowLeftRight className="w-3 h-3" />
+            <ArrowLeftRight className="w-3.5 h-3.5" />
             <span className="font-medium">{t.swap}</span>
           </button>
         </div>
@@ -107,6 +107,9 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
         {/* COFFEE FIELD */}
         <button
           type="button"
+          role="spinbutton"
+          aria-valuenow={parseFloat(coffeeValue) || 0}
+          aria-valuetext={`${formatDisplay(coffeeValue)} g`}
           onClick={() => onSelectField('coffee')}
           aria-pressed={activeField === 'coffee'}
           aria-label={`${t.coffee}: ${formatDisplay(coffeeValue)} g`}
@@ -117,13 +120,13 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
           {/* Active indicator dot */}
           {activeField === 'coffee' && (
             <div className="absolute top-2 right-2 flex items-center gap-1">
-              <span className={`text-[10px] font-mono uppercase px-1.5 py-0.5 rounded font-semibold tracking-wider ${styles.badge}`}>
+              <span className={`text-xs font-mono uppercase px-1.5 py-0.5 rounded font-semibold tracking-wider ${styles.badge}`}>
                 INPUT
               </span>
             </div>
           )}
 
-          <div className="text-[11px] sm:text-xs font-mono font-medium tracking-widest text-zinc-400 mb-1 flex items-center justify-between">
+          <div className="text-xs font-mono font-medium tracking-widest text-zinc-400 mb-1 flex items-center justify-between">
             <span>{t.coffee}</span>
           </div>
 
@@ -144,6 +147,9 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
         {/* WATER FIELD */}
         <button
           type="button"
+          role="spinbutton"
+          aria-valuenow={parseFloat(waterValue) || 0}
+          aria-valuetext={`${formatDisplay(waterValue)} ${volumeUnit}`}
           onClick={() => onSelectField('water')}
           aria-pressed={activeField === 'water'}
           aria-label={`${t.water}: ${formatDisplay(waterValue)} ${volumeUnit}`}
@@ -154,13 +160,13 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
           {/* Active indicator dot */}
           {activeField === 'water' && (
             <div className="absolute top-2 right-2 flex items-center gap-1">
-              <span className={`text-[10px] font-mono uppercase px-1.5 py-0.5 rounded font-semibold tracking-wider ${styles.badge}`}>
+              <span className={`text-xs font-mono uppercase px-1.5 py-0.5 rounded font-semibold tracking-wider ${styles.badge}`}>
                 INPUT
               </span>
             </div>
           )}
 
-          <div className="text-[11px] sm:text-xs font-mono font-medium tracking-widest text-zinc-400 mb-1 flex items-center justify-between">
+          <div className="text-xs font-mono font-medium tracking-widest text-zinc-400 mb-1 flex items-center justify-between">
             <span>{t.water}</span>
           </div>
 
@@ -180,13 +186,10 @@ export const DigitalDisplay: React.FC<DigitalDisplayProps> = ({
       </div>
 
       {/* Subtle indicator bar for currently active field */}
-      <div className="mt-2.5 pt-2 border-t border-zinc-900 flex items-center justify-between text-[11px] font-mono text-zinc-500">
-        <span className="truncate">
-          {activeField === 'coffee'
-            ? `${t.activeField}: ${t.coffee} → ${t.water}`
-            : `${t.activeField}: ${t.water} → ${t.coffee}`}
+      <div className="mt-2.5 pt-2 border-t border-zinc-900 flex items-center justify-end text-xs font-mono text-zinc-500">
+        <span className="text-zinc-500 text-xs uppercase tracking-wider">
+          {activeField === 'coffee' ? t.coffee : t.water} {t.activeField}
         </span>
-        <span className="text-zinc-500 text-[11px]">TAP FIELD TO SWITCH</span>
       </div>
     </div>
   );
