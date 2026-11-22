@@ -552,7 +552,7 @@ export default function App() {
           ratio={ratio}
         />
 
-        {/* Roast Level & Grind Size Helper Guide (with Timemore C2 / C2 Max support!) */}
+        {/* Roast Level & Grind Size Helper Guide (with Timemore C2 support!) */}
         <RoastGrindGuide
           roastLevel={roastLevel}
           onSelectRoast={setRoastLevel}

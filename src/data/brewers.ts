@@ -13,15 +13,15 @@ export const TIMEMORE_C2_CLICKS: Record<GrindSize, GrinderClickRecommendation> =
     min: 11,
     max: 15,
     recommended: 13,
-    descHu: 'Kotyogós / Moka (C2 = C2 Max: 11 klikk világos, 12-14 klikk közepes)',
-    descEn: 'Moka Pot (C2 = C2 Max: 11 clicks light, 12-14 clicks medium)'
+    descHu: 'Kotyogós / Moka (C2: 11 klikk világos, 12-14 klikk közepes)',
+    descEn: 'Moka Pot (C2: 11 clicks light, 12-14 clicks medium)'
   },
   'medium-fine': {
     min: 11,
     max: 18,
     recommended: 13,
-    descHu: 'AeroPress (C2 = C2 Max: 11 klikk világos, 12-14 klikk közepes)',
-    descEn: 'AeroPress (C2 = C2 Max: 11 clicks light, 12-14 clicks medium)'
+    descHu: 'AeroPress (C2: 11 klikk világos, 12-14 klikk közepes)',
+    descEn: 'AeroPress (C2: 11 clicks light, 12-14 clicks medium)'
   },
   'medium': {
     min: 13,
@@ -56,8 +56,8 @@ export const getC2Clicks = (grindSize: GrindSize, roastLevel?: RoastLevel): Grin
           min: 11,
           max: 11,
           recommended: 11,
-          descHu: 'Timemore C2 / C2 Max: 11 klikk világos pörköléshez (Kotyogós / Fine)',
-          descEn: 'Timemore C2 / C2 Max: 11 clicks for light roast (Moka / Fine)',
+          descHu: 'Timemore C2: 11 klikk világos pörköléshez (Kotyogós / Fine)',
+          descEn: 'Timemore C2: 11 clicks for light roast (Moka / Fine)',
         };
       }
       if (roast === 'medium') {
@@ -65,16 +65,16 @@ export const getC2Clicks = (grindSize: GrindSize, roastLevel?: RoastLevel): Grin
           min: 12,
           max: 14,
           recommended: 13,
-          descHu: 'Timemore C2 / C2 Max: 12-14 klikk közepes pörköléshez (Kotyogós / Fine)',
-          descEn: 'Timemore C2 / C2 Max: 12-14 clicks for medium roast (Moka / Fine)',
+          descHu: 'Timemore C2: 12-14 klikk közepes pörköléshez (Kotyogós / Fine)',
+          descEn: 'Timemore C2: 12-14 clicks for medium roast (Moka / Fine)',
         };
       }
       return {
         min: 14,
         max: 15,
         recommended: 14,
-        descHu: 'Timemore C2 / C2 Max: 14-15 klikk sötét pörköléshez (Kotyogós / Fine)',
-        descEn: 'Timemore C2 / C2 Max: 14-15 clicks for dark roast (Moka / Fine)',
+        descHu: 'Timemore C2: 14-15 klikk sötét pörköléshez (Kotyogós / Fine)',
+        descEn: 'Timemore C2: 14-15 clicks for dark roast (Moka / Fine)',
       };
 
     case 'medium-fine':
@@ -83,8 +83,8 @@ export const getC2Clicks = (grindSize: GrindSize, roastLevel?: RoastLevel): Grin
           min: 11,
           max: 12,
           recommended: 11,
-          descHu: 'Timemore C2 / C2 Max: 11 klikk világos pörköléshez (AeroPress)',
-          descEn: 'Timemore C2 / C2 Max: 11 clicks for light roast (AeroPress)',
+          descHu: 'Timemore C2: 11 klikk világos pörköléshez (AeroPress)',
+          descEn: 'Timemore C2: 11 clicks for light roast (AeroPress)',
         };
       }
       if (roast === 'medium') {
@@ -92,16 +92,16 @@ export const getC2Clicks = (grindSize: GrindSize, roastLevel?: RoastLevel): Grin
           min: 12,
           max: 14,
           recommended: 13,
-          descHu: 'Timemore C2 / C2 Max: 12-14 klikk közepes pörköléshez (AeroPress)',
-          descEn: 'Timemore C2 / C2 Max: 12-14 clicks for medium roast (AeroPress)',
+          descHu: 'Timemore C2: 12-14 klikk közepes pörköléshez (AeroPress)',
+          descEn: 'Timemore C2: 12-14 clicks for medium roast (AeroPress)',
         };
       }
       return {
         min: 15,
         max: 17,
         recommended: 16,
-        descHu: 'Timemore C2 / C2 Max: 15-17 klikk sötét pörköléshez (AeroPress)',
-        descEn: 'Timemore C2 / C2 Max: 15-17 clicks for dark roast (AeroPress)',
+        descHu: 'Timemore C2: 15-17 klikk sötét pörköléshez (AeroPress)',
+        descEn: 'Timemore C2: 15-17 clicks for dark roast (AeroPress)',
       };
 
     case 'medium':
@@ -110,8 +110,8 @@ export const getC2Clicks = (grindSize: GrindSize, roastLevel?: RoastLevel): Grin
           min: 13,
           max: 16,
           recommended: 15,
-          descHu: 'Timemore C2 / C2 Max: 14-16 klikk világos pörköléshez (Filter / V60)',
-          descEn: 'Timemore C2 / C2 Max: 14-16 clicks for light roast (Filter / V60)',
+          descHu: 'Timemore C2: 14-16 klikk világos pörköléshez (Filter / V60)',
+          descEn: 'Timemore C2: 14-16 clicks for light roast (Filter / V60)',
         };
       }
       if (roast === 'medium') {
@@ -119,16 +119,16 @@ export const getC2Clicks = (grindSize: GrindSize, roastLevel?: RoastLevel): Grin
           min: 16,
           max: 20,
           recommended: 18,
-          descHu: 'Timemore C2 / C2 Max: 17-19 klikk közepes pörköléshez (Filter / V60)',
-          descEn: 'Timemore C2 / C2 Max: 17-19 clicks for medium roast (Filter / V60)',
+          descHu: 'Timemore C2: 17-19 klikk közepes pörköléshez (Filter / V60)',
+          descEn: 'Timemore C2: 17-19 clicks for medium roast (Filter / V60)',
         };
       }
       return {
         min: 20,
         max: 22,
         recommended: 21,
-        descHu: 'Timemore C2 / C2 Max: 20-22 klikk sötét pörköléshez (Filter / V60)',
-        descEn: 'Timemore C2 / C2 Max: 20-22 clicks for dark roast (Filter / V60)',
+        descHu: 'Timemore C2: 20-22 klikk sötét pörköléshez (Filter / V60)',
+        descEn: 'Timemore C2: 20-22 clicks for dark roast (Filter / V60)',
       };
 
     case 'medium-coarse':
@@ -137,8 +137,8 @@ export const getC2Clicks = (grindSize: GrindSize, roastLevel?: RoastLevel): Grin
           min: 20,
           max: 23,
           recommended: 21,
-          descHu: 'Timemore C2 / C2 Max: 20-23 klikk világos pörköléshez (Chemex)',
-          descEn: 'Timemore C2 / C2 Max: 20-23 clicks for light roast (Chemex)',
+          descHu: 'Timemore C2: 20-23 klikk világos pörköléshez (Chemex)',
+          descEn: 'Timemore C2: 20-23 clicks for light roast (Chemex)',
         };
       }
       if (roast === 'medium') {
@@ -146,16 +146,16 @@ export const getC2Clicks = (grindSize: GrindSize, roastLevel?: RoastLevel): Grin
           min: 23,
           max: 25,
           recommended: 24,
-          descHu: 'Timemore C2 / C2 Max: 23-25 klikk közepes pörköléshez (Chemex)',
-          descEn: 'Timemore C2 / C2 Max: 23-25 clicks for medium roast (Chemex)',
+          descHu: 'Timemore C2: 23-25 klikk közepes pörköléshez (Chemex)',
+          descEn: 'Timemore C2: 23-25 clicks for medium roast (Chemex)',
         };
       }
       return {
         min: 25,
         max: 27,
         recommended: 26,
-        descHu: 'Timemore C2 / C2 Max: 25-27 klikk sötét pörköléshez (Chemex)',
-        descEn: 'Timemore C2 / C2 Max: 25-27 clicks for dark roast (Chemex)',
+        descHu: 'Timemore C2: 25-27 klikk sötét pörköléshez (Chemex)',
+        descEn: 'Timemore C2: 25-27 clicks for dark roast (Chemex)',
       };
 
     case 'coarse':
@@ -164,8 +164,8 @@ export const getC2Clicks = (grindSize: GrindSize, roastLevel?: RoastLevel): Grin
           min: 22,
           max: 26,
           recommended: 24,
-          descHu: 'Timemore C2 / C2 Max: 23-25 klikk világos pörköléshez (French / Cold)',
-          descEn: 'Timemore C2 / C2 Max: 23-25 clicks for light roast (French / Cold)',
+          descHu: 'Timemore C2: 23-25 klikk világos pörköléshez (French / Cold)',
+          descEn: 'Timemore C2: 23-25 clicks for light roast (French / Cold)',
         };
       }
       if (roast === 'medium') {
@@ -173,16 +173,16 @@ export const getC2Clicks = (grindSize: GrindSize, roastLevel?: RoastLevel): Grin
           min: 25,
           max: 28,
           recommended: 27,
-          descHu: 'Timemore C2 / C2 Max: 26-28 klikk közepes pörköléshez (French / Cold)',
-          descEn: 'Timemore C2 / C2 Max: 26-28 clicks for medium roast (French / Cold)',
+          descHu: 'Timemore C2: 26-28 klikk közepes pörköléshez (French / Cold)',
+          descEn: 'Timemore C2: 26-28 clicks for medium roast (French / Cold)',
         };
       }
       return {
         min: 28,
         max: 30,
         recommended: 29,
-        descHu: 'Timemore C2 / C2 Max: 28-30 klikk sötét pörköléshez (French / Cold)',
-        descEn: 'Timemore C2 / C2 Max: 28-30 clicks for dark roast (French / Cold)',
+        descHu: 'Timemore C2: 28-30 klikk sötét pörköléshez (French / Cold)',
+        descEn: 'Timemore C2: 28-30 clicks for dark roast (French / Cold)',
       };
 
     default:
@@ -221,8 +221,8 @@ export const BREWERS: Brewer[] = [
         nameHu: 'James Hoffmann Mesterfőzete',
         creatorEn: 'James Hoffmann (World Barista Champion)',
         creatorHu: 'James Hoffmann (Világbajnok barista)',
-        descEn: 'Low temperature (80-85°C), Timemore C2: 11 clicks for light roast, 12-14 clicks for medium roast (C2 = C2 Max), gentle 30s press.',
-        descHu: 'Alacsonyabb hőfok (80-85°C), Timemore C2: 11 klikk világos, 12-14 klikk közepes pörköléshez (C2 = C2 Max), kíméletes lassú lenyomás.',
+        descEn: 'Low temperature (80-85°C), Timemore C2: 11 clicks for light roast, 12-14 clicks for medium roast, gentle 30s press.',
+        descHu: 'Alacsonyabb hőfok (80-85°C), Timemore C2: 11 klikk világos, 12-14 klikk közepes pörköléshez, kíméletes lassú lenyomás.',
         defaultRatio: 18, // 11g to 200g water (approx 1:18.2)
         minRatio: 14,
         maxRatio: 20,

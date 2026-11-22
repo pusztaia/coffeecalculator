@@ -35,11 +35,11 @@ Kifejezetten az **AeroPress**, a **Kotyogós (Moka Pot / Bialetti)** és a **Col
   - **9 csésze**: ~45g kávé, 450ml víz (330ml kihozatal)
 - **Fizikai kapacitásjelző**: Mutatja a szűrőkosár kapacitását, az alsó tartály biztonsági szelep alá töltendő vízmennyiségét és a várható csészébe jutó kávémennyiséget.
 - **Újhullámos és klasszikus receptek**: James Hoffmann forró vizes specialty technikája és a hagyományos olasz kotyogós technika.
-- **Timemore C2 / C2 Max ajánlás**: 11 klikk világos pörköléshez, 12–14 klikk közepes pörköléshez (Timemore C2 = C2 Max; 11 clicks for light roast, 12-14 clicks for medium roast).
+- **Timemore C2 ajánlás**: 11 klikk világos pörköléshez, 12–14 klikk közepes pörköléshez (11 clicks for light roast, 12-14 clicks for medium roast).
 
 ### 3. 🧪 Kiemelt AeroPress Modul
 - **Mesterreceptek**:
-  - **James Hoffmann Ultimate**: 11g kávé / 200g víz (85°C), kíméletes lenyomás. Timemore C2 / C2 Max: 11 klikk világos, 12–14 klikk közepes pörköléshez (C2 = C2 Max).
+  - **James Hoffmann Ultimate**: 11g kávé / 200g víz (85°C), kíméletes lenyomás. Timemore C2: 11 klikk világos, 12–14 klikk közepes pörköléshez.
   - **Tim Wendelboe Nordic Style**: Tiszta, gyümölcsös és világos északi stílus.
   - **Inverted (Fordított módszer)**: Teljes áztatási kontroll, korai csepegés nélkül.
   - **Espresso-stílusú koncentrátum**: Rövid, sűrű kávé latte-hoz, cappuccinohoz vagy jegeskávéhoz.
@@ -51,9 +51,9 @@ Kifejezetten az **AeroPress**, a **Kotyogós (Moka Pot / Bialetti)** és a **Col
 - Hangjelzés lépésváltáskor és konfetti fanfár a kávé elkészültekor!
 
 ### 5. 🌡️ Pörkölési Szint, Vízhőfok és Őrlésfinomság Útmutató
-- **Világos pörkölés (Light)**: 94–96°C (Timemore C2 / C2 Max: 11 klikk kotyogóshoz)
-- **Közepes pörkölés (Medium)**: 90–93°C (Timemore C2 / C2 Max: 12–14 klikk kotyogóshoz)
-- **Sötét pörkölés (Dark)**: 84–88°C (Timemore C2 / C2 Max: 14–15 klikk kotyogóshoz)
+- **Világos pörkölés (Light)**: 94–96°C (Timemore C2: 11 klikk kotyogóshoz)
+- **Közepes pörkölés (Medium)**: 90–93°C (Timemore C2: 12–14 klikk kotyogóshoz)
+- **Sötét pörkölés (Dark)**: 84–88°C (Timemore C2: 14–15 klikk kotyogóshoz)
 - **Őrlésméret skála**: Vizuális részecskeméret-jelzővel az extra finomtól a durváig.
 
 ### 6. 🌐 Kétnyelvű támogatás & Mértékegységek

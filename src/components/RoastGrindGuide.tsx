@@ -260,7 +260,7 @@ export const RoastGrindGuide: React.FC<RoastGrindGuideProps> = ({
             <div className={`flex flex-wrap items-center gap-1.5 text-[10px] p-2 rounded-lg border ${
               darkMode ? 'bg-zinc-900/80 border-zinc-800 text-zinc-300' : 'bg-zinc-100 border-zinc-200 text-zinc-700'
             }`}>
-              <span className="font-semibold text-amber-500">Timemore C2 / C2 Max:</span>
+              <span className="font-semibold text-amber-500">Timemore C2:</span>
               <button
                 type="button"
                 onClick={() => {
