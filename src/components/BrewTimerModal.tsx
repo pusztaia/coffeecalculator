@@ -292,7 +292,9 @@ export const BrewTimerModal: React.FC<BrewTimerModalProps> = ({
                       {t.step} {idx + 1}
                     </span>
                     <span className="text-zinc-500">
-                      @{formatTime(st.timeSec)}
+                      {idx < steps.length - 1
+                        ? `${formatTime(st.timeSec)} - ${formatTime(steps[idx + 1].timeSec)} (${formatTime(steps[idx + 1].timeSec - st.timeSec)})`
+                        : `@${formatTime(st.timeSec)}`}
                     </span>
                   </div>
 
